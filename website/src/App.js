@@ -17,7 +17,6 @@ function App() {
       <div className="background">
         <div className="item">
         <header className="App-header">
-            <PersonList/>
             <Form>
             <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Label>Please enter a text sample!</Form.Label>
