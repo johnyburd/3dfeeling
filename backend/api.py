@@ -9,7 +9,7 @@ routes = web.RouteTableDef()
 async def analyze(request: Request) -> Response:
     data = await request.post()
     print(data)
-    return web.json_response({'data': 'return something good here'})
+    return web.json_response({'data': 'james is dum'})
 
 app = web.Application()
 app.add_routes(routes)
