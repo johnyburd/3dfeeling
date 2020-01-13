@@ -1,2 +1,3 @@
 tags
 *.pyc
+website/node_modules
