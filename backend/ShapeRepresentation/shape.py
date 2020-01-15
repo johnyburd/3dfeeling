@@ -56,6 +56,7 @@ class Representation:
         self.time_steps = TimeRange(0, MAX_TIME, self.time_steps_size)
         self.rects = self.transform_points()
         self.shape = self.build_shape()
+        # self.total = self.shape.sum()
         self.total = self.sum()
 
     def transform_points(self):

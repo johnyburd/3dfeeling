@@ -1,3 +1,5 @@
 tags
 *.pyc
 website/node_modules
+*.pkl
+*.scad
