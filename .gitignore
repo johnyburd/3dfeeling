@@ -4,3 +4,4 @@ website/node_modules
 website/build
 .DS_Store
 website/.DS_Store
+.vscode/launch.json
