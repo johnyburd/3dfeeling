@@ -3,3 +3,4 @@ tags
 website/node_modules
 *.pkl
 *.scad
+*.stl
