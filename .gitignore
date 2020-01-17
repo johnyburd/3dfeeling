@@ -1,6 +1,7 @@
 tags
 *.pyc
 website/node_modules
+.vscode
 website/build
 .DS_Store
 website/.DS_Store
