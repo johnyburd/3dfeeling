@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Submit from './Submit';
+import Results from './Results';
 
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
@@ -14,6 +15,7 @@ const routing = (
     <div>
       <Route exact path="/" component={App} />
       <Route path="/submit" component={Submit} />
+      <Route path="/results" component={Results} />
     </div>
   </Router>
 )
