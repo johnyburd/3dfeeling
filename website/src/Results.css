@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+.background {
+  background-color: #282c34;
+  flex-direction: row;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .Results-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -9,6 +18,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.divider {
+  width: 2px;
+  margin: 6px 48px;
+  min-height: 50vh;
+  background: white;
+}
+
+p {
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+input {
   font-size: calc(10px + 2vmin);
   color: white;
 }
