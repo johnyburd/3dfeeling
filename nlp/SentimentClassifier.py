@@ -3,21 +3,16 @@ from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 import pandas as pd
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk.tokenize import RegexpTokenizer
 import math
 import dill as pickle
 import os
+from nltk.tokenize import sent_tokenize
 
 
-
-
-
-
-"""
-    Returns an emotion value based on a valence and arousal score.
-"""
 def categorizeSentiment(v, a):
+    """
+    Returns an emotion value based on a valence and arousal score.
+    """
     sent = ""
     if v <= 0 and a <= 0:
         sent = "sad"
@@ -28,6 +23,7 @@ def categorizeSentiment(v, a):
     if v > 0 and a > 0:
         sent = "happy"
     return sent
+
 
 def sentenceToFeatures(sentence):
     lem = WordNetLemmatizer()
@@ -42,14 +38,15 @@ def sentenceToFeatures(sentence):
             # dictionary.add(word)
     return txt
 
-"""
-    Categorizes sentiment into more than the four most basic categories.
-"""
+
 def categorizeSentimentcomplex(v, a):
+    """
+    Categorizes sentiment into more than the four most basic categories.
+    """
     sentiment = ""
     angle = math.atan2(v, a)
     pi = math.pi
-    if(0 <= angle < pi /8):
+    if(0 <= angle < pi / 8):
         sentiment = "pleased"
     if(pi / 8 <= angle < pi / 4):
         sentiment = "happy"
@@ -57,11 +54,11 @@ def categorizeSentimentcomplex(v, a):
         sentiment = "delighted"
     if(pi / 3 <= angle < pi / 2):
         sentiment = "excited"
-    if(angle == pi /2):
+    if(angle == pi / 2):
         sentiment = "astonished"
     if(pi / 2 < angle < 2 * pi / 3):
         sentiment = "alarmed"
-    if(2 * pi /3 <= angle < 3 * pi / 4):
+    if(2 * pi / 3 <= angle < 3 * pi / 4):
         sentiment = "mad"
     if(3 * pi / 4 <= angle < 5 * pi / 6):
         sentiment = "angry"
@@ -71,20 +68,21 @@ def categorizeSentimentcomplex(v, a):
         sentiment = "miserable"
     if(7 * pi / 6 <= angle < 5 * pi / 4):
         sentiment = "depressed"
-    if(5 * pi /4 <= angle > 4 * pi / 3):
+    if(5 * pi / 4 <= angle > 4 * pi / 3):
         sentiment = "bored"
     if(4 * pi / 3 <= angle < 3 * pi / 2):
         sentiment = "tired"
     if(3 * pi / 2 <= angle < 5 * pi / 3):
         sentiment = "sleepy"
-    if(5 * pi / 3 <= angle < 7 * pi /4):
+    if(5 * pi / 3 <= angle < 7 * pi / 4):
         sentiment = "relaxed"
     if(7 * pi / 4 <= angle < 11 * pi / 6):
         sentiment = "calm"
     if(11 * pi / 6 <= angle < 0):
         sentiment = "content"
-    #machine learning is just if statements
+    # machine learning is just if statements
     return sentiment
+
 
 def read_data():
     print("Reading data...")
@@ -94,7 +92,7 @@ def read_data():
     # Data is read out of emobank and stored, in a useful way in vad_docs (txt,v,a,d)
     vad_docs = []
 
-    #read emobank
+    # read emobank
     for index, row in eb.iterrows():
         v = float(row["V"])
         a = float(row["A"])
@@ -107,13 +105,14 @@ def read_data():
         try:
             # lemmatize, remove stop words, and transform sentence to list of words to build training docs
             txt = sentenceToFeatures(text)
-            vad_docs.append((txt, v,a,d))
+            vad_docs.append((txt, v, a, d))
 
-        except:
-            #pandas struggles to read certain strings...
+        except Exception:
+            # pandas struggles to read certain strings...
             print("Failed to add text: ", text)
 
     return vad_docs
+
 
 def train_classifiers(vad_docs):
     print("Building training sets...")
@@ -138,22 +137,20 @@ def train_classifiers(vad_docs):
     return valence_classifier, arousal_classifier, dominance_classifier
 
 
-
-
 class VADClassifier:
 
     def __init__(self):
         self.valence_classifier, self.arousal_classifier, self.dominance_classifier = self.train()
 
     def train(self):
-        result = ()
+        # result = ()
         if not os.path.exists('valence_nb_classifier.pkl') \
                 or not os.path.exists('arousal_nb_classifier.pkl') \
                 or not os.path.exists('dominance_nb_classifier.pkl'):
             # if models are not stored locally, then train classifiers
             vad_docs = read_data()
             valence_classifier, arousal_classifier, dominance_classifier = train_classifiers(vad_docs)
-            result = (valence_classifier, arousal_classifier, dominance_classifier)
+            # result = (valence_classifier, arousal_classifier, dominance_classifier)
 
             # and store models locally
             print('pickling classifiers...')
@@ -184,14 +181,13 @@ class VADClassifier:
             print('done')
 
         return valence_classifier, arousal_classifier, dominance_classifier
-            
 
-    """
-        Removes stop words, and lemmatizes words in order to remove noise from data 
+    def sentenceToFeatures(self, sentence):
+        """
+        Removes stop words, and lemmatizes words in order to remove noise from data
         and reduce the size of the number of values trained over.
         Takes in a sentence as a string, and returns a list of words.
-    """
-    def sentenceToFeatures(self, sentence):
+        """
         lem = WordNetLemmatizer()
         txt = []
         for word in nltk.word_tokenize(sentence):
@@ -213,7 +209,7 @@ class VADClassifier:
         v = self.classify_valence(data_features)
         a = self.classify_arousal(data_features)
         d = self.classify_dominance(data_features)
-        return v,a,d
+        return v, a, d
 
     def classify_valence(self, data_features):
         return self.valence_classifier.classify(data_features)
@@ -224,8 +220,6 @@ class VADClassifier:
     def classify_dominance(self, data_features):
         return self.dominance_classifier.classify(data_features)
 
-
-from nltk.tokenize import sent_tokenize
 
 if __name__ == "__main__":
     vad = VADClassifier()
