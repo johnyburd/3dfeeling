@@ -4,6 +4,8 @@ from aiohttp import web
 from aiohttp.web import Request, Response
 import aiohttp_cors
 
+from object_generation import get_object
+
 
 routes = web.RouteTableDef()
 
@@ -11,8 +13,9 @@ routes = web.RouteTableDef()
 @routes.post('/analyze')
 async def analyze(request: Request) -> Response:
     data = await request.post()
-    print(data)
-    return web.json_response({'data': 'james is dum'})
+    result = await get_object(data['text'])
+    return web.json_response({
+        'filename': result[0], 'points': result[1]})
 
 
 @routes.get('/example')

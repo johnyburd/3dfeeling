@@ -25,13 +25,16 @@ def generate(text):
     points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
     model = shape.Representation(points)
 
-    filename = str(uuid4())
-    filename = "../assets/" + filename
+    uuid = str(uuid4())
+    filename = "../assets/" + uuid
 
     model.get_final_shape().write(filename + ".scad")
-    subprocess.run(["openscad", "-o", filename + ".stl", filename + ".scad"])
+    try:
+        subprocess.run(["openscad", "-o", f"{filename}.stl", f"{filename}.scad"])
+    except FileNotFoundError:
+        print("Please install openscad! STL not generated!")
 
-    return filename + ".stl"
+    return f"{uuid}.stl", points
 
 
 async def get_object(text):
