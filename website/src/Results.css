@@ -1,18 +1,5 @@
-.App {
+.Results {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-p {
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-input {
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .background {
@@ -24,7 +11,8 @@ input {
   justify-content: center;
 }
 
-.App-header {
+.Results-header {
+  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -32,15 +20,6 @@ input {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  flex: 0 1 auto;
-}
-
-.App-link {
-  color: #09d3ac;
-}
-
-.long-boi {
-  width: 50px !important;
 }
 
 .divider {
@@ -48,4 +27,14 @@ input {
   margin: 6px 48px;
   min-height: 50vh;
   background: white;
+}
+
+p {
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+input {
+  font-size: calc(10px + 2vmin);
+  color: white;
 }

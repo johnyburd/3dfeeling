@@ -4,3 +4,8 @@ website/node_modules
 *.pkl
 *.scad
 *.stl
+.vscode
+website/build
+.DS_Store
+website/.DS_Store
+.vscode/launch.json
