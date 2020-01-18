@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default class PersonList extends React.Component {
-  state = {
-    persons: []
-  }
 
-  componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/users`)
+export default function PersonList() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    axios.get(`https://api.3dfeeling.ga/example`)
       .then(res => {
-        const persons = res.data;
-        this.setState({ persons });
+        //const data = res.data;
+        setData(res.data);
       })
-  }
-
-  render() {
-    return (
-      <ul>
-        { this.state.persons.map(person => <li>{person.name}</li>)}
-      </ul>
-    )
-  }
+  }, []);
+  return (
+    <ul>
+      <li>
+        Valence: { data.valence }
+      </li>
+      <li>
+        Arousal: { data.arousal }
+      </li>
+      <li>
+        Dominance: { data.dominance }
+      </li>
+    </ul>
+  );
 }

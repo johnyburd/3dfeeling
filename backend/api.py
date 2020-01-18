@@ -2,6 +2,7 @@ from random import uniform
 
 from aiohttp import web
 from aiohttp.web import Request, Response
+import aiohttp_cors
 
 
 routes = web.RouteTableDef()
@@ -23,4 +24,19 @@ async def example(request: Request) -> Response:
 
 app = web.Application()
 app.add_routes(routes)
+
+
+# Configure default CORS settings.
+cors = aiohttp_cors.setup(app, defaults={
+    "*": aiohttp_cors.ResourceOptions(
+        allow_credentials=True,
+        expose_headers="*",
+        allow_headers="*",
+    )
+})
+
+# Configure CORS on all routes.
+for route in list(app.router.routes()):
+    cors.add(route)
+
 web.run_app(app, host='0.0.0.0', port=3999)
