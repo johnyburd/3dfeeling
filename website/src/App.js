@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {FormControl, Form, Button} from 'react-bootstrap';
 
 
-import PersonList from './PersonList.js';
+import GuildCount from './GuildCount.js';
 
 function App() {
   return (
@@ -17,17 +17,18 @@ function App() {
       <div className="background">
         <div className="item">
         <header className="App-header">
-            <Form>
-            <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Please enter a text sample!</Form.Label>
-                <Form.Control as="textarea" size="lg" rows="6" />
-                <Link to="/submit">
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-                </Link>
-            </Form.Group>
-            </Form>
+          <GuildCount/>
+          <Form>
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Please enter a text sample!</Form.Label>
+            <Form.Control as="textarea" size="lg" rows="6" />
+            <Link to="/submit">
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+            </Link>
+          </Form.Group>
+          </Form>
         </header>
         </div>
         <div className="divider" />
