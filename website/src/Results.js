@@ -33,7 +33,8 @@ class Results extends React.Component {
             <div className='Results-header'>
               Results and shape will be displayed here
               <STLViewer
-                model={testSTL}
+                model={'https://api.3dfeeling.ga/assets/b82be92e-5fa3-4040-bf24-0afb4ec0da39.stl'}
+      //#model={'https://bohdanbirdie.github.io/stl-obj-demo/bottle.stl'}
                 width={400}
                 height={400}
                 modelColor='#EAEAEA'
