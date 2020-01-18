@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export default function PersonList() {
+export default function ExampleGet() {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios.get(`https://api.3dfeeling.ga/example`)
@@ -14,13 +14,13 @@ export default function PersonList() {
   return (
     <ul>
       <li>
-        Valence: { data.valence }
+        Valence: { data.valence }%
       </li>
       <li>
-        Arousal: { data.arousal }
+        Arousal: { data.arousal }%
       </li>
       <li>
-        Dominance: { data.dominance }
+        Dominance: { data.dominance }%
       </li>
     </ul>
   );

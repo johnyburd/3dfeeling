@@ -8,6 +8,8 @@ import STLViewer from 'stl-viewer';
 // Test model? 'https://bohdanbirdie.github.io/stl-obj-demo/bottle.stl'
 import testSTL from './testSTL.stl'
 
+import ExampleGet from './ExampleGet.js';
+
 class Results extends React.Component {
   constructor(props) {
     super(props)
@@ -40,6 +42,7 @@ class Results extends React.Component {
                 orbitControls={true}
               />
             <p>{this.state.resultText}</p>
+            <ExampleGet/>
             </div>
           </div>
         </div>

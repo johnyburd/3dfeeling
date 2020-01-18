@@ -10,9 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {FormControl, Form, Button} from 'react-bootstrap';
 
-
-import GuildCount from './GuildCount.js';
-
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -50,7 +47,6 @@ class App extends React.Component {
         <div className="background">
           <div className="item">
             <header className="App-header">
-              <GuildCount/>
               <Form onChange={() => this.handleChange(this.textInput.value)}>
               <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Label>Please enter a text sample!</Form.Label>
