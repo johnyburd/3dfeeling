@@ -34,11 +34,13 @@ class App extends React.Component {
     console.log('You should see input text below')
     const text = this.state.text
     console.log(text)
-
-    // fetch('api/**SEND_ME_SOMEWHERE**', {
-    //   method: 'POST',
-    //   body: text,
-    // })
+    axios.post('https://api.3dfeeling.ga/analyze',
+      `text=${this.state.text}`
+    ).then(function (resp) {
+      console.log(resp);
+    }).catch(function (error) {
+      console.log(error);
+    });
   }
 
   render () {
