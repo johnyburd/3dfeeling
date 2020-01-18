@@ -12,6 +12,7 @@ from ShapeRepresentation import shape
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier()
 
+
 def generate(text):
     """
     Takes a string of text and transforms it into a physical 3D printable model.
@@ -46,6 +47,8 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    paragraph = "Even before Erica finished formally adjourning the meeting, I wove my way through the crowd of garrulous people and up the stairs into my bedroom. I grabbed my laptop from the desk, then knocked on Ana’s door. She was there waiting for me."
+    paragraph = ("Even before Erica finished formally adjourning the meeting, I wove my way through"
+                 " the crowd of garrulous people and up the stairs into my bedroom. I grabbed my laptop from the"
+                 " desk, then knocked on Ana’s door. She was there waiting for me.")
 
     asyncio.run(get_object(paragraph))
