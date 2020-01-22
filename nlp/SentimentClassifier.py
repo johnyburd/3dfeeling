@@ -4,14 +4,16 @@ import nltk
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.tokenize import sent_tokenize
 import pandas as pd
 import dill as pickle
-
 
 
 """
     Returns an emotion value based on a valence and arousal score.
 """
+
+
 def categorizeSentiment(v, a):
     """
     Returns an emotion value based on a valence and arousal score.
@@ -41,9 +43,12 @@ def sentenceToFeatures(sentence):
             # dictionary.add(word)
     return txt
 
+
 """
     Categorizes sentiment into more than the four most basic categories.
 """
+
+
 def categorizeSentimentcomplex(v, a):
     """
     Categorizes sentiment into more than the four most basic categories.
@@ -51,7 +56,7 @@ def categorizeSentimentcomplex(v, a):
     sentiment = ""
     angle = math.atan2(v, a)
     pi = math.pi
-    if(0 <= angle < pi /8):
+    if(0 <= angle < pi / 8):
         sentiment = "pleased"
     if(pi / 8 <= angle < pi / 4):
         sentiment = "happy"
@@ -152,16 +157,12 @@ def train_classifiers(vad_docs):
     return valence_classifier, arousal_classifier, dominance_classifier
 
 
-
-
 class VADClassifier:
 
     def __init__(self):
         self.valence_classifier, self.arousal_classifier, self.dominance_classifier, self.vad_test_docs = self.train()
 
     def train(self):
-        result = ()
-
         # reading in the data
         # I do this not only when training, so that I can always test the model accuracy
         vad_docs, vad_test_docs = read_data()
@@ -243,7 +244,6 @@ class VADClassifier:
                 # absolute value interchangable with square
                 total[y] += abs(diff)
         return total
-            
 
     def sentenceToFeatures(self, sentence):
         """
@@ -284,8 +284,6 @@ class VADClassifier:
         return self.dominance_classifier.classify(data_features)
 
 
-from nltk.tokenize import sent_tokenize
-
 if __name__ == "__main__":
     vad = VADClassifier()
 
@@ -297,7 +295,6 @@ if __name__ == "__main__":
     for sentence in sent_tokenize(testdata):
         sentiment = vad.analyzeSentiment(sentence)
         result.append(sentence + "vad" + str([x for x in sentiment]))
-
 
     print(result)
     print("loss: ", loss)
