@@ -4,12 +4,11 @@ import './App.css';
 
 import { Link } from 'react-router-dom'
 
+import axios from 'axios';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {FormControl, Form, Button} from 'react-bootstrap';
-
-
-import PersonList from './PersonList.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -35,11 +34,13 @@ class App extends React.Component {
     console.log('You should see input text below')
     const text = this.state.text
     console.log(text)
-
-    // fetch('api/**SEND_ME_SOMEWHERE**', {
-    //   method: 'POST',
-    //   body: text,
-    // })
+    axios.post('https://api.3dfeeling.ga/analyze',
+      `text=${this.state.text}`
+    ).then(function (resp) {
+      console.log(resp);
+    }).catch(function (error) {
+      console.log(error);
+    });
   }
 
   render () {
@@ -48,17 +49,17 @@ class App extends React.Component {
         <div className="background">
           <div className="item">
             <header className="App-header">
-                <Form onChange={() => this.handleChange(this.textInput.value)}>
-                <Form.Group controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Please enter a text sample!</Form.Label>
-                    <Form.Control as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
-                    <Link to="/submit">
-                    <Button variant="primary" type="submit" onClick={this.sendTextToAPI}>
-                        Submit
-                    </Button>
-                    </Link>
-                </Form.Group>
-                </Form>
+              <Form onChange={() => this.handleChange(this.textInput.value)}>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Please enter a text sample!</Form.Label>
+                <Form.Control as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
+                <Link to="/submit">
+                <Button variant="primary" type="submit" onClick={this.sendTextToAPI}>
+                  Submit
+                </Button>
+                </Link>
+              </Form.Group>
+              </Form>
             </header>
           </div>
           <div className="divider" />
@@ -66,7 +67,6 @@ class App extends React.Component {
             <p>Or choose a file to upload</p>
             <input type="file"/>
           </div>
-
         </div>
       </div>
     );

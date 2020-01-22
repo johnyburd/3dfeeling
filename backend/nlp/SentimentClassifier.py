@@ -14,6 +14,18 @@ import dill as pickle
 """
 
 
+try:
+    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('corpora/wordnet')
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('punkt')
+    nltk.download('wordnet')
+    nltk.download('stopwords')
+else:
+    print("NLTK packages already installed :)")
+
+
 def categorizeSentiment(v, a):
     """
     Returns an emotion value based on a valence and arousal score.
@@ -94,10 +106,10 @@ def categorizeSentimentcomplex(v, a):
     return sentiment
 
 
-def read_data():
+def read_data(filename='emobank.csv'):
     print("Reading data...")
     # The emobank dataset contains text entries scored for valence, arousal, and dominance.
-    eb = pd.read_csv('emobank.csv', index_col=0)
+    eb = pd.read_csv(filename, index_col=0)
 
     # Data is read out of emobank and stored, in a useful way in vad_docs (txt,v,a,d)
     vad_docs = []
@@ -159,13 +171,14 @@ def train_classifiers(vad_docs):
 
 class VADClassifier:
 
-    def __init__(self):
-        self.valence_classifier, self.arousal_classifier, self.dominance_classifier, self.vad_test_docs = self.train()
+    def __init__(self, filename='emobank.csv'):
+        self.valence_classifier, self.arousal_classifier,\
+            self.dominance_classifier, self.vad_test_docs = self.train(filename)
 
-    def train(self):
+    def train(self, filename='emobank.csv'):
         # reading in the data
         # I do this not only when training, so that I can always test the model accuracy
-        vad_docs, vad_test_docs = read_data()
+        vad_docs, vad_test_docs = read_data(filename)
 
         if not os.path.exists('valence_nb_classifier.pkl') \
                 or not os.path.exists('arousal_nb_classifier.pkl') \

@@ -1,0 +1,6 @@
+aiohttp
+aiohttp_cors
+nltk
+pandas
+dill
+openpyscad

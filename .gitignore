@@ -1,6 +1,9 @@
 tags
 *.pyc
 website/node_modules
+*.pkl
+*.scad
+*.stl
 .vscode
 website/build
 .DS_Store
