@@ -10,7 +10,7 @@ import nlp.SentimentClassifier as VAD
 from ShapeRepresentation import shape
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
-vad_classifier = VAD.VADClassifier()
+vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
 
 
 def generate(text):
