@@ -3,8 +3,6 @@ from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 import pandas as pd
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk.tokenize import RegexpTokenizer
 import math
 import dill as pickle
 import os
@@ -88,7 +86,7 @@ def categorizeSentimentcomplex(v, a):
         sentiment = "relaxed"
     if(7 * pi / 4 <= angle < 11 * pi / 6):
         sentiment = "calm"
-    if(11 * pi / 6 <= angle < 0):
+    if 11 * pi / 6 <= angle < 0:
         sentiment = "content"
     # machine learning is just if statements
     return sentiment
