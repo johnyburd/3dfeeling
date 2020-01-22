@@ -1,14 +1,11 @@
+import math
+import os
 import nltk
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 import pandas as pd
-import math
 import dill as pickle
-import os
-
-
-
 
 
 
@@ -117,13 +114,13 @@ def read_data():
         try:
 
             if trainingcount % trainingsplit == 0:
-                vad_test_docs.append((text, v,a,d))
+                vad_test_docs.append((text, v, a, d))
             else:
                 # lemmatize, remove stop words, and transform sentence to list of words to build training docs
                 txt = sentenceToFeatures(text)
-                vad_docs.append((txt, v,a,d))
+                vad_docs.append((txt, v, a, d))
 
-            trainingcount+= 1
+            trainingcount += 1
 
         except Exception:
             # pandas struggles to read certain strings...
@@ -211,9 +208,9 @@ class VADClassifier:
         vad_test_docs = self.vad_test_docs
         actual = []
         predicted = []
-        for sentence, v,a,d in vad_test_docs:
-            actual.append((v,a,d))
-            pred_v, pred_a, pred_d =  self.analyzeSentiment(sentence)
+        for sentence, v, a, d in vad_test_docs:
+            actual.append((v, a, d))
+            pred_v, pred_a, pred_d = self.analyzeSentiment(sentence)
             predicted.append((pred_v, pred_a, pred_d))
 
         v_loss, a_loss, d_loss = self.loss(predicted, actual)
@@ -235,15 +232,15 @@ class VADClassifier:
         # this might be technically faster with numpy and matrix arithmetic
 
         # calculating loss for each v,a,d
-        total = [0,0,0]
+        total = [0, 0, 0]
         for x in range(len(predicted)):
             # iterate over values of v,a,d
             for y in range(3):
                 diff = predicted[x][y] - actual[x][y]
-                #square to get positve distance
-                #total[y] += math.pow(diff, 2)
+                # square to get positve distance
+                # total[y] += math.pow(diff, 2)
 
-                #absolute value interchangable with square
+                # absolute value interchangable with square
                 total[y] += abs(diff)
         return total
             
