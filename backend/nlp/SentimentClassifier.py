@@ -9,11 +9,6 @@ import pandas as pd
 import dill as pickle
 
 
-"""
-    Returns an emotion value based on a valence and arousal score.
-"""
-
-
 try:
     nltk.data.find('tokenizers/punkt')
     nltk.data.find('corpora/wordnet')
@@ -54,11 +49,6 @@ def sentenceToFeatures(sentence):
             # but to keep this function more general I will not.
             # dictionary.add(word)
     return txt
-
-
-"""
-    Categorizes sentiment into more than the four most basic categories.
-"""
 
 
 def categorizeSentimentcomplex(v, a):
