@@ -93,6 +93,10 @@ def read_data():
 
     # Data is read out of emobank and stored, in a useful way in vad_docs (txt,v,a,d)
     vad_docs = []
+    vad_test_docs = []
+    # 1 / (trainngsplit) will be resrved for testing
+    trainingsplit = 5
+    trainingcount = 0
 
     #read emobank
     for index, row in eb.iterrows():
@@ -105,15 +109,21 @@ def read_data():
         a = a / 6
         d = d / 6
         try:
-            # lemmatize, remove stop words, and transform sentence to list of words to build training docs
-            txt = sentenceToFeatures(text)
-            vad_docs.append((txt, v,a,d))
+
+            if trainingcount % trainingsplit == 0:
+                vad_test_docs.append((text, v,a,d))
+            else:
+                # lemmatize, remove stop words, and transform sentence to list of words to build training docs
+                txt = sentenceToFeatures(text)
+                vad_docs.append((txt, v,a,d))
+
+            trainingcount+= 1
 
         except:
             #pandas struggles to read certain strings...
             print("Failed to add text: ", text)
 
-    return vad_docs
+    return vad_docs, vad_test_docs
 
 def train_classifiers(vad_docs):
     print("Building training sets...")
@@ -143,15 +153,20 @@ def train_classifiers(vad_docs):
 class VADClassifier:
 
     def __init__(self):
-        self.valence_classifier, self.arousal_classifier, self.dominance_classifier = self.train()
+        self.valence_classifier, self.arousal_classifier, self.dominance_classifier, self.vad_test_docs = self.train()
 
     def train(self):
         result = ()
+
+        # reading in the data
+        # I do this not only when training, so that I can always test the model accuracy
+        vad_docs, vad_test_docs = read_data()
+
         if not os.path.exists('valence_nb_classifier.pkl') \
                 or not os.path.exists('arousal_nb_classifier.pkl') \
                 or not os.path.exists('dominance_nb_classifier.pkl'):
             # if models are not stored locally, then train classifiers
-            vad_docs = read_data()
+
             valence_classifier, arousal_classifier, dominance_classifier = train_classifiers(vad_docs)
             result = (valence_classifier, arousal_classifier, dominance_classifier)
 
@@ -183,7 +198,47 @@ class VADClassifier:
             print('3/3')
             print('done')
 
-        return valence_classifier, arousal_classifier, dominance_classifier
+        return valence_classifier, arousal_classifier, dominance_classifier, vad_test_docs
+
+    def test(self):
+        vad_test_docs = self.vad_test_docs
+        actual = []
+        predicted = []
+        for sentence, v,a,d in vad_test_docs:
+            actual.append((v,a,d))
+            pred_v, pred_a, pred_d =  self.analyzeSentiment(sentence)
+            predicted.append((pred_v, pred_a, pred_d))
+
+        v_loss, a_loss, d_loss = self.loss(predicted, actual)
+
+        num_docs = len(vad_test_docs)
+        average_v = v_loss / num_docs
+        average_a = a_loss / num_docs
+        average_d = d_loss / num_docs
+        total_loss = v_loss + a_loss + d_loss
+
+        print("loss: ", v_loss, a_loss, d_loss)
+        print("total: ", total_loss)
+        print("average valence loss: ", average_v)
+        print("average arousal loss: ", average_a)
+        print("average dominance loss: ", average_d)
+        return v_loss, a_loss, d_loss, total_loss
+
+    def loss(self, predicted, actual):
+        # this might be technically faster with numpy and matrix arithmetic
+
+        # calculating loss for each v,a,d
+        total = [0,0,0]
+        for x in range(len(predicted)):
+            # iterate over values of v,a,d
+            for y in range(3):
+                diff = predicted[x][y] - actual[x][y]
+                #square to get positve distance
+                #total[y] += math.pow(diff, 2)
+
+                #absolute value interchangable with square
+                total[y] += abs(diff)
+        return total
             
 
     """
@@ -234,8 +289,11 @@ if __name__ == "__main__":
                "I hope someday to write a sentence all on my own. Some people say that sentences are not real."
 
     result = []
+    loss = vad.test()
     for sentence in sent_tokenize(testdata):
         sentiment = vad.analyzeSentiment(sentence)
         result.append(sentence + "vad" + str([x for x in sentiment]))
 
+
     print(result)
+    print("loss: ", loss)
