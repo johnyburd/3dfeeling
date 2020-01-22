@@ -9,6 +9,18 @@ import os
 from nltk.tokenize import sent_tokenize
 
 
+try:
+    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('corpora/wordnet')
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('punkt')
+    nltk.download('wordnet')
+    nltk.download('stopwords')
+else:
+    print("NLTK packages already installed :)")
+
+
 def categorizeSentiment(v, a):
     """
     Returns an emotion value based on a valence and arousal score.

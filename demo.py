@@ -1,5 +1,5 @@
 import nlp.SentimentClassifier as SentimentClassifier
-import shape
+from ShapeRepresentation import shape
 # import nltk
 from nltk import sent_tokenize
 import os
