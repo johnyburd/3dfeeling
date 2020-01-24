@@ -14,7 +14,7 @@ class Results extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      resultText: 'Dummy Text. I haven\'t changed yet.',
+      resultText: '',
     }
     this.updateText = this.updateText.bind(this)
   }
