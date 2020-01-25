@@ -2,6 +2,18 @@
   text-align: center;
 }
 
+<<<<<<< HEAD
+=======
+.background {
+  background-color: #282c34;
+  flex-direction: row;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+>>>>>>> 23354eca5d3d629df1b124d6c5b37aa118280cef
 .Results-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -12,3 +24,23 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+<<<<<<< HEAD
+=======
+
+.divider {
+  width: 2px;
+  margin: 6px 48px;
+  min-height: 50vh;
+  background: white;
+}
+
+p {
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+input {
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+>>>>>>> 23354eca5d3d629df1b124d6c5b37aa118280cef

@@ -1,6 +1,6 @@
 import nlp.SentimentClassifier as SentimentClassifier
-import shape
-import nltk
+from ShapeRepresentation import shape
+# import nltk
 from nltk import sent_tokenize
 import os
 
@@ -17,4 +17,3 @@ while True:
     test_shape = shape.Representation(points)
     test_shape.get_final_shape().write("demo.scad")
     os.system("start " + "demo.scad")
-
