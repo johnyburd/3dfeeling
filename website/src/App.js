@@ -133,7 +133,7 @@ class App extends React.Component {
           <div className="Background">
             <div className='item'>
               <div className='Results-header'>
-                <h2>This is your shape is all of its glory!</h2>
+                <h2>This is your shape in all of its glory!</h2>
                 <p>Analysis values and the text it was generated from are below.</p>
                 <STLViewer
                   model={'https://api.3dfeeling.ga/assets/' + this.state.fileName}
