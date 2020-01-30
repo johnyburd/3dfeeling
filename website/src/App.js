@@ -1,15 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
+import React from 'react'
+import logo from './logo.svg'
 import './App.css';
-
-import { Link } from 'react-router-dom'
 
 import axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { ProgressBar } from 'react-bootstrap';
-import {FormControl, Form, Button} from 'react-bootstrap';
+import {Form, Button} from 'react-bootstrap';
 import STLViewer from 'stl-viewer';
 
 class App extends React.Component {

@@ -39,6 +39,36 @@ input {
   color: #09d3ac;
 }
 
+.Submit {
+  text-align: center;
+}
+
+.Submit-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Results {
+  text-align: center;
+}
+
+.Results-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
 .long-boi {
   width: 50px !important;
 }
