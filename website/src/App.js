@@ -138,8 +138,8 @@ class App extends React.Component {
                   //model={'https://api.3dfeeling.ga/assets/b82be92e-5fa3-4040-bf24-0afb4ec0da39.stl'}
                   width={400}
                   height={400}
-                  modelColor='#EAEAEA'
-                  backgroundColor='#222222'
+                  modelColor='red'
+                  backgroundColor='white'
                   rotate={true}
                   orbitControls={true}
                 />
