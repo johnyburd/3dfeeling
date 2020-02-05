@@ -6,6 +6,23 @@ MAX_TIME = 20
 MAX_VALUES = 0.75 * 20
 
 
+def height_function(vad, x):
+    """
+    A function for sampling the height of a continuous function based on the values
+    of valence, arousal and dominance at a specific point, x.
+
+    Height, y, can range from ~[-2, 3]
+
+    :parameter: vad, a tuple of valence, arousal, and dominance
+                x, a float related to 2D cartesian plane (x,y)
+
+    :return: float y, where y = f(v,a,d,x) is related to a + a*sin(x/v) + (1/d)*sin(1/xd)
+    """
+
+    v, a, d = vad
+    return a + a * np.sin(x / v) + a * np.cos(x / np.sqrt(a * d))
+
+
 def transform(x, size):
     return [size] + x
 
