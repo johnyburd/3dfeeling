@@ -4,6 +4,7 @@ import numpy as np
 
 MAX_TIME = 20
 MAX_VALUES = 0.75 * 20
+WIDTH = 100
 
 
 def height_function(vad, x):
@@ -11,7 +12,7 @@ def height_function(vad, x):
     A function for sampling the height of a continuous function based on the values
     of valence, arousal and dominance at a specific point, x.
 
-    Height, y, can range from ~[-2, 3]
+    Height, y, can range from ~[3, 8]
 
     :parameter: vad, a tuple of valence, arousal, and dominance
                 x, a float related to 2D cartesian plane (x,y)
@@ -20,7 +21,46 @@ def height_function(vad, x):
     """
 
     v, a, d = vad
-    return a + a * np.sin(x / v) + a * np.cos(x / np.sqrt(a * d))
+    return a + a * np.sin(x / v) + a * np.cos(x / np.sqrt(a * d)) + 5
+
+
+def neighbors(index, width):
+    return [index, index + width, index + width + 1, index + 1]
+
+
+def generate_terrain(vads):
+    y_points = np.arange(WIDTH)
+    points_3d = []
+    for i in range(len(vads)):
+        for j in y_points:
+            points_3d.append([i, j, height_function(vads[i], j)])
+
+    faces = []
+    for i in range(len(vads) - 1):
+        for j in range(WIDTH - 1):
+            faces.append(neighbors(i * WIDTH + j, WIDTH))
+
+    size = len(points_3d)
+
+    """
+    points_3d.append([0, 0, 0])
+    points_3d.append([0, len(vads) - 1, 0])
+    points_3d.append([WIDTH - 1, 0, 0])
+    points_3d.append([WIDTH - 1, len(vads) - 1, 0])
+    """
+
+    points_3d.append([0, 0, 0])
+    points_3d.append([0, WIDTH - 1, 0])
+    points_3d.append([len(vads) - 1, 0, 0])
+    points_3d.append([len(vads) - 1, WIDTH - 1, 0])
+
+    faces.append([size, size + 1, size + 3, size + 2])
+    faces.append([size + 1] + list(range(WIDTH))[::-1] + [size])
+    faces.append([size + 2] + list(range(size - WIDTH, size)) + [size + 3])
+    faces.append([size] + list(range(0, size, WIDTH)) + [size + 2])
+    faces.append([size + 1, size + 3] + list(range(WIDTH - 1, size, WIDTH))[::-1])
+
+    return ops.Polyhedron(points=points_3d, faces=faces, convex=10)
 
 
 def transform(x, size):
@@ -93,3 +133,7 @@ class Representation:
 
     def get_final_shape(self):
         return self.total
+
+
+if __name__ == "__main__":
+    generate_terrain(np.random.random((1000, 3))).write("test.scad")
