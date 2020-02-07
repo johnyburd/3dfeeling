@@ -72,7 +72,7 @@ for label in ("valence", "arousal", "dominance"):
 model.add_pipe(textcat)
 optimizer = model.resume_training()
 
-for i in range(10):
+for i in range(3):
     random.shuffle(train_data)
     losses = {}
     for batch in minibatch(train_data, size=8):
