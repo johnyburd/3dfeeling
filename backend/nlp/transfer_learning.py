@@ -4,11 +4,19 @@ import random
 import torch
 import pandas as pd
 
-"""
+
+# IMPORTANT
+# to download the pre-trained model:
+# $ python -m spacy download en_trf_distilbertbaseuncased_lg
+model = spacy.load("en_trf_distilbertbaseuncased_lg")
+
+
 is_using_gpu = spacy.prefer_gpu()
 if is_using_gpu:
+    print("Using GPU")
     torch.set_default_tensor_type("torch.cuda.FloatTensor")
-"""
+else:
+    print("Not using GPU")
 
 def read_data(filename='emobank.csv'):
     print("Reading data...")
@@ -57,10 +65,6 @@ train_data, test_data = read_data()
 #train_data = dummy_data
 #test_data = dummy_test
 
-# to download the pre-trained model:
-# python -m spacy download en_trf_distilbertbaseuncased_lg
-model = spacy.load("en_trf_distilbertbaseuncased_lg")
-
 print(model.pipe_names) # ["sentencizer", "pytt_wordpiecer", "pytt_tok2vec"]
 textcat = model.create_pipe("trf_textcat", config={"exclusive_classes": True})
 for label in ("valence", "arousal", "dominance"):
@@ -79,5 +83,5 @@ for i in range(10):
 test_sent = ["This is a test sentence."]
 
 sents = [txt for txt, d in test_data]
-for doc in model.pipe(sents):
-    print(doc.cats)
+for txt, doc in zip(sents, model.pipe(sents)):
+    print(txt, doc.cats)
