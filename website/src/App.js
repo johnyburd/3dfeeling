@@ -13,6 +13,8 @@ import STLViewer from 'stl-viewer';
 class App extends React.Component {
   constructor(props) {
     super(props)
+
+    //State of the entire app since it is all being rendered through one large component
     this.state = {
       inputText: '',
       loading: false,
@@ -20,23 +22,44 @@ class App extends React.Component {
       valence: '',
       arousal: '',
       dominance: '',
-      fileName: '',
+      apiFileName: '',
+      inputFile: null,
     }
-    this.handleChange = this.handleChange.bind(this)
+
+    //This allows react components to use their methods within the class. Don't ask me why
+    this.handleText = this.handleText.bind(this)
     this.sendTextToAPI = this.sendTextToAPI.bind(this)
     this.pointsAverage = this.pointsAverage.bind(this)
+    this.handleFile = this.handleFile.bind(this)
+    this.sendFileToAPI = this.sendFileToAPI.bind(this)
   }
 
+  //Called whenever the component mounts before rendering. (Startup)
   componentDidMount() {
     console.log('Component Mounted')
   }
 
-  handleChange(newText) {
+  //Responsible for updating state when contents of textbox change
+  handleText(newText) {
     this.setState({
       inputText: newText,
     })
   }
 
+  //Updates state when file is uploaded
+  handleFile(newFile) {
+    // Simply store file as Form Data. Use this if gonna send file to API
+    console.log(newFile)
+    if (newFile) {
+      let file = new FormData()
+      file.append('file', newFile)
+      this.setState({
+        inputFile: file
+      })
+    }
+  }
+
+  //Averages points returned from API. Not fail safe yet
   pointsAverage(points) {
     let averages = [0, 0, 0]
     let num = points.length
@@ -52,14 +75,51 @@ class App extends React.Component {
     return averages
   }
 
+  //Sends form data stored in state to API
+  sendFileToAPI() {
+    let currentComponent = this
+    let retrievedData = {
+      apiFileName: "Didnt work", 
+      points: [[-1, -1, -1]],
+    }
+    console.log('File params', this.state.inputFile)
+    this.setState({
+      loading: true
+    })
+    axios.post('https://api.3dfeeling.ga/analyze-file',
+      this.state.inputFile,
+      {
+        'Content-Type': 'multipart/form-data'
+      }
+    ).then(function (resp) {
+      //Assign gathered sentiment analysis values here
+      console.log(resp)
+      retrievedData = resp.data
+      let averages = currentComponent.pointsAverage(retrievedData.points)
+      currentComponent.setState({
+        inputText: retrievedData.text,
+        loading: false,
+        loaded: true,
+        valence: averages[0],
+        arousal: averages[1],
+        dominance: averages[2],
+        apiFileName: retrievedData.filename
+      })
+      console.log(retrievedData);
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  //Sends input text from textbox to API
   sendTextToAPI(event) {
     let currentComponent = this
     let retrievedData = {
-      fileName: "Didnt work", 
+      apiFileName: "Didnt work", 
       points: [[-1, -1, -1]],
     }
     event.preventDefault()
-    console.log('You should see input text below')
+    console.log('Input text: ', this.state.inputText)
     const text = this.state.inputText
     console.log(text)
     this.setState({
@@ -73,12 +133,13 @@ class App extends React.Component {
       retrievedData = resp.data
       let averages = currentComponent.pointsAverage(retrievedData.points)
       currentComponent.setState({
+        inputText: retrievedData.inputText,
         loading: false,
         loaded: true,
         valence: averages[0],
         arousal: averages[1],
         dominance: averages[2],
-        fileName: retrievedData.filename
+        apiFileName: retrievedData.filename
       })
       console.log(retrievedData);
     }).catch(function (error) {
@@ -86,6 +147,20 @@ class App extends React.Component {
     });
   }
 
+  /** 
+   * Renders the entire app. 
+   * 
+   * Called after the component mounts, 
+   *  or every time the app's state changes
+   * 
+   * Right now it's just a conditional render:
+   * App renders different things based on variables 
+   *  that are changed when certain things happen
+   * 
+   * 1st: Input page (loading and loaded are false)
+   * 2nd: Loading page (loading is true, loaded is still false)
+   * 3rd: Results page (loading is false and loaded is true)
+  **/
   render () {
     if (!this.state.loading && !this.state.loaded) {
       return (
@@ -93,11 +168,11 @@ class App extends React.Component {
           <div className="background">
             <div className="item">
               <header className="App-header">
-                <Form onChange={() => this.handleChange(this.textInput.value)}>
+                <Form onChange={() => this.handleText(this.textInput.value)}>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Please enter a text sample!</Form.Label>
-                  <Form.Control as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
-                  <Button variant="primary" type="submit" onClick={this.sendTextToAPI}>
+                  <Form.Control disabled={this.state.inputFile} as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
+                  <Button disabled={this.state.inputFile} variant="primary" type="submit" onClick={this.sendTextToAPI}>
                     Submit
                   </Button>
                 </Form.Group>
@@ -107,11 +182,25 @@ class App extends React.Component {
             <div className="divider" />
             <div className="item">
               <p>Or choose a file to upload</p>
-              <input type="file"/>
+              <input 
+                type="file" 
+                name="inputFileButton" 
+                accept='.txt' 
+                disabled={this.state.inputText}
+                onChange={(event) => this.handleFile(event.target.files[0])}
+              />
+              <input 
+                type='submit' 
+                value='Submit File' 
+                name='fileSubmitButton' 
+                disabled={this.state.inputFile == null || this.state.inputFile === undefined}
+                onClick={this.sendFileToAPI} 
+              />
             </div>
           </div>
         </div>
       )
+
     } else if (this.state.loading && !this.state.loaded) {
       return (
         <div className="Submit">
@@ -125,6 +214,7 @@ class App extends React.Component {
           </header>
         </div>
       );
+
     } else if (!this.state.loading && this.state.loaded) {
       return (
         <div className="Results">
@@ -134,7 +224,7 @@ class App extends React.Component {
                 <h2>This is your shape in all of its glory!</h2>
                 <p>Analysis values and the text it was generated from are below.</p>
                 <STLViewer
-                  model={'https://api.3dfeeling.ga/assets/' + this.state.fileName}
+                  model={'https://api.3dfeeling.ga/assets/' + this.state.apiFileName}
                   //model={'https://api.3dfeeling.ga/assets/b82be92e-5fa3-4040-bf24-0afb4ec0da39.stl'}
                   width={400}
                   height={400}
@@ -143,18 +233,19 @@ class App extends React.Component {
                   rotate={true}
                   orbitControls={true}
                 />
-              <ul>
-                <li>
-                  Valence: { this.state.valence }
-                </li>
-                <li>
-                  Arousal: { this.state.arousal }
-                </li>
-                <li>
-                  Dominance: { this.state.dominance }
-                </li>
-              </ul>
-              <p>Input text: {this.state.inputText}</p>
+                <p>Average Values:</p>
+                <ul>
+                  <li>
+                    Valence: { this.state.valence }
+                  </li>
+                  <li>
+                    Arousal: { this.state.arousal }
+                  </li>
+                  <li>
+                    Dominance: { this.state.dominance }
+                  </li>
+                </ul>
+                <p>Input text: {this.state.inputText}</p>
               </div>
             </div>
           </div>
