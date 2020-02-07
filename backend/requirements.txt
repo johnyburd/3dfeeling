@@ -4,3 +4,4 @@ nltk
 pandas
 dill
 openpyscad
+python-magic
