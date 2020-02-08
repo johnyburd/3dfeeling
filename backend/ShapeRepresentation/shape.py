@@ -29,7 +29,7 @@ def neighbors(index, width):
 
 def generate_terrain(vads, num_points):
     width = 10
-    y_points = np.arange(0, width, width/num_points)
+    y_points = np.arange(0, width, width / num_points)
     points_3d = []
     for i in range(len(vads)):
         for j in y_points:
