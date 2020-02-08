@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from './logo.svg'
-import './App.css';
+import './App.scss';
 
 import axios from 'axios';
 
@@ -8,7 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { ProgressBar } from 'react-bootstrap';
 import {Form, Button} from 'react-bootstrap';
-import STLViewer from 'stl-viewer';
+//import STLViewer from 'stl-viewer';
+import {BJViewer, STLViewer} from 'react-stl-obj-viewer';
 
 class App extends React.Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class App extends React.Component {
   sendFileToAPI() {
     let currentComponent = this
     let retrievedData = {
-      apiFileName: "Didnt work", 
+      apiFileName: "Didnt work",
       points: [[-1, -1, -1]],
     }
     console.log('File params', this.state.inputFile)
@@ -115,7 +116,7 @@ class App extends React.Component {
   sendTextToAPI(event) {
     let currentComponent = this
     let retrievedData = {
-      apiFileName: "Didnt work", 
+      apiFileName: "Didnt work",
       points: [[-1, -1, -1]],
     }
     event.preventDefault()
@@ -133,7 +134,7 @@ class App extends React.Component {
       retrievedData = resp.data
       let averages = currentComponent.pointsAverage(retrievedData.points)
       currentComponent.setState({
-        inputText: retrievedData.inputText,
+        //inputText: retrievedData.inputText,
         loading: false,
         loaded: true,
         valence: averages[0],
@@ -147,16 +148,16 @@ class App extends React.Component {
     });
   }
 
-  /** 
-   * Renders the entire app. 
-   * 
-   * Called after the component mounts, 
+  /**
+   * Renders the entire app.
+   *
+   * Called after the component mounts,
    *  or every time the app's state changes
-   * 
+   *
    * Right now it's just a conditional render:
-   * App renders different things based on variables 
+   * App renders different things based on variables
    *  that are changed when certain things happen
-   * 
+   *
    * 1st: Input page (loading and loaded are false)
    * 2nd: Loading page (loading is true, loaded is still false)
    * 3rd: Results page (loading is false and loaded is true)
@@ -164,37 +165,35 @@ class App extends React.Component {
   render () {
     if (!this.state.loading && !this.state.loaded) {
       return (
-        <div className="App">
-          <div className="background">
-            <div className="item">
-              <header className="App-header">
-                <Form onChange={() => this.handleText(this.textInput.value)}>
-                <Form.Group controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Please enter a text sample!</Form.Label>
-                  <Form.Control disabled={this.state.inputFile} as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
-                  <Button disabled={this.state.inputFile} variant="primary" type="submit" onClick={this.sendTextToAPI}>
-                    Submit
-                  </Button>
-                </Form.Group>
-                </Form>
-              </header>
+        <div className="App background">
+          <div className="Flex">
+            <div className="Flex-item Textarea">
+              <Form onChange={() => this.handleText(this.textInput.value)}>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Please enter a text sample!</Form.Label>
+                <Form.Control as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
+                <Button variant="primary" type="submit" onClick={this.sendTextToAPI}>
+                  Submit
+                </Button>
+              </Form.Group>
+              </Form>
             </div>
             <div className="divider" />
-            <div className="item">
+            <div className="Flex-item">
               <p>Or choose a file to upload</p>
-              <input 
-                type="file" 
-                name="inputFileButton" 
-                accept='.txt' 
+              <input
+                type="file"
+                name="inputFileButton"
+                accept='.txt'
                 disabled={this.state.inputText}
                 onChange={(event) => this.handleFile(event.target.files[0])}
               />
-              <input 
-                type='submit' 
-                value='Submit File' 
-                name='fileSubmitButton' 
+              <input
+                type='submit'
+                value='Submit File'
+                name='fileSubmitButton'
                 disabled={this.state.inputFile == null || this.state.inputFile === undefined}
-                onClick={this.sendFileToAPI} 
+                onClick={this.sendFileToAPI}
               />
             </div>
           </div>
@@ -224,14 +223,16 @@ class App extends React.Component {
                 <h2>This is your shape in all of its glory!</h2>
                 <p>Analysis values and the text it was generated from are below.</p>
                 <STLViewer
-                  model={'https://api.3dfeeling.ga/assets/' + this.state.apiFileName}
+                  //model={'https://api.3dfeeling.ga/assets/' + this.state.apiFileName}
+                  url={'https://api.3dfeeling.ga/assets/' + this.state.apiFileName}
                   //model={'https://api.3dfeeling.ga/assets/b82be92e-5fa3-4040-bf24-0afb4ec0da39.stl'}
-                  width={400}
-                  height={400}
+                  sceneClassName="test-scene"
+                  //width={400}
+                  //height={400}
                   modelColor='red'
-                  backgroundColor='white'
-                  rotate={true}
-                  orbitControls={true}
+                  //backgroundColor='white'
+                  //rotate={true}
+                  //orbitControls={true}
                 />
                 <p>Average Values:</p>
                 <ul>
@@ -252,9 +253,7 @@ class App extends React.Component {
         </div>
       )
     }
-    
   }
-
 }
 
 export default App;

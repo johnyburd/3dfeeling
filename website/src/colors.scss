@@ -1,0 +1,31 @@
+$theme-colors: (
+  'primary': (
+    'base': #384ea9,
+    'light': #e4efff,
+    'dark': #bb86fc
+  ),
+  'accent': (
+    'base': #f08110,
+    'light': #ff8100,
+    'dark': #03dac6
+  ),
+  'primary2': (
+    'base': #393939,
+    'light': #6e6e6e,
+    'dark': #3700b3
+  ),
+  'background': (
+    'base': #f8f5f5,
+    'light': #fff,
+    'dark': #121212
+  ),
+  'error': (
+    'base': #384ea9,
+    'light': #e4efff,
+    'dark': #cf6679
+  )
+);
+
+@function theme-color($key: 'primary', $variant: 'base') {
+  @return map-get(map-get($theme-colors, $key), $variant);
+}
