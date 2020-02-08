@@ -4,7 +4,6 @@ import numpy as np
 
 MAX_TIME = 20
 MAX_VALUES = 0.75 * 20
-WIDTH = 100
 
 
 def height_function(vad, x):
@@ -28,8 +27,9 @@ def neighbors(index, width):
     return [index, index + width, index + width + 1, index + 1]
 
 
-def generate_terrain(vads):
-    y_points = np.arange(WIDTH)
+def generate_terrain(vads, num_points):
+    width = 10
+    y_points = np.arange(0, width, width/num_points)
     points_3d = []
     for i in range(len(vads)):
         for j in y_points:
@@ -37,30 +37,23 @@ def generate_terrain(vads):
 
     faces = []
     for i in range(len(vads) - 1):
-        for j in range(WIDTH - 1):
-            faces.append(neighbors(i * WIDTH + j, WIDTH))
+        for j in range(num_points - 1):
+            faces.append(neighbors(i * num_points + j, num_points))
 
     size = len(points_3d)
 
-    """
     points_3d.append([0, 0, 0])
-    points_3d.append([0, len(vads) - 1, 0])
-    points_3d.append([WIDTH - 1, 0, 0])
-    points_3d.append([WIDTH - 1, len(vads) - 1, 0])
-    """
-
-    points_3d.append([0, 0, 0])
-    points_3d.append([0, WIDTH - 1, 0])
+    points_3d.append([0, width, 0])
     points_3d.append([len(vads) - 1, 0, 0])
-    points_3d.append([len(vads) - 1, WIDTH - 1, 0])
+    points_3d.append([len(vads) - 1, width, 0])
 
     faces.append([size, size + 1, size + 3, size + 2])
-    faces.append([size + 1] + list(range(WIDTH))[::-1] + [size])
-    faces.append([size + 2] + list(range(size - WIDTH, size)) + [size + 3])
-    faces.append([size] + list(range(0, size, WIDTH)) + [size + 2])
-    faces.append([size + 1, size + 3] + list(range(WIDTH - 1, size, WIDTH))[::-1])
+    faces.append([size + 1] + list(range(num_points))[::-1] + [size])
+    faces.append([size + 2] + list(range(size - num_points, size)) + [size + 3])
+    faces.append([size] + list(range(0, size, num_points)) + [size + 2])
+    faces.append([size + 1, size + 3] + list(range(num_points - 1, size, num_points))[::-1])
 
-    return ops.Polyhedron(points=points_3d, faces=faces, convex=10)
+    return ops.Polyhedron(points=points_3d, faces=faces)
 
 
 def transform(x, size):
@@ -136,4 +129,4 @@ class Representation:
 
 
 if __name__ == "__main__":
-    generate_terrain(np.random.random((1000, 3))).write("test.scad")
+    generate_terrain(np.random.random((30, 3)), 250).write("test.scad")

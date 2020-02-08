@@ -7,7 +7,7 @@ from uuid import uuid4
 
 # libraries made by us for this project
 import nlp.SentimentClassifier as VAD
-from ShapeRepresentation import shape
+from ShapeRepresentation.shape import generate_terrain
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
@@ -23,12 +23,12 @@ def generate(text):
     is at least one sentence in the string before calling this function.
     """
     points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
-    model = shape.Representation(points)
+    model = generate_terrain(points, 250)
 
     uuid = str(uuid4())
     filename = "../assets/" + uuid
 
-    model.get_final_shape().write(filename + ".scad")
+    model.write(filename + ".scad")
     try:
         subprocess.run(["openscad", "-o", f"{filename}.stl", f"{filename}.scad"])
     except FileNotFoundError:
