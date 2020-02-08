@@ -36,6 +36,7 @@ def categorizeSentiment(v, a):
         sent = "happy"
     return sent
 
+
 def negate_unigram(word_pair):
     """
         Takes a pair of word tokens and if the first word would negate the second,
@@ -50,6 +51,7 @@ def negate_unigram(word_pair):
     else:
         return word_pair[1]
 
+
 def sentenceToFeatures(sentence):
     lem = WordNetLemmatizer()
     txt = []
@@ -61,11 +63,13 @@ def sentenceToFeatures(sentence):
             Removing stop words would remove important negating words. Instead leave in stopwords
             and postfilter least and most occuring bigrams.
         """
-        #if word not in stopwords.words("english"):
-            #txt.append(word)
-            # Would be time efficent to add words to dictionary here,
-            # but to keep this function more general I will not.
-            # dictionary.add(word)
+        """
+        if word not in stopwords.words("english"):
+            txt.append(word)
+             Would be time efficent to add words to dictionary here,
+             but to keep this function more general I will not.
+             dictionary.add(word)
+        """
         txt.append(word)
     return nltk.bigrams(txt)
 
