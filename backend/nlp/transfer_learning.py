@@ -5,18 +5,16 @@ import torch
 import pandas as pd
 
 
+spacy.require_gpu()
+torch.set_default_tensor_type("torch.cuda.FloatTensor")
+device = torch.device("cuda")
+spacy.util.use_gpu(0)
+
 # IMPORTANT
 # to download the pre-trained model:
 # $ python -m spacy download en_trf_distilbertbaseuncased_lg
 model = spacy.load("en_trf_distilbertbaseuncased_lg")
 
-
-is_using_gpu = spacy.prefer_gpu()
-if is_using_gpu:
-    print("Using GPU")
-    torch.set_default_tensor_type("torch.cuda.FloatTensor")
-else:
-    print("Not using GPU")
 
 def read_data(filename='emobank.csv'):
     print("Reading data...")
@@ -49,8 +47,9 @@ def read_data(filename='emobank.csv'):
         except Exception:
             # pandas struggles to read certain strings...
             print("Failed to add text: ", text)
-    print("number training examples:",len(train_docs))
+    print("number training examples:", len(train_docs))
     return train_docs, test_docs
+
 
 dummy_data = [
     ("He told us a very exciting adventure story.", {"cats": {"POSITIVE": 1.0, "NEGATIVE": 0.0}}),
@@ -62,14 +61,15 @@ dummy_data = [
 dummy_test = [["Here is a sentence"]]
 
 train_data, test_data = read_data()
-#train_data = dummy_data
-#test_data = dummy_test
+# train_data = dummy_data
+# test_data = dummy_test
 
-print(model.pipe_names) # ["sentencizer", "pytt_wordpiecer", "pytt_tok2vec"]
+print(model.pipe_names)  # ["sentencizer", "pytt_wordpiecer", "pytt_tok2vec"]
 textcat = model.create_pipe("trf_textcat", config={"exclusive_classes": True})
 for label in ("valence", "arousal", "dominance"):
     textcat.add_label(label)
 model.add_pipe(textcat)
+# model = model.to(device)
 optimizer = model.resume_training()
 
 for i in range(3):
