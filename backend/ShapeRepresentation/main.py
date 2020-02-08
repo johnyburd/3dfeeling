@@ -10,6 +10,7 @@ def main():
     test_shape = shape.Representation(points)
     test_shape.get_final_shape().write("test.scad")
 
+
 def height_test():
     # random range float [0,1]
     vad_points = [(random(), random(), random()) for i in range(20)]
