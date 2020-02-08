@@ -10,4 +10,4 @@ website/build
 website/.DS_Store
 .vscode/launch.json
 .venv
-yarn.lock
+yarn-error.log
