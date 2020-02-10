@@ -8,8 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { ProgressBar } from 'react-bootstrap';
 import {Form, Button} from 'react-bootstrap';
-//import STLViewer from 'stl-viewer';
-import {BJViewer, STLViewer} from 'react-stl-obj-viewer';
+import { STLViewer } from 'react-stl-obj-viewer';
 
 class App extends React.Component {
   constructor(props) {
@@ -171,7 +170,7 @@ class App extends React.Component {
               <Form onChange={() => this.handleText(this.textInput.value)}>
               <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Label>Please enter a text sample!</Form.Label>
-                <Form.Control as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
+                <Form.Control disabled={this.state.inputFile} as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
                 <Button variant="primary" type="submit" onClick={this.sendTextToAPI}>
                   Submit
                 </Button>
