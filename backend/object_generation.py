@@ -18,11 +18,13 @@ vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
 def graphs(points, fig_id):
     x_values = [i for i in range(1, len(points) + 1)]
     points = np.array(points)
+    plt.xlabel('Sentence')
+    plt.ylabel('VAD Level')
     plt.plot(x_values, points[:, 0], 'ro-', label='Valence')
     plt.plot(x_values, points[:, 1], 'go-', label='Arousal')
     plt.plot(x_values, points[:, 2], 'bo-', label='Dominance')
-    plt.lengend()
-    plt.savefig("../assets/" + fig_id + ".png")
+    plt.legend()
+    plt.savefig("../assets/" + fig_id + ".png", bbox_inches='tight')
 
 
 def generate(text):
@@ -35,6 +37,8 @@ def generate(text):
     is at least one sentence in the string before calling this function.
     """
     points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
+    if len(points) == 1:
+        points.append(points[0])
     model = generate_terrain(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
