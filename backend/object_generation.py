@@ -3,7 +3,9 @@ import asyncio
 import concurrent.futures
 from nltk import sent_tokenize
 import subprocess
-from uuid import uuid4
+import time
+import matplotlib.pyplot as plt
+import numpy as np
 
 # libraries made by us for this project
 import nlp.SentimentClassifier as VAD
@@ -11,6 +13,16 @@ from ShapeRepresentation.shape import generate_terrain
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
+
+
+def graphs(points, fig_id):
+    x_values = [i for i in range(1, len(points) + 1)]
+    points = np.array(points)
+    plt.plot(x_values, points[:, 0], 'ro-', label='Valence')
+    plt.plot(x_values, points[:, 1], 'go-', label='Arousal')
+    plt.plot(x_values, points[:, 2], 'bo-', label='Dominance')
+    plt.lengend()
+    plt.savefig("../assets/" + fig_id + ".png")
 
 
 def generate(text):
@@ -25,8 +37,8 @@ def generate(text):
     points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
     model = generate_terrain(points, 250)
 
-    uuid = str(uuid4())
-    filename = "../assets/" + uuid
+    file_id = str(time.time() * 1000)[0:13]
+    filename = "../assets/" + file_id
 
     model.write(filename + ".scad")
     try:
@@ -34,7 +46,9 @@ def generate(text):
     except FileNotFoundError:
         print("Please install openscad! STL not generated!")
 
-    return f"{uuid}.stl", points
+    graphs(points, file_id)
+
+    return f"{file_id}.stl", points
 
 
 async def get_object(text):
@@ -50,8 +64,11 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
+    """
     paragraph = ("Even before Erica finished formally adjourning the meeting, I wove my way through"
                  " the crowd of garrulous people and up the stairs into my bedroom. I grabbed my laptop from the"
                  " desk, then knocked on Ana’s door. She was there waiting for me.")
 
     asyncio.run(get_object(paragraph))
+    """
+    graphs(np.random.random((10, 3)), "test")
