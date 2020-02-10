@@ -24,7 +24,7 @@ def height_function(vad, x):
 
 
 def neighbors(index, width):
-    return [index, index + width, index + width + 1, index + 1]
+    return [index + 1, index + width + 1, index + width, index]
 
 
 def generate_terrain(vads, num_points):
@@ -47,7 +47,7 @@ def generate_terrain(vads, num_points):
     points_3d.append([len(vads) - 1, 0, 0])
     points_3d.append([len(vads) - 1, width, 0])
 
-    faces.append([size, size + 1, size + 3, size + 2])
+    faces.append([size + 2, size + 3, size + 1, size])
     faces.append([size + 1] + list(range(num_points))[::-1] + [size])
     faces.append([size + 2] + list(range(size - num_points, size)) + [size + 3])
     faces.append([size] + list(range(0, size, num_points)) + [size + 2])
