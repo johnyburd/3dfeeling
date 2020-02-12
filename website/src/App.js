@@ -186,7 +186,7 @@ class App extends React.Component {
               </Form.Label>
 
                 <Form.Group controlId="inputTextArea">
-                  <Form.Label>Enter a text sample.</Form.Label>
+                  <Form.Label>Enter a text sample:</Form.Label>
                   <Form.Control 
                     disabled={this.state.inputFile} 
                     onChange={() => this.handleText(this.textInput.value)} 
@@ -199,7 +199,7 @@ class App extends React.Component {
                 </Form.Group>
 
                 <Form.Group controlId="inputFileArea">
-                  <Form.Label>Or choose a file to upload.</Form.Label>
+                  <Form.Label>Or choose a file to upload:</Form.Label>
                   <Form.Control 
                     type='file' 
                     onChange={(event) => this.handleFile(event.target.files[0])} 
