@@ -1,0 +1,35 @@
+@mixin light($property: null, $value: null) {
+    @if $property == null {
+        .light-mode & {
+            @content;
+        }
+    } @else {
+        .light-mode & {
+            #{$property}: $value;
+        }
+    }
+}
+
+@mixin dark($property: null, $value: null) {
+    @if $property == null {
+        .dark-mode & {
+            @content;
+        }
+    } @else {
+        .dark-mode & {
+            #{$property}: $value;
+        }
+    }
+}
+
+@mixin theme-bg($theme, $color, $adjust: 0%) {
+    @include theme-property(
+        background-color,
+        color-adjust($color, $adjust),
+        $theme
+    );
+}
+
+@mixin theme-fg($theme, $color, $adjust: 0%) {
+    @include theme-property(color, color-adjust($color, $adjust), $theme);
+}

@@ -7,6 +7,8 @@ import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import * as serviceWorker from './serviceWorker';
 
+import "./scss/main.scss";
+
 
 const routing = (
   <Router>
