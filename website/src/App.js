@@ -7,7 +7,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { ProgressBar } from 'react-bootstrap';
-import {Form, Button} from 'react-bootstrap';
+import {Form, Button, Row, Col, Jumbotron} from 'react-bootstrap';
 import { STLViewer } from 'react-stl-obj-viewer';
 
 class App extends React.Component {
@@ -32,6 +32,7 @@ class App extends React.Component {
     this.pointsAverage = this.pointsAverage.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.sendFileToAPI = this.sendFileToAPI.bind(this)
+    this.handleClear = this.handleClear.bind(this)
   }
 
   //Called whenever the component mounts before rendering. (Startup)
@@ -57,6 +58,14 @@ class App extends React.Component {
         inputFile: file
       })
     }
+  }
+
+  //Clears text, file, and state of both
+  handleClear() {
+    this.setState({
+      inputText: '',
+      inputFile: null,
+    })
   }
 
   //Averages points returned from API. Not fail safe yet
@@ -112,13 +121,12 @@ class App extends React.Component {
   }
 
   //Sends input text from textbox to API
-  sendTextToAPI(event) {
+  sendTextToAPI() {
     let currentComponent = this
     let retrievedData = {
       apiFileName: "Didnt work",
       points: [[-1, -1, -1]],
     }
-    event.preventDefault()
     console.log('Input text: ', this.state.inputText)
     const text = this.state.inputText
     console.log(text)
@@ -167,33 +175,53 @@ class App extends React.Component {
         <div className="App background">
           <div className="Flex">
             <div className="Flex-item Textarea">
-              <Form onChange={() => this.handleText(this.textInput.value)}>
-              <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Please enter a text sample!</Form.Label>
-                <Form.Control disabled={this.state.inputFile} as="textarea" size="lg" rows="6" ref={text => {this.textInput = text}}/>
-                <Button variant="primary" type="submit" onClick={this.sendTextToAPI}>
-                  Submit
-                </Button>
-              </Form.Group>
+              <Form 
+                onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}
+              >
+              <Form.Label>
+                <p>Welcome to 3D Feeling! </p>
+                <p>Our project takes your text input, analyzes it, and returns and object.</p>
+                <p>This object represents the emotions and feeling extracted. Try it out!</p>
+                <br/>
+              </Form.Label>
+
+                <Form.Group controlId="inputTextArea">
+                  <Form.Label>Enter a text sample.</Form.Label>
+                  <Form.Control 
+                    disabled={this.state.inputFile} 
+                    onChange={() => this.handleText(this.textInput.value)} 
+                    as="textarea" 
+                    size="lg" 
+                    rows="6" 
+                    ref={text => {this.textInput = text}}
+                  />
+                  <br/>
+                </Form.Group>
+
+                <Form.Group controlId="inputFileArea">
+                  <Form.Label>Or choose a file to upload.</Form.Label>
+                  <Form.Control 
+                    type='file' 
+                    onChange={(event) => this.handleFile(event.target.files[0])} 
+                    disabled={this.state.inputText}
+                  />
+                  <br/>
+                </Form.Group>
+
+                <Row>
+                  <Col>
+                    <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
+                      Submit
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button variant="danger" type="reset" size='lg' onClick={this.handleClear}>
+                      Clear
+                    </Button>
+                  </Col>
+                </Row>
+
               </Form>
-            </div>
-            <div className="divider" />
-            <div className="Flex-item">
-              <p>Or choose a file to upload</p>
-              <input
-                type="file"
-                name="inputFileButton"
-                accept='.txt'
-                disabled={this.state.inputText}
-                onChange={(event) => this.handleFile(event.target.files[0])}
-              />
-              <input
-                type='submit'
-                value='Submit File'
-                name='fileSubmitButton'
-                disabled={this.state.inputFile == null || this.state.inputFile === undefined}
-                onClick={this.sendFileToAPI}
-              />
             </div>
           </div>
         </div>
