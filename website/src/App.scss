@@ -1,19 +1,32 @@
-@import 'colors.scss';
+@import 'scss/colors';
 
-$theme: 'light';
+$app-content-dark-bg: $dark-300;
+$app-content-light-bg: $-light;
+$app-content-dark-fg: $-light;
+$app-content-light-fg: $-dark;
 
 .App {
   text-align: center;
+  @include light {
+    color: $app-content-light-fg;
+    background-color: $app-content-light-bg;
+  }
+  @include dark {
+    color: $app-content-dark-fg;
+    background-color: $app-content-dark-bg;
+  }
 }
 
 p {
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+
+  @include dark-fg;
+  @include light-fg;
 }
 
 input {
   font-size: calc(10px + 2vmin);
-  color: theme-color('input', $theme);
+  //color: theme-color('input', $theme);
 }
 
 //.container {}
@@ -39,12 +52,14 @@ input {
 
 .background {
   //background-color: #282c34;
-  background-color: theme-color('background', $theme);
+  @include dark-bg;
+  @include light-bg;
 }
 
 .Textarea {
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+  @include dark-fg;
+  @include light-fg;
   margin: 0 48px;
 }
 
@@ -54,7 +69,8 @@ input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: theme-color('text', $theme);
+  @include dark-fg;
+  @include light-fg;
   flex: 0 1 auto;
 }
 
@@ -63,14 +79,16 @@ input {
 }
 
 .Submit-header {
-  background-color: theme-color('background', $theme);
+  @include dark-bg;
+  @include light-bg;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+  @include dark-fg;
+  @include light-fg;
 }
 
 .Results {
@@ -78,14 +96,16 @@ input {
 }
 
 .Results-header {
-  background-color: theme-color('background', $theme);
+  @include dark-bg;
+  @include light-bg;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+  @include dark-fg;
+  @include light-fg;
 }
 
 .long-boi {
@@ -97,6 +117,7 @@ input {
     width: 2px;
     margin: 6px 48px;
     min-height: 50vh;
-    background: theme-color('text', $theme);
+    @include dark-fg;
+    @include light-fg;
   }
 }

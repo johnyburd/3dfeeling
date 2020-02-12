@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ProgressBar } from 'react-bootstrap';
 import {Form, Button, Row, Col, Jumbotron} from 'react-bootstrap';
 import { STLViewer } from 'react-stl-obj-viewer';
+import DarkModeToggle from './Dark';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -184,40 +186,43 @@ class App extends React.Component {
                 <p>This object represents the emotions and feeling extracted. Try it out!</p>
                 <br/>
               </Form.Label>
-
-                <Form.Group controlId="inputTextArea">
-                  <Form.Label>Enter a text sample:</Form.Label>
-                  <Form.Control 
-                    disabled={this.state.inputFile} 
-                    onChange={() => this.handleText(this.textInput.value)} 
-                    as="textarea" 
-                    size="lg" 
-                    rows="6" 
-                    ref={text => {this.textInput = text}}
-                  />
-                  <br/>
-                </Form.Group>
-
-                <Form.Group controlId="inputFileArea">
-                  <Form.Label>Or choose a file to upload:</Form.Label>
-                  <Form.Control 
-                    type='file' 
-                    onChange={(event) => this.handleFile(event.target.files[0])} 
-                    disabled={this.state.inputText}
-                  />
-                  <br/>
-                </Form.Group>
-
+                <Row>
+                  <Col>
+                    <Form.Group controlId="inputTextArea">
+                      <Form.Label>Enter a text sample.</Form.Label>
+                      <Form.Control 
+                        disabled={this.state.inputFile} 
+                        onChange={() => this.handleText(this.textInput.value)} 
+                        as="textarea" 
+                        size="lg" 
+                        rows="6" 
+                        ref={text => {this.textInput = text}}
+                      />
+                      <br/>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="inputFileArea">
+                      <Form.Label>Or choose a file to upload.</Form.Label>
+                      <Form.Control 
+                        type='file' 
+                        onChange={(event) => this.handleFile(event.target.files[0])} 
+                        disabled={this.state.inputText}
+                      />
+                      <br/>
+                    </Form.Group>
+                  </Col>
+                </Row>
                 <Row>
                   <Col>
                     <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
                       Submit
                     </Button>
-                  </Col>
-                  <Col>
+ 
                     <Button variant="danger" type="reset" size='lg' onClick={this.handleClear}>
                       Clear
                     </Button>
+                    <DarkModeToggle/>
                   </Col>
                 </Row>
 
