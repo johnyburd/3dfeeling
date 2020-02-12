@@ -1,6 +1,10 @@
-@import 'colors.scss';
+//@import 'colors.scss';
+$enable-rounded: false;
 
-$theme: 'light';
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+//$theme: 'light';
+$enable-rounded: false;
 
 .App {
   text-align: center;
@@ -8,12 +12,12 @@ $theme: 'light';
 
 p {
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+  color: theme-color('dark');
 }
 
 input {
   font-size: calc(10px + 2vmin);
-  color: theme-color('input', $theme);
+  color: theme-color('dark');
 }
 
 //.container {}
@@ -39,12 +43,12 @@ input {
 
 .background {
   //background-color: #282c34;
-  background-color: theme-color('background', $theme);
+  background-color: theme-color('light');
 }
 
 .Textarea {
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+  color: theme-color('dark');
   margin: 0 48px;
 }
 
@@ -54,7 +58,7 @@ input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: theme-color('text', $theme);
+  color: theme-color('dark');
   flex: 0 1 auto;
 }
 
@@ -63,14 +67,14 @@ input {
 }
 
 .Submit-header {
-  background-color: theme-color('background', $theme);
+  background-color: theme-color('dark');
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
+  color: theme-color('dark');
 }
 
 .Results {
@@ -78,25 +82,21 @@ input {
 }
 
 .Results-header {
-  background-color: theme-color('background', $theme);
+  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: theme-color('text', $theme);
-}
-
-.long-boi {
-  width: 50px !important;
+  color: white;
 }
 
 @media only screen and (min-width: 768px) {
   .divider {
     width: 2px;
     margin: 6px 48px;
-    min-height: 50vh;
-    background: theme-color('text', $theme);
+    min-height: 25vh;
+    background: theme-color('dark');
   }
 }
