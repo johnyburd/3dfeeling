@@ -236,9 +236,9 @@ class App extends React.Component {
           <header className="Submit-header">
             Thank you for submitting!
           <div style={{ width: 400 }}>
-            <ProgressBar animated now={45} />
+            <ProgressBar animated now={69} />
             <p>Sit tight. Your text is being processed!</p>
-            <p>(Please do not refresh the page)</p>
+            <p>(Please do not refresh the page or you will have to start over)</p>
           </div>
           </header>
         </div>
