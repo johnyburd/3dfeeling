@@ -1,16 +1,16 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import logo from './logo.svg'
-import './App.scss';
+import './App.scss'
 
-import axios from 'axios';
+import axios from 'axios'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { ProgressBar } from 'react-bootstrap';
-import {Form, Button, Row, Col, Jumbotron} from 'react-bootstrap';
+import {Form, Button, Row, Col} from 'react-bootstrap';
 import { STLViewer } from 'react-stl-obj-viewer';
 import DarkModeToggle from './Dark';
-
 
 class App extends React.Component {
   constructor(props) {
@@ -20,11 +20,6 @@ class App extends React.Component {
     this.state = {
       inputText: '',
       loading: false,
-      loaded: false,
-      valence: '',
-      arousal: '',
-      dominance: '',
-      apiFileName: '',
       inputFile: null,
     }
 
@@ -103,22 +98,26 @@ class App extends React.Component {
         'Content-Type': 'multipart/form-data'
       }
     ).then(function (resp) {
-      //Assign gathered sentiment analysis values here
       console.log(resp)
+      //Assign gathered sentiment analysis values here
       retrievedData = resp.data
       let averages = currentComponent.pointsAverage(retrievedData.points)
       currentComponent.setState({
-        inputText: retrievedData.text,
         loading: false,
-        loaded: true,
-        valence: averages[0],
-        arousal: averages[1],
-        dominance: averages[2],
-        apiFileName: retrievedData.filename
       })
-      console.log(retrievedData);
+      currentComponent.props.history.push({
+        pathname: '/results',
+        state: {
+          inputText: retrievedData.text,
+          valence: averages[0],
+          arousal: averages[1],
+          dominance: averages[2],
+          apiFileName: retrievedData.filename,
+        }
+      })
+      console.log(retrievedData)
     }).catch(function (error) {
-      console.log(error);
+      console.log(error)
     });
   }
 
@@ -138,22 +137,26 @@ class App extends React.Component {
     axios.post('https://api.3dfeeling.ga/analyze',
       `text=${this.state.inputText}`
     ).then(function (resp) {
-      //Assign gathered sentiment analysis values here
       console.log(resp)
+      //Assign gathered sentiment analysis values here
       retrievedData = resp.data
       let averages = currentComponent.pointsAverage(retrievedData.points)
       currentComponent.setState({
-        //inputText: retrievedData.inputText,
         loading: false,
-        loaded: true,
-        valence: averages[0],
-        arousal: averages[1],
-        dominance: averages[2],
-        apiFileName: retrievedData.filename
       })
-      console.log(retrievedData);
+      currentComponent.props.history.push({
+        pathname: '/results',
+        state: {
+          inputText: currentComponent.state.inputText,
+          valence: averages[0],
+          arousal: averages[1],
+          dominance: averages[2],
+          apiFileName: retrievedData.filename,
+        }
+      })
+      console.log(retrievedData)
     }).catch(function (error) {
-      console.log(error);
+      console.log(error)
     });
   }
 
@@ -172,7 +175,7 @@ class App extends React.Component {
    * 3rd: Results page (loading is false and loaded is true)
   **/
   render () {
-    if (!this.state.loading && !this.state.loaded) {
+    if (!this.state.loading) {
       return (
         <div className="App background">
           <div className="Flex">
@@ -232,60 +235,21 @@ class App extends React.Component {
         </div>
       )
 
-    } else if (this.state.loading && !this.state.loaded) {
+    } else {
       return (
         <div className="Submit">
           <header className="Submit-header">
             Thank you for submitting!
           <div style={{ width: 400 }}>
-            <ProgressBar animated now={45} />
+            <ProgressBar animated now={69} />
             <p>Sit tight. Your text is being processed!</p>
-            <p>(Please do not refresh the page)</p>
+            <p>(Please do not refresh the page or you will have to start over)</p>
           </div>
           </header>
         </div>
       );
-
-    } else if (!this.state.loading && this.state.loaded) {
-      return (
-        <div className="Results">
-          <div className="Background">
-            <div className='item'>
-              <div className='Results-header'>
-                <h2>This is your shape in all of its glory!</h2>
-                <p>Analysis values and the text it was generated from are below.</p>
-                <STLViewer
-                  //model={'https://api.3dfeeling.ga/assets/' + this.state.apiFileName}
-                  url={'https://api.3dfeeling.ga/assets/' + this.state.apiFileName}
-                  //model={'https://api.3dfeeling.ga/assets/b82be92e-5fa3-4040-bf24-0afb4ec0da39.stl'}
-                  sceneClassName="test-scene"
-                  //width={400}
-                  //height={400}
-                  modelColor='red'
-                  //backgroundColor='white'
-                  //rotate={true}
-                  //orbitControls={true}
-                />
-                <p>Average Values:</p>
-                <ul>
-                  <li>
-                    Valence: { this.state.valence }
-                  </li>
-                  <li>
-                    Arousal: { this.state.arousal }
-                  </li>
-                  <li>
-                    Dominance: { this.state.dominance }
-                  </li>
-                </ul>
-                <p>Input text: {this.state.inputText}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
     }
   }
 }
 
-export default App;
+export default withRouter(App);
