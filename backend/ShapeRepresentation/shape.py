@@ -31,9 +31,9 @@ def generate_terrain(vads, num_points):
     width = 10
     y_points = np.arange(0, width, width / num_points)
     points_3d = []
-    for i in range(len(vads)):
+    for e,i in enumerate(np.arange(0, 15, 15 / len(vads))):
         for j in y_points:
-            points_3d.append([i, j, height_function(vads[i], j)])
+            points_3d.append([i, j, height_function(vads[e], j)])
 
     faces = []
     for i in range(len(vads) - 1):
@@ -52,6 +52,57 @@ def generate_terrain(vads, num_points):
     faces.append([size + 2] + list(range(size - num_points, size)) + [size + 3])
     faces.append([size] + list(range(0, size, num_points)) + [size + 2])
     faces.append([size + 1, size + 3] + list(range(num_points - 1, size, num_points))[::-1])
+
+    return ops.Polyhedron(points=points_3d, faces=faces)
+
+
+def get_height(vads, x, y, t_length):
+    partitions_size = t_length / len(vads)
+    vad_index = int(x // partitions_size)
+    vad = vads[vad_index]
+
+    return height_function(vad, y)
+
+
+# dimensions of base 10x15
+# these dimensions should be a hard coded, consistent standard
+X_LENGTH = 15
+Y_LENGTH = 10
+def generate_terrain2_electric_boogaloo(vads):
+    # x = dimension along time axis/ multiple sentences
+    # y = dimension along a single sentence/ wave
+    # z = height
+
+    width = Y_LENGTH
+    length = X_LENGTH
+    # sample 10 times per unit of width
+    num_y_samples = width * 10
+    num_x_samples = length * 5
+
+    # points to sample z-height from along x and y axes
+    y_points = np.arange(0, width, width / num_y_samples)
+    x_points = np.arange(0, length, length / num_x_samples)
+    points_3d = []
+    for x in x_points:
+        for y in y_points:
+            points_3d.append([x, y, get_height(vads, x, y, length)])
+    faces = []
+    for i in range(num_x_samples - 1):
+        for j in range(num_y_samples - 1):
+            faces.append(neighbors(i * num_x_samples + j, num_x_samples))
+
+    size = len(points_3d)
+
+    points_3d.append([0, 0, 0])
+    points_3d.append([0, width, 0])
+    points_3d.append([length, 0, 0])
+    points_3d.append([length, width, 0])
+
+    faces.append([size, size + 1, size + 3, size + 2])
+    faces.append([size + 1] + list(range(num_y_samples))[::-1] + [size])
+    faces.append([size + 2] + list(range(size - num_y_samples, size)) + [size + 3])
+    faces.append([size] + list(range(0, size, num_y_samples)) + [size + 2])
+    faces.append([size + 1, size + 3] + list(range(num_y_samples - 1, size, num_y_samples))[::-1])
 
     return ops.Polyhedron(points=points_3d, faces=faces)
 
@@ -129,4 +180,4 @@ class Representation:
 
 
 if __name__ == "__main__":
-    generate_terrain(np.random.random((30, 3)), 250).write("test.scad")
+    generate_terrain(np.random.random((5, 3)),250).write("test.scad")
