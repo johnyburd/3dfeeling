@@ -179,8 +179,8 @@ class App extends React.Component {
                 onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}
               >
               <Form.Label>
-                <p>Welcome to 3D Feeling! </p>
-                <p>Our project takes your text input, analyzes it, and returns and object.</p>
+                <strong>Welcome to 3D Feeling! </strong>
+                <p>Our project takes your text input, analyzes it, and returns an object.</p>
                 <p>This object represents the emotions and feeling extracted. Try it out!</p>
                 <br/>
               </Form.Label>
