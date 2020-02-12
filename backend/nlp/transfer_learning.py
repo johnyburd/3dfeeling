@@ -1,3 +1,4 @@
+# $pip install spacy-transformers
 import spacy
 from spacy.util import minibatch
 import random
