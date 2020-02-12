@@ -1,28 +1,27 @@
 $theme-colors: (
-  'primary': (
-    'base': #384ea9,
-    'light': #e4efff,
-    'dark': #bb86fc
+  'text': (
+    'light': #2e2e2e,
+    'dark': #f2f2f2
   ),
   'accent': (
-    'base': #f08110,
     'light': #ff8100,
     'dark': #03dac6
   ),
-  'primary2': (
-    'base': #393939,
-    'light': #6e6e6e,
-    'dark': #3700b3
+  'primary': (
+    'light': #006bff,
+    'dark': #006bff
   ),
   'background': (
-    'base': #f8f5f5,
-    'light': #fff,
-    'dark': #121212
+    'light': #f2f2f2,
+    'dark': #2e2e2e
   ),
   'error': (
-    'base': #384ea9,
     'light': #e4efff,
     'dark': #cf6679
+  ),
+  'input': (
+    'light': #000000,
+    'dark': #000000
   )
 );
 

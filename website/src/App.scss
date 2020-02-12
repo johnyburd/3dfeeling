@@ -1,6 +1,6 @@
 @import 'colors.scss';
 
-$theme: 'dark';
+$theme: 'light';
 
 .App {
   text-align: center;
@@ -8,12 +8,12 @@ $theme: 'dark';
 
 p {
   font-size: calc(10px + 2vmin);
-  color: theme-color('primary', $theme);
+  color: theme-color('text', $theme);
 }
 
 input {
   font-size: calc(10px + 2vmin);
-  color: theme-color('primary', $theme);
+  color: theme-color('input', $theme);
 }
 
 //.container {}
@@ -44,7 +44,7 @@ input {
 
 .Textarea {
   font-size: calc(10px + 2vmin);
-  color: theme-color('primary', $theme);
+  color: theme-color('text', $theme);
   margin: 0 48px;
 }
 
@@ -54,7 +54,7 @@ input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: theme-color('primary', $theme);
+  color: theme-color('text', $theme);
   flex: 0 1 auto;
 }
 
@@ -63,14 +63,14 @@ input {
 }
 
 .Submit-header {
-  background-color: #282c34;
+  background-color: theme-color('background', $theme);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: theme-color('primary', $theme);
+  color: theme-color('text', $theme);
 }
 
 .Results {
@@ -78,14 +78,14 @@ input {
 }
 
 .Results-header {
-  background-color: #282c34;
+  background-color: theme-color('background', $theme);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: theme-color('text', $theme);
 }
 
 .long-boi {
@@ -97,6 +97,6 @@ input {
     width: 2px;
     margin: 6px 48px;
     min-height: 50vh;
-    background: white;
+    background: theme-color('text', $theme);
   }
 }
