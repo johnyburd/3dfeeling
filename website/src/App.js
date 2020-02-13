@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { ProgressBar } from 'react-bootstrap';
 import {Form, Button, Row, Col} from 'react-bootstrap';
-import { STLViewer } from 'react-stl-obj-viewer';
 import DarkModeToggle from './Dark';
 
 class App extends React.Component {
@@ -178,6 +177,7 @@ class App extends React.Component {
     if (!this.state.loading) {
       return (
         <div className="App background">
+          <DarkModeToggle/>
           <div className="Flex">
             <div className="Flex-item Textarea">
               <Form 
@@ -208,10 +208,12 @@ class App extends React.Component {
                     <Form.Group controlId="inputFileArea">
                       <Form.Label>Or choose a file to upload.</Form.Label>
                       <Form.Control 
-                        type='file' 
+                        type='file'
+                        Id="fileuploadbtn"
                         onChange={(event) => this.handleFile(event.target.files[0])} 
                         disabled={this.state.inputText}
                       />
+                      <Form.Label htmlFor="fileuploadbtn" className="btn">hello</Form.Label>
                       <br/>
                     </Form.Group>
                   </Col>
@@ -225,7 +227,6 @@ class App extends React.Component {
                     <Button variant="danger" type="reset" size='lg' onClick={this.handleClear}>
                       Clear
                     </Button>
-                    <DarkModeToggle/>
                   </Col>
                 </Row>
 

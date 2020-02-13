@@ -1,16 +1,15 @@
 import React from 'react';
 import useDarkMode from 'use-dark-mode';
 
+import './Dark.scss'
+
 
 const DarkModeToggle = () => {
   const darkMode = useDarkMode(false);
 
   return (
     <div>
-      <button type="button" onClick={darkMode.disable}>
-        ☀
-      </button>
-      <button type="button" onClick={darkMode.enable}>
+      <button type="button" className="btn btn-outline-info darkButton" onClick={darkMode.toggle}>
         ☾
       </button>
     </div>

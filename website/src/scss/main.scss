@@ -53,7 +53,7 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-    -webkit-appearance: none;
+    margin: 5px;
 }
 
 .hr-short {
@@ -175,6 +175,12 @@ input[type="text"] {
     &.form-control.is-valid {
         border-color: $-success;
     }
+}
+
+input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
 }
 
 .button-blank {

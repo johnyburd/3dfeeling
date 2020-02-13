@@ -1,0 +1,13 @@
+@import 'scss/colors';
+
+.darkButton {
+    position: absolute;
+    margin: 5px;
+    display: grid !important;
+    @include light {
+
+    }
+    @include dark {
+
+    }
+  }
