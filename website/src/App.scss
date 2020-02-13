@@ -18,13 +18,15 @@ $app-content-light-fg: $-dark;
 }
 
 .test-scene {
+  position: absolute;
+  display: grid;
   @include light {
-    color: $app-content-light-fg;
-    background-color: $app-content-light-bg;
+    color: $app-content-light-bg !important;
+    background-color: $app-content-light-bg !important;
   }
   @include dark {
-    color: $app-content-dark-fg;
-    background-color: $app-content-dark-bg;
+    color: $app-content-dark-bg !important;
+    background-color: $app-content-dark-bg !important;
   }
 }
 
