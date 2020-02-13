@@ -210,13 +210,18 @@ class App extends React.Component {
                   <Col>
                     <Form.Group controlId="inputFileArea">
                       <Form.Label>Or choose a file to upload.</Form.Label>
-                      <Form.Control 
-                        type='file'
-                        Id="fileuploadbtn"
-                        onChange={(event) => this.handleFile(event.target.files[0])} 
-                        disabled={this.state.inputText}
-                      />
-                      <Form.Label htmlFor="fileuploadbtn" className="btn">hello</Form.Label>
+                      <div className="custom-file">
+                        <Form.Control 
+                          type='file'
+                          controlId="customFile"
+                          className="custom-file-input"
+                          onChange={(event) => this.handleFile(event.target.files[0])} 
+                          disabled={this.state.inputText}
+                        />
+                        <Form.Label htmlFor="customFile" className="custom-file-label">
+                          Choose file
+                        </Form.Label>
+                      </div>
                       <br/>
                     </Form.Group>
                   </Col>
@@ -226,15 +231,12 @@ class App extends React.Component {
                     <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
                       Submit
                     </Button>
-                  </Col>
-                  <Col>
                     <Button variant="danger" type="reset" size='lg' onClick={this.resetState}>
                       Clear
                     </Button>
                   </Col>
                 </Row>
               </Form>
-              <DarkModeToggle/>
             </div>
           </div>
         </div>
