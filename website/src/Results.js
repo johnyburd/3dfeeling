@@ -14,7 +14,7 @@ class Results extends React.Component {
   render () {
       return (
         <div className="Results">
-          <div className="Background">
+          <div className="background">
             <div className='item'>
               <div className='Results-header'>
                 <h2>This is your shape in all of its glory!</h2>

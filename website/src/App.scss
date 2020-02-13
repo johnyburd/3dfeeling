@@ -17,6 +17,17 @@ $app-content-light-fg: $-dark;
   }
 }
 
+.test-scene {
+  @include light {
+    color: $app-content-light-fg;
+    background-color: $app-content-light-bg;
+  }
+  @include dark {
+    color: $app-content-dark-fg;
+    background-color: $app-content-dark-bg;
+  }
+}
+
 p {
   font-size: calc(5px + 2vmin);
 

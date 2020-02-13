@@ -22,6 +22,8 @@ class App extends React.Component {
       inputFile: null,
     }
 
+    this.fileName = ""
+
     //This allows react components to use their methods within the class. Don't ask me why
     this.handleText = this.handleText.bind(this)
     this.sendTextToAPI = this.sendTextToAPI.bind(this)
@@ -50,6 +52,7 @@ class App extends React.Component {
     if (newFile) {
       let file = new FormData()
       file.append('file', newFile)
+      this.fileName = newFile.name
       this.setState({
         inputFile: file
       })
@@ -213,13 +216,13 @@ class App extends React.Component {
                       <div className="custom-file">
                         <Form.Control 
                           type='file'
-                          controlId="customFile"
+                          //controlId="customFile"
                           className="custom-file-input"
                           onChange={(event) => this.handleFile(event.target.files[0])} 
                           disabled={this.state.inputText}
                         />
-                        <Form.Label htmlFor="customFile" className="custom-file-label">
-                          Choose file
+                        <Form.Label className="custom-file-label">
+                          {this.state.inputFile ? this.fileName : "Choose File"}
                         </Form.Label>
                       </div>
                       <br/>
