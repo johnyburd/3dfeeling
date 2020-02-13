@@ -28,7 +28,7 @@ class App extends React.Component {
     this.pointsAverage = this.pointsAverage.bind(this)
     this.handleFile = this.handleFile.bind(this)
     this.sendFileToAPI = this.sendFileToAPI.bind(this)
-    this.handleClear = this.handleClear.bind(this)
+    this.resetState = this.resetState.bind(this)
   }
 
   //Called whenever the component mounts before rendering. (Startup)
@@ -56,10 +56,11 @@ class App extends React.Component {
     }
   }
 
-  //Clears text, file, and state of both
-  handleClear() {
+  //Clears state of app which rerenders inital page
+  resetState() {
     this.setState({
       inputText: '',
+      loading: false,
       inputFile: null,
     })
   }
@@ -101,19 +102,21 @@ class App extends React.Component {
       //Assign gathered sentiment analysis values here
       retrievedData = resp.data
       let averages = currentComponent.pointsAverage(retrievedData.points)
-      currentComponent.setState({
-        loading: false,
-      })
-      currentComponent.props.history.push({
-        pathname: '/results',
-        state: {
-          inputText: retrievedData.text,
-          valence: averages[0],
-          arousal: averages[1],
-          dominance: averages[2],
-          apiFileName: retrievedData.filename,
-        }
-      })
+      if (currentComponent.state.loading) {
+        currentComponent.setState({
+          loading: false,
+        })
+        currentComponent.props.history.push({
+          pathname: '/results',
+          state: {
+            inputText: retrievedData.text,
+            valence: averages[0],
+            arousal: averages[1],
+            dominance: averages[2],
+            apiFileName: retrievedData.filename,
+          }
+        })
+      }
       console.log(retrievedData)
     }).catch(function (error) {
       console.log(error)
@@ -140,19 +143,21 @@ class App extends React.Component {
       //Assign gathered sentiment analysis values here
       retrievedData = resp.data
       let averages = currentComponent.pointsAverage(retrievedData.points)
-      currentComponent.setState({
-        loading: false,
-      })
-      currentComponent.props.history.push({
-        pathname: '/results',
-        state: {
-          inputText: currentComponent.state.inputText,
-          valence: averages[0],
-          arousal: averages[1],
-          dominance: averages[2],
-          apiFileName: retrievedData.filename,
-        }
-      })
+      if (currentComponent.state.loading) {
+        currentComponent.setState({
+          loading: false,
+        })
+        currentComponent.props.history.push({
+          pathname: '/results',
+          state: {
+            inputText: currentComponent.state.inputText,
+            valence: averages[0],
+            arousal: averages[1],
+            dominance: averages[2],
+            apiFileName: retrievedData.filename,
+          }
+        })
+      }
       console.log(retrievedData)
     }).catch(function (error) {
       console.log(error)
@@ -180,9 +185,7 @@ class App extends React.Component {
           <DarkModeToggle/>
           <div className="Flex">
             <div className="Flex-item Textarea">
-              <Form 
-                onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}
-              >
+              <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
               <Form.Label>
                 <strong>Welcome to 3D Feeling! </strong>
                 <p>Our project takes your text input, analyzes it, and returns an object.</p>
@@ -223,14 +226,15 @@ class App extends React.Component {
                     <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
                       Submit
                     </Button>
- 
-                    <Button variant="danger" type="reset" size='lg' onClick={this.handleClear}>
+                  </Col>
+                  <Col>
+                    <Button variant="danger" type="reset" size='lg' onClick={this.resetState}>
                       Clear
                     </Button>
                   </Col>
                 </Row>
-
               </Form>
+              <DarkModeToggle/>
             </div>
           </div>
         </div>
@@ -245,6 +249,9 @@ class App extends React.Component {
             <ProgressBar animated now={69} />
             <p>Sit tight. Your text is being processed!</p>
             <p>(Please do not refresh the page or you will have to start over)</p>
+            <Button variant="danger" size="lg" onClick={this.resetState}>
+              Cancel
+            </Button> 
           </div>
           </header>
         </div>
