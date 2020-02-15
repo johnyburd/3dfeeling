@@ -4,3 +4,4 @@ nltk
 pandas
 dill
 openpyscad
+matplotlib
