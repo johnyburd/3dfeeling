@@ -123,6 +123,16 @@ class App extends React.Component {
       console.log(retrievedData)
     }).catch(function (error) {
       console.log(error)
+      currentComponent.props.history.push({
+        pathname: '/results',
+        state: {
+          inputText: "error reading text",
+          valence: 0,
+          arousal: 0,
+          dominance: 0,
+          apiFileName: 'unknown',
+        }
+      })
     });
   }
 
@@ -184,19 +194,19 @@ class App extends React.Component {
   render () {
     if (!this.state.loading) {
       return (
-        <div className="App background">
+        <div>
           <DarkModeToggle/>
-          <div className="Flex">
-            <div className="Flex-item Textarea">
+          <div className="App">
+            <div>
               <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
-              <Form.Label>
+              <Form.Label className="mb-5">
                 <strong>Welcome to 3D Feeling! </strong>
                 <p>Our project takes your text input, analyzes it, and returns an object.</p>
                 <p>This object represents the emotions and feeling extracted. Try it out!</p>
                 <br/>
               </Form.Label>
-                <Row>
-                  <Col>
+                <div className="container-c">
+                  <div className="item Textarea">
                     <Form.Group controlId="inputTextArea">
                       <Form.Label>Enter a text sample.</Form.Label>
                       <Form.Control 
@@ -209,8 +219,9 @@ class App extends React.Component {
                       />
                       <br/>
                     </Form.Group>
-                  </Col>
-                  <Col>
+                  </div>
+                  <div className="divider"></div>
+                  <div className="item Fileupload">
                     <Form.Group controlId="inputFileArea">
                       <Form.Label>Or choose a file to upload.</Form.Label>
                       <div className="custom-file">
@@ -227,8 +238,8 @@ class App extends React.Component {
                       </div>
                       <br/>
                     </Form.Group>
-                  </Col>
-                </Row>
+                  </div>
+                </div>
                 <Row>
                   <Col>
                     <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
