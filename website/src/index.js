@@ -2,16 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Results from './Results';
 
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import * as serviceWorker from './serviceWorker';
+
+import "./scss/main.scss";
 
 
 const routing = (
   <Router>
     <div>
       <Route exact path="/" component={App} />
+      <Route path="/results" component={Results} />
     </div>
   </Router>
 )

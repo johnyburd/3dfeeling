@@ -9,3 +9,5 @@ website/build
 .DS_Store
 website/.DS_Store
 .vscode/launch.json
+.venv
+yarn-error.log

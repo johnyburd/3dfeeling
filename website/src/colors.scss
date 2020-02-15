@@ -1,0 +1,30 @@
+$theme-colors: (
+  'text': (
+    'light': #2e2e2e,
+    'dark': #f2f2f2
+  ),
+  'accent': (
+    'light': #ff8100,
+    'dark': #03dac6
+  ),
+  'primary': (
+    'light': #006bff,
+    'dark': #006bff
+  ),
+  'background': (
+    'light': #f2f2f2,
+    'dark': #2e2e2e
+  ),
+  'error': (
+    'light': #e4efff,
+    'dark': #cf6679
+  ),
+  'input': (
+    'light': #000000,
+    'dark': #000000
+  )
+);
+
+@function theme-color($key: 'primary', $variant: 'base') {
+  @return map-get(map-get($theme-colors, $key), $variant);
+}
