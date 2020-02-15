@@ -19,7 +19,7 @@ class Results extends React.Component {
           <div className="background">
             <DarkModeToggle/>
 
-            <div className='item'>
+            <div>
               <div className='Results-header'>
                 <h2>This is your shape in all of its glory!</h2>
                 <p>Analysis values and the text it was generated from are below.</p>
