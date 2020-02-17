@@ -1,42 +1,105 @@
+@import 'scss/colors';
+@import 'scss/fonts';
+@import 'scss/media';
+
+$app-content-dark-bg: $dark-300;
+$app-content-light-bg: $-light;
+$app-content-dark-fg: $-light;
+$app-content-light-fg: $-dark;
+
 .App {
   text-align: center;
-}
+  @include light {
+    color: $app-content-light-fg;
+    background-color: $app-content-light-bg;
+  }
+  @include dark {
+    color: $app-content-dark-fg;
+    background-color: $app-content-dark-bg;
+  }
+  //height: 100vh;
 
-.App-logo {
-  height: 40vmin;
-}
+  overflow: hidden;
 
-p {
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-input {
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.background {
-  background-color: #282c34;
-  flex-direction: row;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.App-header {
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  flex: 0 1 auto;
 }
 
-.App-link {
-  color: #09d3ac;
+.container-c {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  width: 100vw;
+  
+  @include respond-below(md) {
+    flex-direction: column;
+  }
+  margin: 0;
+  padding: 0;
+
+  //background-color: green;
+}
+
+.item {
+  flex: 1 0 0;
+  //background: red;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  line-height: 40px;
+  margin: 0 24px;
+  //max-width: 50vw;
+
+  //background-color: red;
+}
+
+
+p, strong {
+  font-size: calc(5px + 2vmin);
+  font-family: $font-family-base;
+
+  @include dark-fg;
+  @include light-fg;
+
+}
+
+input {
+  font-size: calc(10px + 2vmin);
+  font-family: $font-family-base;
+  
+  @include dark-fg;
+  @include light-fg;
+}
+
+.Textarea {
+  font-family: $font-family-base;
+  font-size: calc(6px + 2vmin);
+ // max-width: 80%;
+  //width: 35%;
+ // margin-left: auto;
+  //margin-right: auto;
+
+  @include dark-fg;
+  @include light-fg;
+}
+
+.Fileupload {
+  font-family: $font-family-base;
+  font-size: calc(6px + 2vmin);
+ // max-width: 80%;
+  //width: 100%;
+ // margin-left: auto;
+  //margin-right: auto;
+
+  @include dark-fg;
+  @include light-fg;
 }
 
 .Submit {
@@ -44,14 +107,16 @@ input {
 }
 
 .Submit-header {
-  background-color: #282c34;
+  @include dark-bg;
+  @include light-bg;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  @include dark-fg;
+  @include light-fg;
 }
 
 .Results {
@@ -59,23 +124,31 @@ input {
 }
 
 .Results-header {
-  background-color: #282c34;
+  @include dark-bg;
+  @include light-bg;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.long-boi {
-  width: 50px !important;
+  @include dark-fg;
+  @include light-fg;
 }
 
 .divider {
   width: 2px;
   margin: 6px 48px;
-  min-height: 50vh;
-  background: white;
+  min-height: 40vh;
+  position: relative;
+  right: -8px;
+  @include dark {
+    background-color: $app-content-light-bg;
+  }
+  @include light {
+    background-color: $app-content-dark-bg;
+  }
+  @include respond-below(md) {
+    display: none;
+  }
 }

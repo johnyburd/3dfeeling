@@ -5,3 +5,4 @@ pandas
 dill
 openpyscad
 python-magic
+matplotlib
