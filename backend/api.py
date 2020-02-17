@@ -5,6 +5,7 @@ from aiohttp.web import Request, Response
 import aiohttp_cors
 
 from object_generation import get_object
+from utils import parse_from_bytes
 
 
 routes = web.RouteTableDef()
@@ -16,6 +17,19 @@ async def analyze(request: Request) -> Response:
     result = await get_object(data['text'])
     return web.json_response({
         'filename': result[0], 'points': result[1]})
+
+
+@routes.post('/analyze-file')
+async def analyze_file(request: Request) -> Response:
+    data = await request.post()
+    f = data['file'].file
+    try:
+        text = parse_from_bytes(f.read())
+        result = await get_object(text)
+        return web.json_response({
+            'filename': result[0], 'points': result[1], 'text': text}, status=200)
+    except ValueError as e:
+        return web.json_response({'message': str(e)}, status=400)
 
 
 @routes.get('/example')
