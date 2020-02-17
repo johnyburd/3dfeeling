@@ -47,7 +47,6 @@ def generate_terrain(vads, num_points):
     points_3d.append([len(vads) - 1, 0, 0])
     points_3d.append([len(vads) - 1, width, 0])
 
-
     faces.append([size + 2, size + 3, size + 1, size])
     faces.append([size + 1] + list(range(num_points))[::-1] + [size])
     faces.append([size + 2] + list(range(size - num_points, size)) + [size + 3])
