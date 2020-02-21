@@ -1,6 +1,5 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import logo from './logo.svg'
 import './App.scss'
 
 import axios from 'axios'
@@ -8,8 +7,10 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { ProgressBar } from 'react-bootstrap';
-import {Form, Button, Row, Col} from 'react-bootstrap';
+import {Form, Button } from 'react-bootstrap';
 import DarkModeToggle from './Dark';
+import Loader from 'react-loader-spinner';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -202,7 +203,8 @@ class App extends React.Component {
               <Form.Label className="mb-5">
                 <p><strong>3D Feeling</strong> is a project designed to help you model emotions.</p>
                 <p>The app will process text and produce a 3D representation of the emotions from the text.</p>
-                <strong>Enter text in the input box or upload a file to get started</strong>
+                <br/>
+                <strong>Enter text in the input box or upload a file to get started.</strong>
                 <br/>
               </Form.Label>
                 <div className="container-c">
@@ -260,9 +262,8 @@ class App extends React.Component {
           <header className="Submit-header">
             Thank you for submitting!
           <div style={{ width: 400 }}>
-            <ProgressBar animated now={69} />
+            <Loader type="Bars" color="#73a3ba" height={120} width={120} />
             <p>Sit tight. Your text is being processed!</p>
-            <p>(Please do not refresh the page or you will have to start over)</p>
             <Button variant="danger" size="lg" onClick={this.resetState}>
               Cancel
             </Button> 
