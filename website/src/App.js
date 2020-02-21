@@ -200,9 +200,9 @@ class App extends React.Component {
             <div>
               <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
               <Form.Label className="mb-5">
-                <strong>Welcome to 3D Feeling! </strong>
-                <p>Our project takes your text input, analyzes it, and returns an object.</p>
-                <p>This object represents the emotions and feeling extracted. Try it out!</p>
+                <p><strong>3D Feeling</strong> is a project designed to help you model emotions.</p>
+                <p>The app will process text and produce a 3D representation of the emotions from the text.</p>
+                <strong>Enter text in the input box or upload a file to get started</strong>
                 <br/>
               </Form.Label>
                 <div className="container-c">
@@ -232,24 +232,22 @@ class App extends React.Component {
                           onChange={(event) => this.handleFile(event.target.files[0])} 
                           disabled={this.state.inputText}
                         />
-                        <Form.Label className="custom-file-label">
-                          {this.state.inputFile ? this.fileName : "Choose File"}
+                        <Form.Label className="custom-file-label Filelabel">
+                          {this.state.inputFile ? this.fileName : "Choose File..."}
                         </Form.Label>
                       </div>
                       <br/>
                     </Form.Group>
                   </div>
                 </div>
-                <Row>
-                  <Col>
-                    <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
-                      Submit
-                    </Button>
-                    <Button variant="danger" type="reset" size='lg' onClick={this.resetState}>
-                      Clear
-                    </Button>
-                  </Col>
-                </Row>
+                <div className="nice-buttons">
+                  <Button variant="primary" className="nice-button" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
+                    Submit
+                  </Button>
+                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState}>
+                    Clear
+                  </Button>
+                </div>
               </Form>
             </div>
           </div>

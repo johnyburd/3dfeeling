@@ -25,6 +25,8 @@ class Results extends React.Component {
                 <p>Analysis values and the text it was generated from are below.</p>
                 <STLViewer
                   url={'https://api.3dfeeling.ga/assets/' + this.props.location.state.apiFileName}
+                  width="400"
+                  height="800"
                   backgroundColor="#f6f8f9"
                   sceneClassName="test-scene"
                   modelColor='red'
