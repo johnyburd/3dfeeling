@@ -6,8 +6,7 @@ import axios from 'axios'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { ProgressBar } from 'react-bootstrap';
-import {Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import DarkModeToggle from './Dark';
 import Loader from 'react-loader-spinner';
 

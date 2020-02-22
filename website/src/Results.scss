@@ -1,0 +1,60 @@
+@import 'scss/colors';
+@import 'scss/media';
+
+
+.Results {
+    text-align: center;
+}
+  
+.Results-header {
+    @include dark-bg;
+    @include light-bg;
+    min-height: 100vh;
+    display: flex;
+    //flex-direction: column;
+    //align-items: center;
+    //justify-content: center;
+    //font-size: calc(10px + 2vmin);
+    @include dark-fg;
+    @include light-fg;
+}
+
+.container {
+    display: flex;
+    overflow: hidden;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    min-width: 100vw;
+    @include respond-below(md) {
+      flex-direction: column;
+    }
+}
+
+.right-side {
+    flex: 1 1 auto;
+    //width: 50%
+}
+
+.input-text {
+    height: 100%;
+}
+.graph {
+   // width: auto;
+    height: auto;
+    //max-width: 50%;
+    width: 100%;
+    margin: 12px;
+}
+.left-side {
+    //right: 100px;
+    flex: 1 1 auto;
+    //width: 500;
+    //height: 500;
+    //padding: auto;
+}
+
+.test-scene {
+    //margin: auto;
+}
