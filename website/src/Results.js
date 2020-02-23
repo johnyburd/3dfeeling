@@ -10,7 +10,7 @@ import DarkModeToggle from './Dark';
 import useDarkMode from 'use-dark-mode';
 
 const ViewWithTheme = (name) => {
-  const { value } = useDarkMode(false)
+  const { value } = useDarkMode()
 
   const [dimensions, setDimensions] = React.useState({ 
     width: window.innerWidth
@@ -29,14 +29,14 @@ const ViewWithTheme = (name) => {
       window.removeEventListener('resize', handleResize)
     }
   })
-  
+  console.log(value ? "#2d2d2d" : "#f6f8f9")
   return <STLViewer
-    url={'https://api.3dfeeling.ga/assets/' + name.name}
-    width={dimensions.width/2.2}
-    height={dimensions.width/2.2}
-    backgroundColor={ value ? "#f6f8f9" : "#2d2d2d"}
-    sceneClassName="test-scene"
-    modelColor='red'
+    url={ 'https://api.3dfeeling.ga/assets/' + name.name }
+    width={ dimensions.width / 2.2 }
+    height={ dimensions.width / 2 }
+    backgroundColor={ value ? "#2d2d2d" : "#f6f8f9" }
+    sceneClassName={ value ? "#2d2d2d" : "#f6f8f9" }
+    modelColor='#e6584d'
   />
 }
 
