@@ -6,6 +6,7 @@ import subprocess
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+from math import ceil
 
 # libraries made by us for this project
 import nlp.SentimentClassifier as VAD
@@ -36,9 +37,25 @@ def generate(text):
     This function will fail and error out if an empty string is passed to it. Make sure there
     is at least one sentence in the string before calling this function.
     """
-    points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
-    if len(points) == 1:
+    points = np.array([vad_classifier.analyzeSentiment(sentence)
+                       for sentence in sent_tokenize(text)])
+    # Need to make sure that there are at least 2 sentences and less than 25,000
+    if points.shape[0] == 1:
         points.append(points[0])
+    elif points.shape[0] > 25000:
+        avg_points = []
+
+        window = ceil(points.shape[0] / 25000)
+        if (points.shape[0] % window) != 0:
+            points = np.append(points, [points[-1] * (points.shape[0] % window)], axis=0)
+
+        for i in range(0, points.shape[0] - window, window):
+            avg_points.append(np.sum(points[i:i + window], axis=0) / window)
+
+        points = np.array(avg_points)
+
+    print("Shape: ", points.shape)
+
     model = generate_terrain(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
@@ -68,11 +85,5 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    """
-    paragraph = ("Even before Erica finished formally adjourning the meeting, I wove my way through"
-                 " the crowd of garrulous people and up the stairs into my bedroom. I grabbed my laptop from the"
-                 " desk, then knocked on Ana’s door. She was there waiting for me.")
-
+    paragraph = "This is a fun and happy sentence. " * 30000
     asyncio.run(get_object(paragraph))
-    """
-    graphs(np.random.random((10, 3)), "test")
