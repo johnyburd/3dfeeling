@@ -1,7 +1,7 @@
 import React from 'react';
 import useDarkMode from 'use-dark-mode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoon, faSun } from '@fortawesome/free-regular-svg-icons'
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
 
 import './Dark.scss'
 
