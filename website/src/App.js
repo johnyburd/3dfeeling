@@ -4,9 +4,14 @@ import './App.scss'
 
 import axios from 'axios'
 
+import logo from './logo.svg'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Navbar, Nav } from 'react-bootstrap';
 import DarkModeToggle from './Dark';
 import Loader from 'react-loader-spinner';
 
@@ -195,7 +200,20 @@ class App extends React.Component {
     if (!this.state.loading) {
       return (
         <div>
-          <DarkModeToggle/>
+          <Navbar>
+            <Navbar.Brand href="/">
+              <img alt="" src={logo} width="32" height="32" className="d-inline-block align-top" />{' '}
+              3D Feeling
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/results">Results</Nav.Link>
+                <DarkModeToggle/>
+              </Nav>
+            </Navbar.Collapse> 
+          </Navbar>
           <div className="App">
             <div>
               <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
@@ -245,9 +263,11 @@ class App extends React.Component {
                   <Button variant="primary" className="nice-button" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
                     Submit
                   </Button>
-                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState}>
+                  <ToastContainer />
+                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState && (() => toast('Input Reset'))}>
                     Clear
                   </Button>
+                  <ToastContainer />
                 </div>
               </Form>
             </div>
