@@ -4,12 +4,11 @@ import './Results.scss'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import logo from './logo.svg'
-
-import { Image, Button, Form, Navbar, Nav } from 'react-bootstrap';
+import { Image, Button, Form } from 'react-bootstrap';
 import { STLViewer } from 'react-stl-obj-viewer';
-import DarkModeToggle from './Dark';
 import useDarkMode from 'use-dark-mode';
+
+import Feelbar from './Feelbar'
 
 const ViewWithTheme = (name) => {
   const { value } = useDarkMode()
@@ -46,6 +45,7 @@ class Results extends React.Component {
 
   componentDidMount() {
     console.log('Results Mounted')
+    console.log('Location', this.props.location)
   }
 
   render () {
@@ -53,40 +53,14 @@ class Results extends React.Component {
     if (this.props.location.state == null) {
       return (
         <div>
-          <Navbar>
-            <Navbar.Brand href="/">
-              <img alt="" src={logo} width="32" height="32" className="d-inline-block align-top" />{' '}
-              3D Feeling
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/results">Results</Nav.Link>
-                <DarkModeToggle/>
-              </Nav>
-            </Navbar.Collapse> 
-          </Navbar>
+          <Feelbar />
           <p>Results have not been generated yet. Please return to the homepage using buttons above.</p>
         </div>
       )
     } else {
       return (
         <div className="Results">
-          <Navbar>
-            <Navbar.Brand href="/">
-              <img alt="" src={logo} width="32" height="32" className="d-inline-block align-top" />{' '}
-              3D Feeling
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/results">Results</Nav.Link>
-                <DarkModeToggle/>
-              </Nav>
-            </Navbar.Collapse> 
-          </Navbar>
+          <Feelbar />
           <div>
             <div className='Results-header'>
               <div className="container">

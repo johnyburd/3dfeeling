@@ -4,16 +4,16 @@ import './App.scss'
 
 import axios from 'axios'
 
-import logo from './logo.svg'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { Form, Button, Navbar, Nav } from 'react-bootstrap';
-import DarkModeToggle from './Dark';
+import { Form, Button } from 'react-bootstrap';
 import Loader from 'react-loader-spinner';
+
+import Feelbar from './Feelbar'
+import history from './history'
 
 
 class App extends React.Component {
@@ -36,6 +36,7 @@ class App extends React.Component {
     this.handleFile = this.handleFile.bind(this)
     this.sendFileToAPI = this.sendFileToAPI.bind(this)
     this.resetState = this.resetState.bind(this)
+    this.cancelInput = this.cancelInput.bind(this)
   }
 
   //Called whenever the component mounts before rendering. (Startup)
@@ -72,6 +73,16 @@ class App extends React.Component {
       inputFile: null,
     })
     toast('Input Cleared')
+  }
+
+  //Cancels input and disregards response. Rerenders inital page
+  cancelInput() {
+    this.setState({
+      inputText: '',
+      loading: false,
+      inputFile: null,
+    })
+    toast('Submission Cancelled')
   }
 
   //Averages points returned from API. Not fail safe yet
@@ -115,7 +126,8 @@ class App extends React.Component {
         currentComponent.setState({
           loading: false,
         })
-        currentComponent.props.history.push({
+        //MAKE SURE TO CHECK IF BELOW WORKS. NOT TESTED YET
+        history.push({
           pathname: '/results',
           state: {
             inputText: retrievedData.text,
@@ -129,16 +141,18 @@ class App extends React.Component {
       console.log(retrievedData)
     }).catch(function (error) {
       console.log(error)
-      currentComponent.props.history.push({
-        pathname: '/results',
-        state: {
-          inputText: "error reading text",
-          valence: 0,
-          arousal: 0,
-          dominance: 0,
-          apiFileName: 'unknown',
-        }
-      })
+      toast('Error processing text')
+      currentComponent.cancelInput()
+      // currentComponent.props.history.push({
+      //   pathname: '/results',
+      //   state: {
+      //     inputText: "error reading text",
+      //     valence: 0,
+      //     arousal: 0,
+      //     dominance: 0,
+      //     apiFileName: 'unknown',
+      //   }
+      // })
     });
   }
 
@@ -150,8 +164,6 @@ class App extends React.Component {
       points: [[-1, -1, -1]],
     }
     console.log('Input text: ', this.state.inputText)
-    const text = this.state.inputText
-    console.log(text)
     this.setState({
       loading: true
     })
@@ -166,7 +178,8 @@ class App extends React.Component {
         currentComponent.setState({
           loading: false,
         })
-        currentComponent.props.history.push({
+        //MAKE SURE TO CHECK IF BELOW WORKS. NOT TESTED YET
+        history.push({
           pathname: '/results',
           state: {
             inputText: currentComponent.state.inputText,
@@ -179,6 +192,8 @@ class App extends React.Component {
       }
       console.log(retrievedData)
     }).catch(function (error) {
+      toast('Error processing text')
+      currentComponent.cancelInput()
       console.log(error)
     });
   }
@@ -201,20 +216,7 @@ class App extends React.Component {
     if (!this.state.loading) {
       return (
         <div>
-          <Navbar>
-            <Navbar.Brand href="/">
-              <img alt="" src={logo} width="32" height="32" className="d-inline-block align-top" />{' '}
-              3D Feeling
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/results">Results</Nav.Link>
-                <DarkModeToggle/>
-              </Nav>
-            </Navbar.Collapse> 
-          </Navbar>
+          <Feelbar />
           <div className="App">
             <div>
               <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
@@ -283,7 +285,7 @@ class App extends React.Component {
           <div style={{ width: 400 }}>
             <Loader type="Bars" color="#73a3ba" height={120} width={120} />
             <p>Sit tight. Your text is being processed!</p>
-            <Button variant="danger" size="lg" onClick={this.resetState}>
+            <Button variant="danger" size="lg" onClick={this.cancelInput}>
               Cancel
             </Button> 
           </div>
