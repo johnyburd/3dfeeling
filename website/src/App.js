@@ -71,6 +71,7 @@ class App extends React.Component {
       loading: false,
       inputFile: null,
     })
+    toast('Input Cleared')
   }
 
   //Averages points returned from API. Not fail safe yet
@@ -263,8 +264,7 @@ class App extends React.Component {
                   <Button variant="primary" className="nice-button" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
                     Submit
                   </Button>
-                  <ToastContainer />
-                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState && (() => toast('Input Reset'))}>
+                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState}>
                     Clear
                   </Button>
                   <ToastContainer />
