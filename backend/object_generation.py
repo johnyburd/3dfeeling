@@ -42,13 +42,13 @@ def generate(text):
     sents = sent_tokenize(text)
     if len(sents) == 1:
         sents.append(sents[0])
-        points = np.array([vad_classifier.analyzeSentiment(s) for s in sents])
+        points = [vad_classifier.analyzeSentiment(s) for s in sents]
     elif len(sents) > 2000:
         window = ceil(len(sents) / 2000)
         for i in range(0, len(sents) - window, window):
             vals = np.array([vad_classifier.analyzeSentiment(sents[i + j]) for j in range(window)])
             avg = np.sum(vals, axis=0) / window
-            points.append(avg)
+            points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
             points.append(vad_classifier.analyzeSentiment(sents[i]))
     else:
