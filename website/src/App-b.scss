@@ -1,0 +1,102 @@
+//@import 'colors.scss';
+$enable-rounded: false;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+//$theme: 'light';
+$enable-rounded: false;
+
+.App {
+  text-align: center;
+}
+
+p {
+  font-size: calc(10px + 2vmin);
+  color: theme-color('dark');
+}
+
+input {
+  font-size: calc(10px + 2vmin);
+  color: theme-color('dark');
+}
+
+//.container {}
+.Flex {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.Flex-item {
+  flex: 1 0 auto;
+  //background: red;
+  position: relative;
+  text-align: center;
+  line-height: 40px;
+  margin: 0 24px;
+}
+
+.background {
+  //background-color: #282c34;
+  background-color: theme-color('light');
+}
+
+.Textarea {
+  font-size: calc(10px + 2vmin);
+  color: theme-color('dark');
+  margin: 0 48px;
+}
+
+.App-header {
+  //min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: theme-color('dark');
+  flex: 0 1 auto;
+}
+
+.Submit {
+  text-align: center;
+}
+
+.Submit-header {
+  background-color: theme-color('dark');
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: theme-color('dark');
+}
+
+.Results {
+  text-align: center;
+}
+
+.Results-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@media only screen and (min-width: 768px) {
+  .divider {
+    width: 2px;
+    margin: 6px 48px;
+    min-height: 25vh;
+    background: theme-color('dark');
+  }
+}
