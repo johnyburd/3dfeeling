@@ -26,9 +26,9 @@ def graphs(points, fig_id):
     ax.plot(x_values, points[:, 1], 'go-', label='Arousal')
     ax.plot(x_values, points[:, 2], 'bo-', label='Dominance')
     plt.legend()
-    fig.set_facecolor("#F2F2F2")
     ax.set_facecolor("#F2F2F2")
-    plt.savefig("../assets/" + fig_id + ".png", bbox_inches='tight')
+    fig.savefig("../assets/" + fig_id + ".png", facecolor="#F2F2F2",
+                edgecolor="#F2F2F2", bbox_inches='tight')
 
 
 def generate(text):
