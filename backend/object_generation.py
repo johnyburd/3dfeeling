@@ -7,7 +7,7 @@ from uuid import uuid4
 
 # libraries made by us for this project
 import nlp.SentimentClassifier as VAD
-from ShapeRepresentation.shape import generate_terrain
+from ShapeRepresentation.shape import generate_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
@@ -23,7 +23,7 @@ def generate(text):
     is at least one sentence in the string before calling this function.
     """
     points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
-    model = generate_terrain(points, 250)
+    model = generate_cylinder(points, 250)
 
     uuid = str(uuid4())
     filename = "../assets/" + uuid
