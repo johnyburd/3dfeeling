@@ -9,7 +9,7 @@ import numpy as np
 
 # libraries made by us for this project
 import nlp.SentimentClassifier as VAD
-from ShapeRepresentation.shape import generate_terrain
+from ShapeRepresentation.shape import generate_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
@@ -37,9 +37,10 @@ def generate(text):
     is at least one sentence in the string before calling this function.
     """
     points = [vad_classifier.analyzeSentiment(sentence) for sentence in sent_tokenize(text)]
+
     if len(points) == 1:
         points.append(points[0])
-    model = generate_terrain(points, 250)
+    model = generate_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
