@@ -11,7 +11,7 @@ import cProfile
 
 # libraries made by us for this project
 import nlp.SentimentClassifier as VAD
-from ShapeRepresentation.shape import generate_terrain
+from ShapeRepresentation.shape import generate_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
@@ -20,13 +20,17 @@ vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
 def graphs(points, fig_id):
     x_values = [i for i in range(1, len(points) + 1)]
     points = np.array(points)
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
     plt.xlabel('Sentence')
     plt.ylabel('VAD Level')
-    plt.plot(x_values, points[:, 0], 'ro-', label='Valence')
-    plt.plot(x_values, points[:, 1], 'go-', label='Arousal')
-    plt.plot(x_values, points[:, 2], 'bo-', label='Dominance')
+    ax.plot(x_values, points[:, 0], 'ro-', label='Valence')
+    ax.plot(x_values, points[:, 1], 'go-', label='Arousal')
+    ax.plot(x_values, points[:, 2], 'bo-', label='Dominance')
     plt.legend()
-    plt.savefig("../assets/" + fig_id + ".png", bbox_inches='tight')
+    ax.set_facecolor("#F6F7F9")
+    fig.savefig("../assets/" + fig_id + ".png", facecolor="#F6F7F9",
+                edgecolor="#F6F7F9", bbox_inches='tight')
 
 
 def generate(text):
@@ -54,7 +58,7 @@ def generate(text):
     else:
         points = [vad_classifier.analyzeSentiment(s) for s in sents]
 
-    model = generate_terrain(points, 250)
+    model = generate_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
