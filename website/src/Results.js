@@ -33,7 +33,7 @@ const ViewWithTheme = (name) => {
   console.log(value ? "#2d2d2d" : "#f6f8f9")
   return <STLViewer
     url={ 'https://api.3dfeeling.ga/assets/' + name.name }
-    width={ dimensions.width / 2.2 }
+    width={ dimensions.width / 2.3 }
     height={ dimensions.width / 2.6 }
     backgroundColor={ value ? "#2d2d2d" : "#f6f8f9" }
     sceneClassName={ value ? "#2d2d2d" : "#f6f8f9" }
