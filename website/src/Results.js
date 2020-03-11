@@ -13,7 +13,7 @@ import Feelbar from './Feelbar'
 const ViewWithTheme = (name) => {
   const { value } = useDarkMode()
 
-  const [dimensions, setDimensions] = React.useState({ 
+  const [dimensions, setDimensions] = React.useState({
     width: window.innerWidth
   })
   React.useEffect(() => {
@@ -24,7 +24,7 @@ const ViewWithTheme = (name) => {
         })
       }
     }
-    
+
     window.addEventListener('resize', handleResize)
     return _ => {
       window.removeEventListener('resize', handleResize)
@@ -33,8 +33,8 @@ const ViewWithTheme = (name) => {
   console.log(value ? "#2d2d2d" : "#f6f8f9")
   return <STLViewer
     url={ 'https://api.3dfeeling.ga/assets/' + name.name }
-    width={ dimensions.width / 2.2 }
-    height={ dimensions.width / 2 }
+    width={ dimensions.width / 2.3 }
+    height={ dimensions.width / 2.6 }
     backgroundColor={ value ? "#2d2d2d" : "#f6f8f9" }
     sceneClassName={ value ? "#2d2d2d" : "#f6f8f9" }
     modelColor='#e6584d'
@@ -68,7 +68,6 @@ class Results extends React.Component {
                   <ViewWithTheme
                     name={this.props.location.state.apiFileName}
                   />
-                  
                   <div>
                     <Button
                       variant="success"
@@ -83,13 +82,13 @@ class Results extends React.Component {
                     src={'https://api.3dfeeling.ga/assets/' + this.props.location.state.apiFileName.replace('stl', 'png')}
                     className="graph"/>
                   <Form>
-                    <Form.Control 
+                    <Form.Control
                         disabled={ true }
                         className="input-text"
-                        //onChange={() => this.handleText(this.textInput.value)} 
-                        as="textarea" 
-                        size="lg" 
-                        rows="6" 
+                        //onChange={() => this.handleText(this.textInput.value)}
+                        as="textarea"
+                        size="lg"
+                        rows="6"
                         defaultValue={this.props.location.state.inputText}
                       />
                   </Form>
