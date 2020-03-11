@@ -20,7 +20,6 @@ class Feelbar extends React.Component {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
                 <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/results">Results</Nav.Link>
                 <Nav.Link href="/details">Details</Nav.Link>
                 <DarkModeToggle/>
               </Nav>
