@@ -126,7 +126,6 @@ class App extends React.Component {
         currentComponent.setState({
           loading: false,
         })
-        //MAKE SURE TO CHECK IF BELOW WORKS. NOT TESTED YET
         history.push({
           pathname: '/results',
           state: {
@@ -143,16 +142,6 @@ class App extends React.Component {
       console.log(error)
       toast('Error processing text')
       currentComponent.cancelInput()
-      // currentComponent.props.history.push({
-      //   pathname: '/results',
-      //   state: {
-      //     inputText: "error reading text",
-      //     valence: 0,
-      //     arousal: 0,
-      //     dominance: 0,
-      //     apiFileName: 'unknown',
-      //   }
-      // })
     });
   }
 
@@ -178,7 +167,6 @@ class App extends React.Component {
         currentComponent.setState({
           loading: false,
         })
-        //MAKE SURE TO CHECK IF BELOW WORKS. NOT TESTED YET
         history.push({
           pathname: '/results',
           state: {
