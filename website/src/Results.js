@@ -9,6 +9,7 @@ import { STLViewer } from 'react-stl-obj-viewer';
 import useDarkMode from 'use-dark-mode';
 
 import Feelbar from './Feelbar'
+import history from './history'
 
 const ViewWithTheme = (name) => {
   const { value } = useDarkMode()
@@ -54,7 +55,10 @@ class Results extends React.Component {
       return (
         <div>
           <Feelbar />
-          <p>Results have not been generated yet. Please return to the homepage using buttons above.</p>
+          <div className="Error">
+            <h1>Results have not been generated yet.</h1>
+            <h1>Please return to the homepage using buttons above.</h1>
+          </div>
         </div>
       )
     } else {
@@ -74,7 +78,11 @@ class Results extends React.Component {
                       size='lg'
                       onClick={() => { window.location.href = "https://api.3dfeeling.ga/assets/" + this.props.location.state.apiFileName}}
                     >Download</Button>
-                    <Button variant="primary" size='lg'>Details</Button>
+                    <Button 
+                      variant="primary" 
+                      size='lg'
+                      onClick={() => history.push({pathname: '/details'})}
+                    >Details</Button>
                   </div>
                 </div>
                 <div className="right-side">

@@ -1,7 +1,8 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import './Details.scss'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Feelbar from './Feelbar'
 
@@ -13,9 +14,11 @@ class Details extends React.Component {
 
   render () {
     return (
-        <div>
+        <div className="Details">
             <Feelbar />
-            <p>This is the details page. You made it. Yay!</p>
+            <div className="Details-content">
+              <p>This is the details page. You made it. Yay!</p>
+            </div>
         </div>
     )
   }
