@@ -36,12 +36,12 @@ $app-content-light-fg: $-dark;
   align-items: center;
   justify-content: space-between;
   list-style: none;
-  width: 100vw;
-  
+  //max-width: 100%;
+
   @include respond-below(md) {
     flex-direction: column;
   }
-  margin: 0;
+  margin: auto;
   padding: 0;
 
   //background-color: green;
@@ -54,7 +54,7 @@ $app-content-light-fg: $-dark;
   text-align: center;
   align-items: center;
   line-height: 40px;
-  margin: 0 24px;
+  margin: 0 48px;
   //max-width: 50vw;
 
   //background-color: red;
@@ -62,7 +62,7 @@ $app-content-light-fg: $-dark;
 
 
 p, strong {
-  font-size: calc(5px + 2vmin);
+  font-size: calc(5px + 1.9vmin);
   font-family: $font-family-base;
 
   @include dark-fg;
@@ -71,7 +71,7 @@ p, strong {
 }
 
 input {
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 1.9vmin);
   font-family: $font-family-base;
   
   @include dark-fg;
@@ -80,7 +80,7 @@ input {
 
 .Textarea {
   font-family: $font-family-base;
-  font-size: calc(6px + 2vmin);
+  font-size: calc(6px + 1.9vmin);
  // max-width: 80%;
   //width: 35%;
  // margin-left: auto;
@@ -102,6 +102,10 @@ input {
   @include light-fg;
 }
 
+.Filelabel {
+  text-align: left;
+}
+
 .Submit {
   text-align: center;
 }
@@ -114,34 +118,28 @@ input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(15px + 2vmin);
   @include dark-fg;
   @include light-fg;
 }
 
-.Results {
-  text-align: center;
-}
-
-.Results-header {
-  @include dark-bg;
-  @include light-bg;
-  min-height: 100vh;
+.nice-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  @include dark-fg;
-  @include light-fg;
+}
+
+.nice-button {
+  flex: 0 1 94px;
+  //max-width: 10%;
+
 }
 
 .divider {
   width: 2px;
-  margin: 6px 48px;
+  margin: 24px 24px;
   min-height: 40vh;
-  position: relative;
-  right: -8px;
   @include dark {
     background-color: $app-content-light-bg;
   }

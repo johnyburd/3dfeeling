@@ -1,15 +1,20 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import logo from './logo.svg'
 import './App.scss'
 
 import axios from 'axios'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { ProgressBar } from 'react-bootstrap';
-import {Form, Button, Row, Col} from 'react-bootstrap';
-import DarkModeToggle from './Dark';
+import { Form, Button } from 'react-bootstrap';
+import Loader from 'react-loader-spinner';
+
+import Feelbar from './Feelbar'
+import history from './history'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -31,6 +36,7 @@ class App extends React.Component {
     this.handleFile = this.handleFile.bind(this)
     this.sendFileToAPI = this.sendFileToAPI.bind(this)
     this.resetState = this.resetState.bind(this)
+    this.cancelInput = this.cancelInput.bind(this)
   }
 
   //Called whenever the component mounts before rendering. (Startup)
@@ -66,6 +72,17 @@ class App extends React.Component {
       loading: false,
       inputFile: null,
     })
+    toast('Input Cleared')
+  }
+
+  //Cancels input and disregards response. Rerenders inital page
+  cancelInput() {
+    this.setState({
+      inputText: '',
+      loading: false,
+      inputFile: null,
+    })
+    toast('Submission Cancelled')
   }
 
   //Averages points returned from API. Not fail safe yet
@@ -109,7 +126,7 @@ class App extends React.Component {
         currentComponent.setState({
           loading: false,
         })
-        currentComponent.props.history.push({
+        history.push({
           pathname: '/results',
           state: {
             inputText: retrievedData.text,
@@ -123,16 +140,8 @@ class App extends React.Component {
       console.log(retrievedData)
     }).catch(function (error) {
       console.log(error)
-      currentComponent.props.history.push({
-        pathname: '/results',
-        state: {
-          inputText: "error reading text",
-          valence: 0,
-          arousal: 0,
-          dominance: 0,
-          apiFileName: 'unknown',
-        }
-      })
+      toast('Error processing text')
+      currentComponent.cancelInput()
     });
   }
 
@@ -144,8 +153,6 @@ class App extends React.Component {
       points: [[-1, -1, -1]],
     }
     console.log('Input text: ', this.state.inputText)
-    const text = this.state.inputText
-    console.log(text)
     this.setState({
       loading: true
     })
@@ -160,7 +167,7 @@ class App extends React.Component {
         currentComponent.setState({
           loading: false,
         })
-        currentComponent.props.history.push({
+        history.push({
           pathname: '/results',
           state: {
             inputText: currentComponent.state.inputText,
@@ -173,6 +180,8 @@ class App extends React.Component {
       }
       console.log(retrievedData)
     }).catch(function (error) {
+      toast('Error processing text')
+      currentComponent.cancelInput()
       console.log(error)
     });
   }
@@ -195,14 +204,15 @@ class App extends React.Component {
     if (!this.state.loading) {
       return (
         <div>
-          <DarkModeToggle/>
+          <Feelbar />
           <div className="App">
             <div>
               <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
               <Form.Label className="mb-5">
-                <strong>Welcome to 3D Feeling! </strong>
-                <p>Our project takes your text input, analyzes it, and returns an object.</p>
-                <p>This object represents the emotions and feeling extracted. Try it out!</p>
+                <p><strong>3D Feeling</strong> is a project designed to help you model emotions.</p>
+                <p>The app will process text and produce a 3D representation of the emotions from the text.</p>
+                <br/>
+                <strong>Enter text in the input box or upload a file to get started.</strong>
                 <br/>
               </Form.Label>
                 <div className="container-c">
@@ -232,24 +242,23 @@ class App extends React.Component {
                           onChange={(event) => this.handleFile(event.target.files[0])} 
                           disabled={this.state.inputText}
                         />
-                        <Form.Label className="custom-file-label">
-                          {this.state.inputFile ? this.fileName : "Choose File"}
+                        <Form.Label className="custom-file-label Filelabel">
+                          {this.state.inputFile ? this.fileName : "Choose File..."}
                         </Form.Label>
                       </div>
                       <br/>
                     </Form.Group>
                   </div>
                 </div>
-                <Row>
-                  <Col>
-                    <Button variant="primary" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
-                      Submit
-                    </Button>
-                    <Button variant="danger" type="reset" size='lg' onClick={this.resetState}>
-                      Clear
-                    </Button>
-                  </Col>
-                </Row>
+                <div className="nice-buttons">
+                  <Button variant="primary" className="nice-button" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
+                    Submit
+                  </Button>
+                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState}>
+                    Clear
+                  </Button>
+                  <ToastContainer />
+                </div>
               </Form>
             </div>
           </div>
@@ -262,10 +271,9 @@ class App extends React.Component {
           <header className="Submit-header">
             Thank you for submitting!
           <div style={{ width: 400 }}>
-            <ProgressBar animated now={69} />
+            <Loader type="Bars" color="#73a3ba" height={120} width={120} />
             <p>Sit tight. Your text is being processed!</p>
-            <p>(Please do not refresh the page or you will have to start over)</p>
-            <Button variant="danger" size="lg" onClick={this.resetState}>
+            <Button variant="danger" size="lg" onClick={this.cancelInput}>
               Cancel
             </Button> 
           </div>
