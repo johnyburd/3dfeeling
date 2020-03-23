@@ -5,7 +5,10 @@ website/node_modules
 *.scad
 *.stl
 .vscode
+*.png
 website/build
 .DS_Store
 website/.DS_Store
 .vscode/launch.json
+.venv
+yarn-error.log

@@ -1,21 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import Submit from './Submit';
-import Results from './Results';
 
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import App from './App';
+import Results from './Results';
+import Details from './Details'
+import history from './history'
+
+import { Route, Router } from 'react-router-dom'
 
 import * as serviceWorker from './serviceWorker';
 
+import "./scss/main.scss";
+
 
 const routing = (
-  <Router>
+  <Router history={history}>
     <div>
       <Route exact path="/" component={App} />
-      <Route path="/submit" component={Submit} />
       <Route path="/results" component={Results} />
+      <Route path="/details" component={Details} />
     </div>
   </Router>
 )

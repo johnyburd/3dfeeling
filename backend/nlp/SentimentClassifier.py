@@ -37,18 +37,41 @@ def categorizeSentiment(v, a):
     return sent
 
 
+def negate_unigram(word_pair):
+    """
+        Takes a pair of word tokens and if the first word would negate the second,
+        prepend a negation symbol to the following unigram.
+    :param word_pair:
+    :return: a single word
+    """
+    # consider a more comprehensive list with negative adverbs ie: "badly"
+    negating_words = ["no", "not", "isn't", "ain't", "won't", "shouldn't", "n"]
+    if word_pair[0] in negating_words:
+        return "n-" + word_pair[1]
+    else:
+        return word_pair[1]
+
+
 def sentenceToFeatures(sentence):
     lem = WordNetLemmatizer()
     txt = []
     for word in nltk.word_tokenize(sentence):
         word = word.lower()
         word = lem.lemmatize(word, "v")
+
+        """
+            Removing stop words would remove important negating words. Instead leave in stopwords
+            and postfilter least and most occuring bigrams.
+        """
+        """
         if word not in stopwords.words("english"):
             txt.append(word)
-            # Would be time efficent to add words to dictionary here,
-            # but to keep this function more general I will not.
-            # dictionary.add(word)
-    return txt
+             Would be time efficent to add words to dictionary here,
+             but to keep this function more general I will not.
+             dictionary.add(word)
+        """
+        txt.append(word)
+    return nltk.bigrams(txt)
 
 
 def categorizeSentimentcomplex(v, a):

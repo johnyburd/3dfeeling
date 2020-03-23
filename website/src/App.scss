@@ -1,0 +1,152 @@
+@import 'scss/colors';
+@import 'scss/fonts';
+@import 'scss/media';
+
+$app-content-dark-bg: $dark-300;
+$app-content-light-bg: $-light;
+$app-content-dark-fg: $-light;
+$app-content-light-fg: $-dark;
+
+.App {
+  text-align: center;
+  @include light {
+    color: $app-content-light-fg;
+    background-color: $app-content-light-bg;
+  }
+  @include dark {
+    color: $app-content-dark-fg;
+    background-color: $app-content-dark-bg;
+  }
+  //height: 100vh;
+
+  overflow: hidden;
+
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-c {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  //max-width: 100%;
+
+  @include respond-below(md) {
+    flex-direction: column;
+  }
+  margin: auto;
+  padding: 0;
+
+  //background-color: green;
+}
+
+.item {
+  flex: 1 0 0;
+  //background: red;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  line-height: 40px;
+  margin: 0 48px;
+  //max-width: 50vw;
+
+  //background-color: red;
+}
+
+
+p, strong {
+  font-size: calc(5px + 1.9vmin);
+  font-family: $font-family-base;
+
+  @include dark-fg;
+  @include light-fg;
+
+}
+
+input {
+  font-size: calc(10px + 1.9vmin);
+  font-family: $font-family-base;
+  
+  @include dark-fg;
+  @include light-fg;
+}
+
+.Textarea {
+  font-family: $font-family-base;
+  font-size: calc(6px + 1.9vmin);
+ // max-width: 80%;
+  //width: 35%;
+ // margin-left: auto;
+  //margin-right: auto;
+
+  @include dark-fg;
+  @include light-fg;
+}
+
+.Fileupload {
+  font-family: $font-family-base;
+  font-size: calc(6px + 2vmin);
+ // max-width: 80%;
+  //width: 100%;
+ // margin-left: auto;
+  //margin-right: auto;
+
+  @include dark-fg;
+  @include light-fg;
+}
+
+.Filelabel {
+  text-align: left;
+}
+
+.Submit {
+  text-align: center;
+}
+
+.Submit-header {
+  @include dark-bg;
+  @include light-bg;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(15px + 2vmin);
+  @include dark-fg;
+  @include light-fg;
+}
+
+.nice-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.nice-button {
+  flex: 0 1 94px;
+  //max-width: 10%;
+
+}
+
+.divider {
+  width: 2px;
+  margin: 24px 24px;
+  min-height: 40vh;
+  @include dark {
+    background-color: $app-content-light-bg;
+  }
+  @include light {
+    background-color: $app-content-dark-bg;
+  }
+  @include respond-below(md) {
+    display: none;
+  }
+}

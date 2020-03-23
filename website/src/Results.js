@@ -1,70 +1,105 @@
-
-import React from 'react';
-import './Results.css';
+import React from 'react'
+import { withRouter } from 'react-router-dom'
+import './Results.scss'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-<<<<<<< HEAD
 
-function Results() {
-  return (
-    <div className="Results">
-      <header className="Results-header">
-        <div className="Results-display">
-        Results will be displayed here
-        </div>
-      </header>
-    </div>
-  );
-=======
-import STLViewer from 'stl-viewer';
+import { Image, Button, Form } from 'react-bootstrap';
+import { STLViewer } from 'react-stl-obj-viewer';
+import useDarkMode from 'use-dark-mode';
 
-// Test model? 'https://bohdanbirdie.github.io/stl-obj-demo/bottle.stl'
-import testSTL from './testSTL.stl'
+import Feelbar from './Feelbar'
 
-import ExampleGet from './ExampleGet.js';
+const ViewWithTheme = (name) => {
+  const { value } = useDarkMode()
+
+  const [dimensions, setDimensions] = React.useState({
+    width: window.innerWidth
+  })
+  React.useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth % 5 === 0) {
+        setDimensions({
+          width: window.innerWidth
+        })
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return _ => {
+      window.removeEventListener('resize', handleResize)
+    }
+  })
+  console.log(value ? "#2d2d2d" : "#f6f8f9")
+  return <STLViewer
+    url={ 'https://api.3dfeeling.ga/assets/' + name.name }
+    width={ dimensions.width / 2.3 }
+    height={ dimensions.width / 2.6 }
+    backgroundColor={ value ? "#2d2d2d" : "#f6f8f9" }
+    sceneClassName={ value ? "#2d2d2d" : "#f6f8f9" }
+    modelColor='#e6584d'
+  />
+}
 
 class Results extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      resultText: '',
 
-    }
-    this.updateText = this.updateText.bind(this)
-  }
-
-  updateText(newText) {
-    this.setState({
-      resultText: newText
-    })
+  componentDidMount() {
+    console.log('Results Mounted')
+    console.log('Location', this.props.location)
   }
 
   render () {
-    return (
-      <div className="Results">
-        <div className="Background">
-          <div className='item'>
+    //console.log(this.DarkModeStatus());
+    if (this.props.location.state == null) {
+      return (
+        <div>
+          <Feelbar />
+          <p>Results have not been generated yet. Please return to the homepage using buttons above.</p>
+        </div>
+      )
+    } else {
+      return (
+        <div className="Results">
+          <Feelbar />
+          <div>
             <div className='Results-header'>
-              Results and shape will be displayed here
-              <STLViewer
-                model={'https://api.3dfeeling.ga/assets/b82be92e-5fa3-4040-bf24-0afb4ec0da39.stl'}
-      //#model={'https://bohdanbirdie.github.io/stl-obj-demo/bottle.stl'}
-                width={400}
-                height={400}
-                modelColor='#EAEAEA'
-                backgroundColor='#222222'
-                rotate={true}
-                orbitControls={true}
-              />
-            <p>{this.state.resultText}</p>
-            <ExampleGet/>
+              <div className="container">
+                <div className="left-side">
+                  <ViewWithTheme
+                    name={this.props.location.state.apiFileName}
+                  />
+                  <div>
+                    <Button
+                      variant="success"
+                      size='lg'
+                      onClick={() => { window.location.href = "https://api.3dfeeling.ga/assets/" + this.props.location.state.apiFileName}}
+                    >Download</Button>
+                    <Button variant="primary" size='lg'>Details</Button>
+                  </div>
+                </div>
+                <div className="right-side">
+                  <Image
+                    src={'https://api.3dfeeling.ga/assets/' + this.props.location.state.apiFileName.replace('stl', 'png')}
+                    className="graph"/>
+                  <Form>
+                    <Form.Control
+                        disabled={ true }
+                        className="input-text"
+                        //onChange={() => this.handleText(this.textInput.value)}
+                        as="textarea"
+                        size="lg"
+                        rows="6"
+                        defaultValue={this.props.location.state.inputText}
+                      />
+                  </Form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
->>>>>>> 23354eca5d3d629df1b124d6c5b37aa118280cef
 }
 
-export default Results;
+export default withRouter(Results);
