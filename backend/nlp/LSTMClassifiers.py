@@ -80,11 +80,11 @@ def load_model(model_name):
 
 def load_classifiers():
     print("Loading valence classifier...")
-    valence_model = load_model("valence_lstm")
+    valence_model = load_model("./models/valence_lstm")
     print("Loading arousal classifier...")
-    arousal_model = load_model("arousal_lstm")
+    arousal_model = load_model("./models/arousal_lstm")
     print("Loading dominance classifier...")
-    dominance_model = load_model("dominance_lstm")
+    dominance_model = load_model("./models/dominance_lstm")
     print("done.")
     return valence_model, arousal_model, dominance_model
 
@@ -127,15 +127,15 @@ def create_and_save():
     ##########################################################
     
     print("Saving valence models")
-    save_model(valence_model, "valence_lstm")
+    save_model(valence_model, "./models/valence_lstm")
     print("done.")
 
     print("Saving arousal models")
-    save_model(arousal_model, "arousal_lstm")
+    save_model(arousal_model, "./models/arousal_lstm")
     print("done.")
 
     print("Saving dominance models")
-    save_model(dominance_model, "dominance_lstm")
+    save_model(dominance_model, "./models/dominance_lstm")
     print("done.")
 
 
@@ -188,6 +188,40 @@ def mem_test():
         print("valence: ", v[i])
         print("arousal: ", a[i])
         print("dominance: ", d[i])
+
+
+class LSTMClassifier:
+
+
+    def __init__(self, wordvec_path="glove.twitter.27B.25d.txt"):
+        """
+        Loads the keras lstm models and the feature embedder object
+
+        :param wordvec_path: 200 MB file of word embeddings pretrained by Stanford
+        """
+        self.feature_embedder = wordvec.GloveFeatureEmbedder(wordvec_path)
+        self.max_length = MAX_LENGTH
+        self.valence_model, self.arousal_model, self.dominance_model = load_classifiers()
+
+
+    def predict(self, sentence_list):
+        """
+        Takes a list of sentences and returns a valence, arousal, and dominance values for all sentences.
+
+        Can not be: "a sentence"
+        must be: ["a sentence"]
+
+        :param sentence_list:
+        :return: tuple containing list of valence values, arousal values, and dominance values
+        """
+        feature_list = self.feature_embedder.embed_features(sentence_list, self.max_length)
+        v = self.valence_model.predict(feature_list)
+        a = self.arousal_model.predict(feature_list)
+        d = self.dominance_model.predict(feature_list)
+        v = (v - 1) / 4
+        a = (a - 1) / 4
+        d = (d - 1) / 4
+        return (v, a, d)
 
 
 if __name__ == "__main__":
