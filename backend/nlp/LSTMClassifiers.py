@@ -176,7 +176,11 @@ def load_and_test():
 
 def mem_test():
     valence_model, arousal_model, dominance_model = load_classifiers()
-    test_sentence = ["Here is a fun new sentence that we can all try together.", "This is another sentence, but it kind of sucks", "I don't know why we bother witht his sentence", "This sentence is alright"]
+    test_sentence = ["Here is a fun new sentence",
+                     "This is another sentence, but it kind of sucks",
+                     "I don't know why we bother witht his sentence",
+                     "This sentence is alright"]
+
     print("Embedding features...")
     # embedder = wordvec.FasttextFeatureEmbedder(wordvec_path='wiki.en/wiki.en.bin')
     embedder = wordvec.GloveFeatureEmbedder(wordvec_path="glove.twitter.27B.25d.txt")
