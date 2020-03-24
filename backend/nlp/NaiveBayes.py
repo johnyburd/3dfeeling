@@ -119,7 +119,7 @@ def train_classifiers(vad_docs):
     return valence_classifier, arousal_classifier, dominance_classifier
 
 
-class NaiveBayesClassifier:
+class NBClassifier:
 
     def __init__(self, filename='emobank.csv'):
         self.valence_classifier, self.arousal_classifier,\

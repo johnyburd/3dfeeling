@@ -10,15 +10,15 @@ from math import ceil
 import cProfile
 
 # libraries made by us for this project
-import nlp.SentimentClassifier as VAD
-import LSTMClassifiers
+import NaiveBayes.NBClassifier as VAD
+# import LSTMClassifiers
 from ShapeRepresentation.shape import generate_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
 
 # above is outdated. should be:
-#vad_classifier = LSTMClassifiers.LSTMClassifier()
+# vad_classifier = LSTMClassifiers.LSTMClassifier()
 
 
 def graphs(points, fig_id):

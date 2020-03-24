@@ -1,7 +1,6 @@
 import NaiveBayes
 import LSTMClassifiers
 import math
-import nltk
 from nltk.tokenize import sent_tokenize
 
 
@@ -67,7 +66,7 @@ def categorizeSentimentcomplex(v, a):
 
 
 def naive_bayes_demo():
-    classifier = NaiveBayes.NaiveBayesClassifier()
+    classifier = NaiveBayes.NBClassifier()
 
     testdata = "These are some sentences. I love writing sentences. Sometimes when I write sentences, I get sad. " \
                "I hope someday to write a sentence all on my own. Some people say that sentences are not real."
@@ -75,11 +74,12 @@ def naive_bayes_demo():
     result = []
     loss = classifier.test()
     for sentence in sent_tokenize(testdata):
-        sentiment =classifier.analyzeSentiment(sentence)
+        sentiment = classifier.analyzeSentiment(sentence)
         result.append(sentence + "vad" + str([x for x in sentiment]))
 
     print(result)
     print("loss: ", loss)
+
 
 def lstm_demo():
 
@@ -91,13 +91,13 @@ def lstm_demo():
     sentences = sent_tokenize(testdata)
     v, a, d = classifier.predict(sentences)
 
-
     for i in range(len(sentences)):
         print(sentences[i])
         print("valence: ", v[i])
         print("arousal: ", a[i])
         print("dominance: ", d[i])
 
+
 if __name__ == "__main__":
     lstm_demo()
-    #naive_bayes_demo()
+    # naive_bayes_demo()
