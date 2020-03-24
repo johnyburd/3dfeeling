@@ -15,7 +15,7 @@ from nltk.tokenize import word_tokenize
 # length of lstm sequence/ number of word parts for classification.
 # one integer is not necessarily equal to one integer because of fasttext
 """
-MAX_LENGTH = 25
+MAX_LENGTH = 50
 
 def load_emobank(path='emobank.csv'):
     """
@@ -36,7 +36,7 @@ def load_emobank(path='emobank.csv'):
 
 def create_lstm(word_embedding_dim, max_length):
     model = Sequential()
-    model.add(LSTM(max_length, input_shape=(max_length, word_embedding_dim)))
+    model.add(LSTM(max_length, input_shape=(max_length, word_embedding_dim), return_sequences=False))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
     return model
@@ -76,6 +76,7 @@ def load_model(model_name):
     fn = model_name + "_weights.hf"
     loaded_model.load_weights(fn)
     loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+    return loaded_model
 
 def load_classifiers():
     print("Loading valence classifier...")
@@ -88,21 +89,23 @@ def load_classifiers():
     return valence_model, arousal_model, dominance_model
 
     
-def main():
+def create_and_save():
     
     print("Loading Emobank...")
     train, dev, test = load_emobank()
     print("done.")
     
     print("Embedding features...")
-    train_features = wordvec.embed_features(train[0], MAX_LENGTH, wordvec_path='wiki.en/wiki.en.bin')
+    #embedder = wordvec.FasttextFeatureEmbedder(wordvec_path='wiki.en/wiki.en.bin')
+    embedder = wordvec.GloveFeatureEmbedder(wordvec_path="glove.twitter.27B.25d.txt")
+    train_features = embedder.embed_features(train[0], MAX_LENGTH)
     word_embedding_dim = train_features.shape[2]
     print("done.")
     
     ###########################################################
     #                   train  models                         #
     ###########################################################
-    epochs = 2
+    epochs = 5
 
     print("Training valence model...")
     valence_model = create_lstm(word_embedding_dim, MAX_LENGTH)
@@ -136,8 +139,58 @@ def main():
     print("done.")
 
 
-    
+def mean_abs_error(pred, actual):
+    diff = np.sum(np.abs(pred[-1, :] - actual))
+    return diff / len(pred)
+
+
+def load_and_test():
+    valence_model, arousal_model, dominance_model = load_classifiers()
+    test_sentence = ["Here is a fun new sentence that we can all try together."]
+    print("Embedding features...")
+    # embedder = wordvec.FasttextFeatureEmbedder(wordvec_path='wiki.en/wiki.en.bin')
+    embedder = wordvec.GloveFeatureEmbedder(wordvec_path="glove.twitter.27B.25d.txt")
+    test_feats = embedder.embed_features(test_sentence, MAX_LENGTH)
+    print("done.")
+    v = valence_model.predict(test_feats)
+    a = arousal_model.predict(test_feats)
+    d = dominance_model.predict(test_feats)
+    print(test_sentence)
+    print("valence: ", v)
+    print("arousal: ", a)
+    print("dominance: ", d)
+
+    print("Loading Emobank...")
+    train, dev, test = load_emobank()
+    print("Embedding features...")
+    test_features = embedder.embed_features(test[0], MAX_LENGTH)
+    v_preds = valence_model.predict(test_features)
+    a_preds = arousal_model.predict(test_features)
+    d_preds = dominance_model.predict(test_features)
+
+    print("done.")
+    print("done.")
+    print("average error: ", mean_abs_error(v_preds, test[1]), mean_abs_error(a_preds, test[2]),mean_abs_error(d_preds, test[3]) )
+
+def mem_test():
+    valence_model, arousal_model, dominance_model = load_classifiers()
+    test_sentence = ["Here is a fun new sentence that we can all try together.", "This is another sentence, but it kind of sucks", "I don't know why we bother witht his sentence", "This sentence is alright"]
+    print("Embedding features...")
+    # embedder = wordvec.FasttextFeatureEmbedder(wordvec_path='wiki.en/wiki.en.bin')
+    embedder = wordvec.GloveFeatureEmbedder(wordvec_path="glove.twitter.27B.25d.txt")
+    test_feats = embedder.embed_features(test_sentence, MAX_LENGTH)
+    print("done.")
+    v = valence_model.predict(test_feats)
+    a = arousal_model.predict(test_feats)
+    d = dominance_model.predict(test_feats)
+    for i in range(len(test_sentence)):
+        print(test_sentence[i])
+        print("valence: ", v[i])
+        print("arousal: ", a[i])
+        print("dominance: ", d[i])
 
 
 if __name__ == "__main__":
-    main()
+    #create_and_save()
+    #load_and_test()
+    mem_test()

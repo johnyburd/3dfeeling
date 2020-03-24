@@ -1,39 +1,70 @@
 import fasttext as ft
 import io
+import numpy as np
 from keras.preprocessing import sequence
 from nltk.tokenize import word_tokenize
 
-class WordVectorizer:
-
-    def __init__(self, fname):
-        self.model = ft.load_model(fname)
+class GloveFeatureEmbedder:
 
 
-    def get_word_vec(self, word):
-        return self.model.get_word_vector(word)
+    def __init__(self, wordvec_path="glove.twitter.27B.25d.txt"):
+        self.embeddings_dict = {}
+        with open(wordvec_path, 'r', encoding="utf-8") as f:
+            for line in f:
+                values = line.split()
+                word = values[0]
+                vector = np.asarray(values[1:], "float32")
+                self.embeddings_dict[word] = vector
 
 
-def embed_features(text, max_length, wordvec_path='wiki.en/wiki.en.bin'):
-    """
-    :param text: array (not dataframe) of text entries
-    :param max_length:
-    :return:  list max_length lists of word vectors each word vector currently length 300
-    """
-    X = []
+    def get_word_vector(self, word):
+        word = word.lower()
+        if word in self.embeddings_dict:
+            return self.embeddings_dict[word]
+        else:
+            return [0 for i in range(25)]
 
-    # Load vector representations
-    vectorizer = WordVectorizer(wordvec_path)
 
-    # text = text["text"]
-    for entry in text:
-        feats = []
-        for i, word in enumerate(word_tokenize(entry)):
-            if i < max_length:
-                feats.append(vectorizer.get_word_vec(word))
-        X.append(feats)
+    def embed_features(self, text, max_length, pad_sequence=True):
+        X = []
+        for entry in text:
+            feats = []
+            for i, word in enumerate(word_tokenize(entry)):
+                if i < max_length:
+                    vector = self.get_word_vector(word)
+                    feats.append(vector)
+            X.append(feats)
 
-    X = sequence.pad_sequences(X, maxlen=max_length)
-    return X
+        if pad_sequence:
+            X = sequence.pad_sequences(X, maxlen=max_length)
+
+        return X
+
+
+class FasttextFeatureEmbedder:
+    def __init__(self, wordvec_path='wiki.en/wiki.en.bin'):
+        self.vectorizer = ft.load_model(wordvec_path)
+
+    def embed_features(self, text, max_length, pad_sequence=True):
+        """
+        :param text: array (not dataframe) of text entries
+        :param max_length:
+        :return:  list max_length lists of word vectors each word vector currently length 300
+        """
+        X = []
+
+        # text = text["text"]
+        for entry in text:
+            feats = []
+            for i, word in enumerate(word_tokenize(entry)):
+                if i < max_length:
+                    feats.append(self.vectorizer.get_word_vector(word))
+            X.append(feats)
+
+        if pad_sequence:
+            X = sequence.pad_sequences(X, maxlen=max_length)
+
+        return X
 
 
 def main():
