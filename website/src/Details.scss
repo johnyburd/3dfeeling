@@ -5,15 +5,20 @@
     text-align: center;
 }
 
-.Details-content {
+.Details-header {
     @include dark-bg;
     @include light-bg;
+    @include dark-fg;
+    @include light-fg;
+}
+
+.Details-content {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: left;
+    padding: 15vh;
+    line-height: 5vh;
     // font-size: calc(10px + 2vmin);
-    @include dark-fg;
-    @include light-fg;
 }
