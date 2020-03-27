@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import './Details.scss'
+import logo from './3dfeeling_logo.png'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -18,7 +19,7 @@ class Details extends React.Component {
           <Feelbar />
           <div className="Details-header">
             <div className="Details-content">
-              <h1>About 3D Feeling</h1>
+              <h1>About 3D Feeling <img width="36px" height="36px" src={logo}></img></h1>
               <p>
                 Our project, 3D Feeling, creates a 3D representation 
                 of emotions found within a corpus of text. 
