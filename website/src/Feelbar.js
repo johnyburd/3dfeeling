@@ -3,9 +3,10 @@ import { withRouter } from 'react-router-dom'
 import './Feelbar.scss'
 
 import { Navbar, Nav } from 'react-bootstrap';
-import logo from './logo.svg'
+import logo from './3dfeeling_logo.png'
 
 import DarkModeToggle from './Dark';
+import useDarkMode from 'use-dark-mode';
 
 class Feelbar extends React.Component {
 
@@ -13,7 +14,7 @@ class Feelbar extends React.Component {
       return (
           <Navbar className="Feelbar" fixed="top">
             <Navbar.Brand href="/">
-              <img alt="" src={logo} width="32" height="32" className="d-inline-block align-top" />{' '}
+              <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top" />{' '}
               3D Feeling
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
