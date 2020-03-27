@@ -42,6 +42,12 @@ class Details extends React.Component {
               </p>
               <br />
               <p>
+                Our logo is inspired by an emotion 
+                classification model known as plutchick's 
+                wheel. <u><a href="https://en.wikipedia.org/wiki/Robert_Plutchik">See where it comes from</a></u>.
+              </p>
+              <br />
+              <p>
                 VAD Explanation: The website uses an NLP model that predicts 
                 the Valence, Arousal, and Dominance (VAD) in each sentence 
                 and uses those values to generate a unique 3D object that 
@@ -63,8 +69,9 @@ class Details extends React.Component {
                 each sentence. This was used as a proof of concept model 
                 generation technique and as a stepping stone to more 
                 complicated techniques. The current object generation 
-                algorithm generates a terrain where each ridge represents 
-                the emotion in each sentence. A formula was created which 
+                algorithm that you can see now generates a terrain 
+                where each ridge represents 
+                the emotion in each sentence. A custom formula 
                 takes into account the VAD variables to generate a curve 
                 that represents the emotion in that sentence. Many points 
                 are then sampled from this curve which are put into the 
