@@ -19,7 +19,7 @@ class Details extends React.Component {
           <Feelbar />
           <div className="Details-header">
             <div className="Details-content">
-              <h1>About 3D Feeling <img alt="3D Feeling" width="36px" height="36px" src={logo}></img></h1>
+              <h1>About 3D Feeling <img alt="3D Feeling Logo" width="36px" height="36px" src={logo}></img></h1>
               <p>
                 Our project, 3D Feeling, creates a 3D representation 
                 of emotions found within a corpus of text. 
