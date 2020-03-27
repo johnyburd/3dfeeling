@@ -6,7 +6,6 @@ import { Navbar, Nav } from 'react-bootstrap';
 import logo from './3dfeeling_logo.png'
 
 import DarkModeToggle from './Dark';
-import useDarkMode from 'use-dark-mode';
 
 class Feelbar extends React.Component {
 
@@ -19,10 +18,10 @@ class Feelbar extends React.Component {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="Feelbar-content">
+              <Nav className="justify-content-end" style={{width: "95%"}}>
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/details">Details</Nav.Link>
-                <DarkModeToggle/>
+                <DarkModeToggle />
               </Nav>
             </Navbar.Collapse> 
           </Navbar>
