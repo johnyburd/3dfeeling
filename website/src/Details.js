@@ -19,7 +19,7 @@ class Details extends React.Component {
           <Feelbar />
           <div className="Details-header">
             <div className="Details-content">
-              <h1>About 3D Feeling <img alt="3D Feeling Logo" width="36px" height="36px" src={logo}></img></h1>
+              <h1 style={{color: '#006bff'}}>About 3D Feeling <img alt="3D Feeling Logo" width="36px" height="36px" src={logo}></img></h1>
               <p>
                 Our project, 3D Feeling, creates a 3D representation 
                 of emotions found within a corpus of text. 
@@ -35,6 +35,8 @@ class Details extends React.Component {
                 built in the real world.
               </p>
               <br />
+
+              <div className='Sub-header'>Who built this?</div>
               <p>
                 This project was built by a team of six 
                 Georgia Tech students for Dr. Krystin Gollihue. 
@@ -42,30 +44,38 @@ class Details extends React.Component {
                 at Georgia Tech, and the origin of this wonderful idea.
               </p>
               <br />
+
+              <div className='Sub-header'>Nice logo. Where'd you get it?</div>
               <p>
                 Our logo is inspired by an emotion 
                 classification model known as plutchick's 
                 wheel. <u><a href="https://en.wikipedia.org/wiki/Robert_Plutchik">See where it comes from</a></u>.
               </p>
               <br />
+
+              <div className='Sub-header'>VAD Explanation</div>
               <p>
-                VAD Explanation: The website uses an NLP model that predicts 
+                The website uses an NLP model that predicts 
                 the Valence, Arousal, and Dominance (VAD) in each sentence 
                 and uses those values to generate a unique 3D object that 
                 represents those values. You can read more about this method of emotion 
                 classification <u><a href="https://en.wikipedia.org/wiki/Emotion_classification">here</a></u>.
               </p>
               <br />
+
+              <div className='Sub-header'>Classifier Methodology</div>
               <p>
-                Classifier Methodology: The current NLP model uses 
+                The current NLP model uses 
                 a <u><a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a></u> model 
                 to capture the text in each sentence. This bag of words 
                 is then fed into a naïve bayes which will output the VAD 
                 levels of each sentence.
               </p>
               <br />
+
+              <div className='Sub-header'>Object Generation</div>
               <p>
-                Object Generation: The first method of object generation 
+                The first method of object generation 
                 was to simply create a 3D histogram of the VAD level in 
                 each sentence. This was used as a proof of concept model 
                 generation technique and as a stepping stone to more 
@@ -80,8 +90,10 @@ class Details extends React.Component {
                 a terrain that represents the entirety of emotion in the text.
               </p>
               <br />
+
+              <div className='Sub-header'>Stuff for Nerds</div>
               <p>
-                Stuff for Nerds: Tools and technologies. 
+                Tools and technologies. 
                 Check out <u><a href="https://github.com/johnyburd/3dfeeling">our repository</a></u>!
               </p>
               <br />
