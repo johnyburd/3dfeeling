@@ -65,6 +65,7 @@ def polygon_cylinder(vads, num_points):
         for j, th in enumerate(theta_values):
             r = 0.3 * circ_function_r(vads[i], th)
             r += polygons[poly][j]
+            r *= (4 - abs(((i % 10) - 5))) * 0.075 + 1
             points_3d.append([x, r * np.cos(th), r * np.sin(th)])
     for i in range(len(vads) - 1):
         faces.append([i * num_points,
