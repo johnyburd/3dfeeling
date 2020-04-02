@@ -1,0 +1,33 @@
+@import 'scss/colors';
+@import 'scss/media';
+
+.title {
+    color: $-secondary;
+}
+
+.Details {
+    text-align: center;
+}
+
+.Details-header {
+    @include dark-bg;
+    @include light-bg;
+    @include dark-fg;
+    @include light-fg;
+}
+
+.Details-content {
+    // min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: left;
+    padding: 15vh;
+    line-height: 5vh;
+    // font-size: calc(10px + 2vmin);
+}
+
+.Sub-header {
+    font-size: x-large;
+    color: $-secondary;
+}

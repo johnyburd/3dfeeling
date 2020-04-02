@@ -1,6 +1,18 @@
 @import 'scss/colors';
 @import 'scss/media';
 
+.Error {
+    @include dark-bg;
+    @include light-bg;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // font-size: calc(10px + 2vmin);
+    @include dark-fg;
+    @include light-fg;
+}
 
 .Results {
     text-align: center;
