@@ -1,6 +1,10 @@
 @import 'scss/colors';
 @import 'scss/media';
 
+.title {
+    color: $-secondary;
+}
+
 .Details {
     text-align: center;
 }
@@ -25,5 +29,5 @@
 
 .Sub-header {
     font-size: x-large;
-    color: #006bff;
+    color: $-secondary;
 }
