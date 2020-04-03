@@ -83,6 +83,7 @@ class Results extends React.Component {
                       size='lg'
                       onClick={() => history.push({pathname: '/details'})}
                     >Details</Button>
+
                   </div>
                 </div>
                 <div className="right-side">
