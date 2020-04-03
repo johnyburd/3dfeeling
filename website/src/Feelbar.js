@@ -17,7 +17,7 @@ class Feelbar extends React.Component {
               3D Feeling
             </Navbar.Brand>
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="justify-content-end" style={{width: "95%"}}>
+              <Nav className="justify-content-end">
                 <div className="nav-item">
                   <Nav.Link href="/">Home</Nav.Link>
                 </div>
