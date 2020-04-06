@@ -51,9 +51,15 @@ def polygon_points(num_corners, num_points):
 def polygon_cylinder(vads, num_points):
     vads = np.array(vads)
     polygons = []
-    for i in range(vads.shape[0] // 10):
-        arg = np.argmax(np.square(vads[i * 10:i * 10 + 10, 2] - 0.5))
-        val = vads[i * 10 + arg, 2]
+    if vads.shape[0] > 9:
+        for i in range(vads.shape[0] // 10):
+            arg = np.argmax(np.square(vads[i * 10:i * 10 + 10, 2] - 0.5))
+            val = vads[i * 10 + arg, 2]
+            sides = round(15 - (val * 12))
+            polygons.append(polygon_points(sides, num_points))
+    else:
+        arg = np.argmax(np.square(vads[:, 2] - 0.5))
+        val = vads[arg, 2]
         sides = round(15 - (val * 12))
         polygons.append(polygon_points(sides, num_points))
 

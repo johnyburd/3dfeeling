@@ -58,7 +58,7 @@ def generate(text):
     else:
         points = [vad_classifier.analyzeSentiment(s) for s in sents]
 
-    model = generate_cylinder(points, 250)
+    model = polygon_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
