@@ -19,7 +19,7 @@ class Details extends React.Component {
           <Feelbar />
           <div className="Details-header">
             <div className="Details-content">
-              <h1 className="title">About 3D Feeling <img alt="3D Feeling Logo" width="72px" height="72px" src={logo}></img></h1>
+              <h1 className="title">About 3D Feeling <img alt="3D Feeling Logo" width="36px" height="36px" src={logo}></img></h1>
               <p>
                 Our project, 3D Feeling, creates a 3D representation 
                 of emotions found within a corpus of text. 
@@ -36,7 +36,7 @@ class Details extends React.Component {
               </p>
               <br />
 
-              <h3 className='Sub-header'>Who built this?</h3>
+              <h4 className='Sub-header'>Who built this?</h4>
               <p>
                 This project was built by a team of six 
                 Georgia Tech students for Dr. Krystin Gollihue. 
@@ -45,7 +45,7 @@ class Details extends React.Component {
               </p>
               <br />
 
-              <h3 className='Sub-header'>Nice logo. Where'd you get it?</h3>
+              <h4 className='Sub-header'>Nice logo. Where'd you get it?</h4>
               <p>
                 Our logo is inspired by an emotion 
                 classification model known as plutchick's 
@@ -53,7 +53,7 @@ class Details extends React.Component {
               </p>
               <br />
 
-              <h3 className='Sub-header'>VAD Explanation</h3>
+              <h4 className='Sub-header'>VAD Explanation</h4>
               <p>
                 The website uses an NLP model that predicts 
                 the Valence, Arousal, and Dominance (VAD) in each sentence 
@@ -63,7 +63,7 @@ class Details extends React.Component {
               </p>
               <br />
 
-              <h3 className='Sub-header'>Classifier Methodology</h3>
+              <h4 className='Sub-header'>Classifier Methodology</h4>
               <p>
                 The current NLP model uses 
                 a <u><a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a></u> model 
@@ -73,7 +73,7 @@ class Details extends React.Component {
               </p>
               <br />
 
-              <h3 className='Sub-header'>Object Generation</h3>
+              <h4 className='Sub-header'>Object Generation</h4>
               <p>
                 The first method of object generation 
                 was to simply create a 3D histogram of the VAD level in 
@@ -91,7 +91,7 @@ class Details extends React.Component {
               </p>
               <br />
 
-              <h3 className='Sub-header'>Stuff for Nerds</h3>
+              <h4 className='Sub-header'>Stuff for Nerds</h4>
               <p>
                 Tools and technologies. 
                 Check out <u><a href="https://github.com/johnyburd/3dfeeling">our repository</a></u>!
