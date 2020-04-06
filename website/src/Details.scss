@@ -22,12 +22,11 @@
     flex-direction: column;
     text-align: left;
     justify-content: left;
-    padding: 15vh;
+    padding: calc(8vh + 2vmin);
     line-height: 5vh;
     // font-size: calc(10px + 2vmin);
 }
 
 .Sub-header {
-    font-size: x-large;
     color: $-secondary;
 }
