@@ -6,6 +6,88 @@ MAX_TIME = 20
 MAX_VALUES = 0.75 * 20
 
 
+def circ_function_r(vad, theta):
+    """
+    A function for finding the radius value of the circle shape function
+
+    :parameter: vad, tuple of valence, arousal, and dominance
+                     all in range [0,1]
+    :parameter: theta, float value in range [0, 2pi)
+
+    :return: r, where r is a float representing the radius of the "circle" at theta
+    """
+    v, a, d = vad
+
+    v *= 19
+    v += 3
+    v = round(v)
+
+    a += 1
+
+    r = 5 + a * np.sin((26 - v) * theta) + (1 - d) * np.sin(30 * theta)
+    return r
+
+
+def polygon_points(num_corners, num_points):
+    """
+    Generates points of a regular polygon.
+
+    Code in this function taken from:
+    https://math.stackexchange.com/questions/41940/is-there-an-equation-to-describe-regular-polygons
+
+    :parameter: num_corners The number of corners the polygon should have
+    :parameter: num_points How many points to generate.
+
+    :return: [x, y] List of float values that are the points of the polygon.
+    """
+    theta_values = np.arange(0, 2 * np.pi, 2 * np.pi / num_points)
+    pi_n = np.pi / num_corners
+    r_values = []
+    for i in range(num_points):
+        r_values.append(10 * (np.cos(pi_n) / (np.cos((theta_values[i] % (2 * pi_n)) - pi_n))))
+    return r_values
+
+
+def polygon_cylinder(vads, num_points):
+    vads = np.array(vads)
+    polygons = []
+    if vads.shape[0] > 9:
+        for i in range(vads.shape[0] // 10):
+            arg = np.argmax(np.square(vads[i * 10:i * 10 + 10, 2] - 0.5))
+            val = vads[i * 10 + arg, 2]
+            sides = round(15 - (val * 12))
+            polygons.append(polygon_points(sides, num_points))
+    else:
+        arg = np.argmax(np.square(vads[:, 2] - 0.5))
+        val = vads[arg, 2]
+        sides = round(15 - (val * 12))
+        polygons.append(polygon_points(sides, num_points))
+
+    theta_values = np.arange(0, 2 * np.pi, 2 * np.pi / num_points)
+    points_3d = []
+    faces = []
+    for i, x in enumerate(np.arange(0, 25, 25 / len(vads))):
+        poly = min(len(polygons) - 1, i // 10)
+        for j, th in enumerate(theta_values):
+            r = 0.3 * circ_function_r(vads[i], th)
+            r += polygons[poly][j]
+            r *= (4 - abs(((i % 10) - 5))) * 0.075 + 1
+            points_3d.append([x, r * np.cos(th), r * np.sin(th)])
+    for i in range(len(vads) - 1):
+        faces.append([i * num_points,
+                      (i + 1) * num_points - 1,
+                      (i + 2) * num_points - 1,
+                      (i + 1) * num_points])
+        for j in range(num_points - 1):
+            faces.append(circ_neighbors(i * num_points + j, num_points))
+
+    size = len(points_3d)
+    faces.append(list(range(num_points - 1, -1, -1))[::-1])
+    faces.append(list(range(size - 1, size - num_points - 1, -1)))
+
+    return ops.Polyhedron(points=points_3d, faces=faces)
+
+
 def height_function(vad, x):
     """
     A function for sampling the height of a continuous function based on the values
@@ -241,4 +323,5 @@ class Representation:
 
 if __name__ == "__main__":
     # generate_terrain(np.random.random((5, 3)), 250).write("test.scad")
-    generate_cylinder(np.random.random((5, 3)), 250).write("test.scad")
+    # generate_cylinder(np.random.random((5, 3)), 250).write("test.scad")
+    polygon_cylinder(np.random.random((100, 3)), 250).write("polycyl.scad")

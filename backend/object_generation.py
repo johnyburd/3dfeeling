@@ -11,7 +11,7 @@ import cProfile
 
 # libraries made by us for this project
 import nlp.LSTMClassifiers as VAD
-from ShapeRepresentation.shape import generate_cylinder
+from ShapeRepresentation.shape import polygon_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.LSTMClassifier()
@@ -58,7 +58,7 @@ def generate(text):
     else:
         points = [vad_classifier.predict(s) for s in sents]
 
-    model = generate_cylinder(points, 250)
+    model = polygon_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
