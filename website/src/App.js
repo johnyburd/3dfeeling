@@ -156,9 +156,9 @@ class App extends React.Component {
     this.setState({
       loading: true
     })
-    axios.post('https://api.3dfeeling.ga/analyze',
-      `text=${this.state.inputText}`
-    ).then(function (resp) {
+    axios.post('https://api.3dfeeling.ga/analyze', {
+      text: this.state.inputText
+    }).then(function (resp) {
       console.log(resp)
       //Assign gathered sentiment analysis values here
       retrievedData = resp.data
@@ -219,12 +219,12 @@ class App extends React.Component {
                   <div className="item Textarea">
                     <Form.Group controlId="inputTextArea">
                       <Form.Label>Enter a text sample.</Form.Label>
-                      <Form.Control 
-                        disabled={this.state.inputFile} 
-                        onChange={() => this.handleText(this.textInput.value)} 
-                        as="textarea" 
-                        size="lg" 
-                        rows="6" 
+                      <Form.Control
+                        disabled={this.state.inputFile}
+                        onChange={() => this.handleText(this.textInput.value)}
+                        as="textarea"
+                        size="lg"
+                        rows="6"
                         ref={text => {this.textInput = text}}
                       />
                       <br/>
@@ -235,11 +235,11 @@ class App extends React.Component {
                     <Form.Group controlId="inputFileArea">
                       <Form.Label>Or choose a file to upload.</Form.Label>
                       <div className="custom-file">
-                        <Form.Control 
+                        <Form.Control
                           type='file'
                           //controlId="customFile"
                           className="custom-file-input"
-                          onChange={(event) => this.handleFile(event.target.files[0])} 
+                          onChange={(event) => this.handleFile(event.target.files[0])}
                           disabled={this.state.inputText}
                         />
                         <Form.Label className="custom-file-label Filelabel">
@@ -275,7 +275,7 @@ class App extends React.Component {
             <p>Sit tight. Your text is being processed!</p>
             <Button variant="danger" size="lg" onClick={this.cancelInput}>
               Cancel
-            </Button> 
+            </Button>
           </div>
           </header>
         </div>
