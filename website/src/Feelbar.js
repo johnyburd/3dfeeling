@@ -11,7 +11,7 @@ class Feelbar extends React.Component {
 
   render () {
       return (
-          <Navbar className="Feelbar" fixed="top">
+          <Navbar className="Feelbar" sticky="top" >
             <Navbar.Brand href="/">
               <img alt="3D Feeling Logo" src={logo} width="30" height="30" className="d-inline-block align-top" />{' '}
               3D Feeling
@@ -24,7 +24,7 @@ class Feelbar extends React.Component {
                 <Nav.Link href="/details">Details</Nav.Link>
                 <DarkModeToggle />
               </Nav>
-            </Navbar.Collapse> 
+            </Navbar.Collapse>
           </Navbar>
       )
     }
