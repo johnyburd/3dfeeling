@@ -217,7 +217,7 @@ class App extends React.Component {
           <h1>Sorry about this...</h1>
           <p>This website was not built with intent to function on mobile.</p>
           <p>Please visit it on a desktop or laptop computer.</p>
-          <p>You can still check out our <a href='/details'>details page</a>!</p>.
+          <p>You can still check out our <a href='/details'>details page</a>!</p>
         </div>
       )
     } else {
