@@ -1,4 +1,4 @@
-import wordvec
+import nlp.wordvec as wordvec
 import pandas as pd
 import numpy as np
 from keras.models import Sequential
@@ -229,6 +229,6 @@ class LSTMClassifier:
 
 
 if __name__ == "__main__":
-    # create_and_save()
-    # load_and_test()
+    create_and_save()
+    load_and_test()
     mem_test()

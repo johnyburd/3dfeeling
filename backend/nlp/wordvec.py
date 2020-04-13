@@ -1,4 +1,4 @@
-import fasttext as ft
+# import fasttext as ft
 import numpy as np
 from keras.preprocessing import sequence
 from nltk.tokenize import word_tokenize
