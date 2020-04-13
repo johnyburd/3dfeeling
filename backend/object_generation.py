@@ -10,11 +10,15 @@ from math import ceil
 import cProfile
 
 # libraries made by us for this project
+# import LSTMClassifiers
 import nlp.LSTMClassifiers as VAD
 from ShapeRepresentation.shape import polygon_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
 vad_classifier = VAD.LSTMClassifier()
+
+# above is outdated. should be:
+# vad_classifier = LSTMClassifiers.LSTMClassifier()
 
 
 def graphs(points, fig_id):
