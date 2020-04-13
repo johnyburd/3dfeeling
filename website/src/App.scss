@@ -70,6 +70,12 @@ p, strong {
 
 }
 
+strong {
+  font-size: calc(5px + 1.9vmin);
+  font-family: $font-family-base;
+  color: $-secondary;
+}
+
 input {
   font-size: calc(10px + 1.9vmin);
   font-family: $font-family-base;

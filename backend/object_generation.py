@@ -10,12 +10,12 @@ from math import ceil
 import cProfile
 
 # libraries made by us for this project
-import NaiveBayes.NBClassifier as VAD
 # import LSTMClassifiers
-from ShapeRepresentation.shape import generate_cylinder
+import nlp.LSTMClassifiers as VAD
+from ShapeRepresentation.shape import polygon_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
-vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
+vad_classifier = VAD.LSTMClassifier()
 
 # above is outdated. should be:
 # vad_classifier = LSTMClassifiers.LSTMClassifier()
@@ -50,19 +50,19 @@ def generate(text):
     sents = sent_tokenize(text)
     if len(sents) == 1:
         sents.append(sents[0])
-        points = [vad_classifier.analyzeSentiment(s) for s in sents]
+        points = [vad_classifier.predict(s) for s in sents]
     elif len(sents) > 2000:
         window = ceil(len(sents) / 2000)
         for i in range(0, len(sents) - window, window):
-            vals = np.array([vad_classifier.analyzeSentiment(sents[i + j]) for j in range(window)])
+            vals = np.array([vad_classifier.predict(sents[i + j]) for j in range(window)])
             avg = np.sum(vals, axis=0) / window
             points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
-            points.append(vad_classifier.analyzeSentiment(sents[i]))
+            points.append(vad_classifier.predict(sents[i]))
     else:
-        points = [vad_classifier.analyzeSentiment(s) for s in sents]
+        points = [vad_classifier.predict(s) for s in sents]
 
-    model = generate_cylinder(points, 250)
+    model = polygon_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
