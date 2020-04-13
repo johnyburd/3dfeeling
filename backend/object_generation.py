@@ -56,9 +56,9 @@ def generate(text):
         v, a, d = v.flatten(), a.flatten(), d.flatten()
         window = ceil(len(sents) / 2000)
         for i in range(0, len(sents) - window, window):
-            avg = (np.average(v[i:i+window]),
-                   np.average(a[i:i+window]),
-                   np.average(d[i:i+window]))
+            avg = (np.average(v[i:i + window]),
+                   np.average(a[i:i + window]),
+                   np.average(d[i:i + window]))
             points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
             points.append([v[i], a[i], d[i]])
