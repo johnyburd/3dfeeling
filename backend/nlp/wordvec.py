@@ -40,7 +40,8 @@ class GloveFeatureEmbedder:
 
 class FasttextFeatureEmbedder:
     def __init__(self, wordvec_path='wiki.en/wiki.en.bin'):
-        self.vectorizer = ft.load_model(wordvec_path)
+        # self.vectorizer = ft.load_model(wordvec_path)
+        pass
 
     def embed_features(self, text, max_length, pad_sequence=True):
         """
@@ -65,13 +66,14 @@ class FasttextFeatureEmbedder:
 
 
 def main():
-    word = "banana-raisinbran"
-    model = ft.load_model('wiki.en/wiki.en.bin')
-    print(model.get_word_vector(word))
+    # word = "banana-raisinbran"
+    # model = ft.load_model('wiki.en/wiki.en.bin')
+    # print(model.get_word_vector(word))
     # nearest nieghbors not available with pypi release
     # neighbors = model.get_nearest_neighbors(word)
     # vectorizer = Word_Vectorizer(path)
     # print(word, ": ", vectorizer.get_word_vec(word))
+    pass
 
 
 if __name__ == "__main__":
