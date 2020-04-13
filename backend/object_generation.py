@@ -7,7 +7,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 from math import ceil
-import cProfile
 
 # libraries made by us for this project
 # import LSTMClassifiers
@@ -50,17 +49,22 @@ def generate(text):
     sents = sent_tokenize(text)
     if len(sents) == 1:
         sents.append(sents[0])
-        points = [vad_classifier.predict(s) for s in sents]
+        v, a, d = vad_classifier.predict(sents)
+        points = np.asmatrix([v.flatten(), a.flatten(), d.flatten()]).T
     elif len(sents) > 2000:
+        v, a, d = vad_classifier.predict(sents)
+        v, a, d = v.flatten(), a.flatten(), d.flatten()
         window = ceil(len(sents) / 2000)
         for i in range(0, len(sents) - window, window):
-            vals = np.array([vad_classifier.predict(sents[i + j]) for j in range(window)])
-            avg = np.sum(vals, axis=0) / window
+            avg = (np.average(v[i:i + window]),
+                   np.average(a[i:i + window]),
+                   np.average(d[i:i + window]))
             points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
-            points.append(vad_classifier.predict(sents[i]))
+            points.append([v[i], a[i], d[i]])
     else:
-        points = [vad_classifier.predict(s) for s in sents]
+        v, a, d = vad_classifier.predict(sents)
+        points = np.asmatrix([v.flatten(), a.flatten(), d.flatten()]).T
 
     model = polygon_cylinder(points, 250)
 
@@ -91,5 +95,5 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    paragraph = "This is a fun and happy sentence. " * 32000
-    cProfile.run("generate(paragraph)")
+    paragraph = "This is a fun sentence. This is a sad sentence. This is a neutral sentence. " * 1000
+    generate(paragraph)
