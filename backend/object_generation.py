@@ -10,14 +10,14 @@ from math import ceil
 
 # libraries made by us for this project
 # import LSTMClassifiers
-import nlp.LSTMClassifiers as VAD
+# import nlp.LSTMClassifiers as VAD
 from ShapeRepresentation.shape import polygon_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
-vad_classifier = VAD.LSTMClassifier()
+# vad_classifier = VAD.LSTMClassifier()
 
 # above is outdated. should be:
-# vad_classifier = LSTMClassifiers.LSTMClassifier()
+from nlp.LSTMClassifiers import LSTMClassifier
 
 
 def graphs(points, fig_id):
@@ -45,6 +45,7 @@ def generate(text):
     This function will fail and error out if an empty string is passed to it. Make sure there
     is at least one sentence in the string before calling this function.
     """
+    vad_classifier = LSTMClassifier()
     points = []
     sents = sent_tokenize(text)
     if len(sents) == 1:
@@ -79,14 +80,14 @@ def generate(text):
 
     graphs(points, file_id)
 
-    return f"{file_id}.stl", points
+    return f"{file_id}.stl", points.tolist()
 
 
 async def get_object(text):
     """
     Runs the above generate method in a separate thread and awaits the result.
     """
-    loop = asyncio.get_running_loop()
+    loop = asyncio.get_event_loop()
     result = ""
 
     with concurrent.futures.ProcessPoolExecutor() as pool:
@@ -95,5 +96,5 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    paragraph = "This is a fun sentence. This is a sad sentence. This is a neutral sentence. " * 1000
+    paragraph = "A happy sentence; but maybe not. Does it break on semicolons? Something a little longer."
     generate(paragraph)

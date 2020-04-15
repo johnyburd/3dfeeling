@@ -7,7 +7,6 @@ import aiohttp_cors
 from object_generation import get_object
 from utils import parse_from_bytes
 
-
 routes = web.RouteTableDef()
 
 
