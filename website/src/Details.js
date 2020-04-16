@@ -27,7 +27,7 @@ class Details extends React.Component {
               <p>
                 The results you see from this project are not definitive,
                 nor do they claim to be perfect representations of emotion.
-                Having built this unique project, we certainly know that
+                Having built this unique service, we certainly know that
                 extracting sentiment from a text corpus and modeling it in 3D space
                 is an abstract problem that has no right or wrong answer.
                 However, this is one interesting answer to a task
