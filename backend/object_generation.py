@@ -51,11 +51,11 @@ def generate(text):
     if len(sents) == 1:
         sents.append(sents[0])
         v, a, d = vad_classifier.predict(sents)
-        points = np.asmatrix([v.flatten(), a.flatten(), d.flatten()]).T
-    elif len(sents) > 2000:
+        points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
+    elif len(sents) > 1000:
         v, a, d = vad_classifier.predict(sents)
         v, a, d = v.flatten(), a.flatten(), d.flatten()
-        window = ceil(len(sents) / 2000)
+        window = ceil(len(sents) / 1000)
         for i in range(0, len(sents) - window, window):
             avg = (np.average(v[i:i + window]),
                    np.average(a[i:i + window]),
@@ -63,9 +63,10 @@ def generate(text):
             points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
             points.append([v[i], a[i], d[i]])
+        points = np.array(points)
     else:
         v, a, d = vad_classifier.predict(sents)
-        points = np.asmatrix([v.flatten(), a.flatten(), d.flatten()]).T
+        points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
 
     model = polygon_cylinder(points, 250)
 
@@ -81,8 +82,9 @@ def generate(text):
     graphs(points, file_id)
 
     color_index = np.argsort(np.var(points, axis=1))[0]
-    r, g, b = int(points[color_index] * 255)
-    r, g, b = hex(r).lstrip("0x"), hex(g).lstrip("0x"), hex(b).lstrip("0x")
+    print("Thing: ", points[color_index])
+    r, g, b = points[color_index] * 255
+    r, g, b = hex(int(r)).lstrip("0x"), hex(int(g)).lstrip("0x"), hex(int(b)).lstrip("0x")
     if len(r) != 2:
         r = "0" + r
     if len(g) != 2:
@@ -106,5 +108,5 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    paragraph = "A happy sentence; but maybe not. Does it break on semicolons? Something a little longer."
-    generate(paragraph)
+    paragraph = "A happy sentence; but maybe not. Does it break on semicolons? Something a little longer. " * 5000
+    print(generate(paragraph))

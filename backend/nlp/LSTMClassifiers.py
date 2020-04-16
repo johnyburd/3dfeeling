@@ -229,15 +229,10 @@ class LSTMClassifier:
         :param sentence_list:
         :return: tuple containing list of valence values, arousal values, and dominance values
         """
-        print("Model code")
         feature_list = self.feature_embedder.embed_features(sentence_list, self.max_length)
-        print("valence analysis")
-        v = self.valence_model.predict(feature_list, verbose=1)
-        print("arousal")
+        v = self.valence_model.predict(feature_list)
         a = self.arousal_model.predict(feature_list)
-        print("dominance")
         d = self.dominance_model.predict(feature_list)
-        print("some math")
         v = (v - 1) / 4
         a = (a - 1) / 4
         d = (d - 1) / 4
