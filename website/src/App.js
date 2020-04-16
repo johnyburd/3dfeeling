@@ -157,9 +157,9 @@ class App extends React.Component {
     this.setState({
       loading: true
     })
-    axios.post('https://api.3dfeeling.ga/analyze',
-      `text=${this.state.inputText}`
-    ).then(function (resp) {
+    axios.post('https://api.3dfeeling.ga/analyze', {
+      text: this.state.inputText
+    }).then(function (resp) {
       console.log(resp)
       //Assign gathered sentiment analysis values here
       retrievedData = resp.data

@@ -6,3 +6,5 @@ dill
 openpyscad
 python-magic
 matplotlib
+tensorflow
+keras

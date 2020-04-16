@@ -13,8 +13,8 @@ routes = web.RouteTableDef()
 
 @routes.post('/analyze')
 async def analyze(request: Request) -> Response:
-    data = await request.post()
-    result = await get_object(data['text'])
+    data = await request.json()
+    result = await get_object(str(data['text']))
     return web.json_response({
         'filename': result[0], 'points': result[1]})
 

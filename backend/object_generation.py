@@ -7,14 +7,17 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 from math import ceil
-import cProfile
 
 # libraries made by us for this project
-import nlp.SentimentClassifier as VAD
-from ShapeRepresentation.shape import generate_cylinder
+# import LSTMClassifiers
+import nlp.LSTMClassifiers as VAD
+from ShapeRepresentation.shape import polygon_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
-vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
+vad_classifier = VAD.LSTMClassifier()
+
+# above is outdated. should be:
+# vad_classifier = LSTMClassifiers.LSTMClassifier()
 
 
 def graphs(points, fig_id):
@@ -46,19 +49,24 @@ def generate(text):
     sents = sent_tokenize(text)
     if len(sents) == 1:
         sents.append(sents[0])
-        points = [vad_classifier.analyzeSentiment(s) for s in sents]
+        v, a, d = vad_classifier.predict(sents)
+        points = np.asmatrix([v.flatten(), a.flatten(), d.flatten()]).T
     elif len(sents) > 2000:
+        v, a, d = vad_classifier.predict(sents)
+        v, a, d = v.flatten(), a.flatten(), d.flatten()
         window = ceil(len(sents) / 2000)
         for i in range(0, len(sents) - window, window):
-            vals = np.array([vad_classifier.analyzeSentiment(sents[i + j]) for j in range(window)])
-            avg = np.sum(vals, axis=0) / window
+            avg = (np.average(v[i:i + window]),
+                   np.average(a[i:i + window]),
+                   np.average(d[i:i + window]))
             points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
-            points.append(vad_classifier.analyzeSentiment(sents[i]))
+            points.append([v[i], a[i], d[i]])
     else:
-        points = [vad_classifier.analyzeSentiment(s) for s in sents]
+        v, a, d = vad_classifier.predict(sents)
+        points = np.asmatrix([v.flatten(), a.flatten(), d.flatten()]).T
 
-    model = generate_cylinder(points, 250)
+    model = polygon_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
@@ -87,5 +95,5 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    paragraph = "This is a fun and happy sentence. " * 32000
-    cProfile.run("generate(paragraph)")
+    paragraph = "This is a fun sentence. This is a sad sentence. This is a neutral sentence. " * 1000
+    generate(paragraph)
