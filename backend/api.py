@@ -15,7 +15,7 @@ async def analyze(request: Request) -> Response:
     data = await request.json()
     result = await get_object(str(data['text']))
     return web.json_response({
-        'filename': result[0], 'points': result[1]})
+        'filename': result[0], 'points': result[1], 'color': result[2]})
 
 
 @routes.post('/analyze-file')
@@ -26,7 +26,7 @@ async def analyze_file(request: Request) -> Response:
         text = parse_from_bytes(f.read())
         result = await get_object(text)
         return web.json_response({
-            'filename': result[0], 'points': result[1], 'text': text}, status=200)
+            'filename': result[0], 'points': result[1], 'text': text, 'color': result[2]}, status=200)
     except ValueError as e:
         return web.json_response({'message': str(e)}, status=400)
 

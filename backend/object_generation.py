@@ -80,7 +80,17 @@ def generate(text):
 
     graphs(points, file_id)
 
-    return f"{file_id}.stl", points.tolist()
+    color_index = np.argsort(np.var(points, axis=1))[0]
+    r, g, b = int(points[color_index] * 255)
+    r, g, b = hex(r).lstrip("0x"), hex(g).lstrip("0x"), hex(b).lstrip("0x")
+    if len(r) != 2:
+        r = "0" + r
+    if len(g) != 2:
+        g = "0" + g
+    if len(b) != 2:
+        b = "0" + b
+
+    return f"{file_id}.stl", points.tolist(), "0x" + r + g + b
 
 
 async def get_object(text):
