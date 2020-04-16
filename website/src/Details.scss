@@ -30,3 +30,12 @@
 .Sub-header {
     color: $-secondary;
 }
+
+.subtle {
+    font-size: calc(2px + 1vmin);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: left;
+    line-height: 3vh;
+}

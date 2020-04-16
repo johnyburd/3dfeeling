@@ -23,12 +23,20 @@ class Details extends React.Component {
               <p>
                 Our project, 3D Feeling, creates a 3D representation
                 of emotions found within a corpus of text.
-                This is not definitive, as extracting sentiment
-                from a text corpus and modeling it in 3D space
-                is an abstract problem that has no right answer.
-                Our solution generates 3D models that have a
-                quantitative and explainable foundation while
+              </p>
+              <p>
+                The results you see from this project are not definitive,
+                nor do they claim to be perfect representations of emotion.
+                Having built this unique project, we certainly know that
+                extracting sentiment from a text corpus and modeling it in 3D space
+                is an abstract problem that has no right or wrong answer.
+                However, this is one interesting answer to a task
+                no one has attempted before to our knowledge.
+                This project generates 3D models that have a
+                quantitative and explainable foundation, while
                 also instilling complex, indescribable emotion in the viewer.
+              </p>
+              <p>
                 We achieve this task by using information gathered
                 from natural language processing data collection
                 methods, which inspire a 3D model that can be
@@ -49,27 +57,36 @@ class Details extends React.Component {
               <p>
                 Our logo is inspired by an emotion
                 classification model known as plutchick's
-                wheel. <u><a href="https://en.wikipedia.org/wiki/Robert_Plutchik">See where it comes from</a></u>.
+                wheel. <a href="https://en.wikipedia.org/wiki/Robert_Plutchik">Click
+                here to see where it comes from</a>.
               </p>
               <br />
 
               <h4 className='Sub-header'>VAD Explanation</h4>
               <p>
-                The website uses an NLP model that predicts
+                The website uses an NLP (Natural Language Processing) model that predicts
                 the Valence, Arousal, and Dominance (VAD) in each sentence
                 and uses those values to generate a unique 3D object that
-                represents those values. You can read more about this method of emotion
-                classification <u><a href="https://en.wikipedia.org/wiki/Emotion_classification">here</a></u>.
+                represents those values. If you're curious about what VAD values are,
+                You can read more about this method of emotion
+                classification <a href="https://en.wikipedia.org/wiki/Emotion_classification">here</a>.
               </p>
               <br />
 
               <h4 className='Sub-header'>Classifier Methodology</h4>
               <p>
-                The current NLP model uses
-                a <u><a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a></u> model
+                The previous NLP model used
+                a <a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a> model
                 to capture the text in each sentence. This bag of words
-                is then fed into a naïve bayes which will output the VAD
+                was then fed into a naïve bayes which output the VAD
                 levels of each sentence.
+              </p>
+              <p>
+                The current NLP model uses 25 dimensional Glove
+                embeddings trained on twitter data. The features
+                are classified using three <a href='https://en.wikipedia.org/wiki/Long_short-term_memory'>LSTM</a> (Long
+                Short-Term Memory) models that
+                predict the VAD values for each sentence.
               </p>
               <br />
 
@@ -79,7 +96,10 @@ class Details extends React.Component {
                 was to simply create a 3D histogram of the VAD level in
                 each sentence. This was used as a proof of concept model
                 generation technique and as a stepping stone to more
-                complicated techniques. The current object generation
+                complicated techniques.
+              </p>
+              <p>
+                The current object generation
                 algorithm that you can see now generates a terrain
                 where each ridge represents
                 the emotion in each sentence. A custom formula
@@ -93,11 +113,54 @@ class Details extends React.Component {
 
               <h4 className='Sub-header'>Stuff for Nerds</h4>
               <p>
-                Tools and technologies.
-                Check out <u><a href="https://github.com/johnyburd/3dfeeling">our repository</a></u>!
+                This website is built using React and styled with React bootstrap components.
+              </p>
+              <p>
+                Requests are made using axios to our server, which allows for multiple requests
+                by utilizing queueing and parallel processing.
+              </p>
+              <p>
+                Those parallel processes run our Natural Language Processing and Object Generation
+                algorithms, which you can read about above if you haven't already.
+              </p>
+              <p>
+                After those are finished, the VAD values generated from sentiment analysis and the STL
+                file are sent back, along with visuals and other goodies like a color recommendation
+                for the user to see on the results page.
               </p>
               <br />
-              <p>(Put rights and licensing here)</p>
+              <br />
+              <h4 className='Sub-header'>Licensing and our Code</h4>
+              <p>
+                Created with an MIT License. Please read this thoroughly if you
+                wish to modify/add to this project and make it your own in any way.
+              </p>
+              <p className='subtle'>
+                Permission is hereby granted, free of charge, to any person obtaining a copy
+                of this software and associated documentation files (the "Software"), to deal
+                in the Software without restriction, including without limitation the rights
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                copies of the Software, and to permit persons to whom the Software is
+                furnished to do so, subject to the following conditions:
+
+                The above copyright notice and this permission notice shall be included in all
+                copies or substantial portions of the Software.
+
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                SOFTWARE.
+              </p>
+              <p>
+                So if you're into programming like we are,
+                check out <u><a href="https://github.com/johnyburd/3dfeeling">our repository</a></u>!
+              </p>
+              <p>
+                Copyright © 2020 <strong>Team 3D Feeling <img alt="3D Feeling Logo" width="12px" height="12px" src={logo}></img> JIC 9328</strong>
+              </p>
             </div>
           </div>
         </div>
