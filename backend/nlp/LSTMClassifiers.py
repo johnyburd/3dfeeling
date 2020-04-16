@@ -52,7 +52,7 @@ def create_lstm(word_embedding_dim, max_length):
 
 
 def train_model(model, X, Y, epochs=30):
-    model.fit(X, Y, epochs=epochs, batch_size=1, verbose=2)
+    model.fit(X, Y, epochs=epochs, batch_size=1, verbose=0)
 
 
 def save_model(model, model_name):
