@@ -11,7 +11,7 @@ import useDarkMode from 'use-dark-mode';
 import Feelbar from './Feelbar'
 import history from './history'
 
-const ViewWithTheme = (name, shapeColor) => {
+const ViewWithTheme = (props) => {
   const { value } = useDarkMode()
 
   const [dimensions, setDimensions] = React.useState({
@@ -32,21 +32,21 @@ const ViewWithTheme = (name, shapeColor) => {
     }
   })
   console.log(value ? "#2d2d2d" : "#f6f8f9")
+  console.log('Color recommendation', props.color)
   return <STLViewer
-    url={ 'https://api.3dfeeling.ga/assets/' + name.name }
+    url={ 'https://api.3dfeeling.ga/assets/' + props.name }
     width={ dimensions.width / 2.3 }
     height={ dimensions.width / 2.6 }
     backgroundColor={ value ? "#2d2d2d" : "#f6f8f9" }
     sceneClassName={ value ? "#2d2d2d" : "#f6f8f9" }
     // modelColor='#e6584d'
-    modelColor={shapeColor}
+    modelColor={'' + props.color}
   />
 }
 
 class Results extends React.Component {
 
   componentDidMount() {
-    console.log('Results Mounted')
     console.log('Location', this.props.location)
   }
 
@@ -72,10 +72,10 @@ class Results extends React.Component {
                 <div className="left-side">
                   <ViewWithTheme
                     name={this.props.location.state.apiFileName}
-                    shapeColor={this.props.location.state.shapeColor}
+                    color={this.props.location.state.shapeColor}
                   />
                   <div>
-                    <p>Color recommendation: {this.props.location.state.shapeColor ? this.props.location.state.shapeColor : '#000000'}</p>
+                    <p>Color recommendation: {this.props.location.state.shapeColor}</p>
                     <Button
                       variant="success"
                       size='lg'

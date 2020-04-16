@@ -135,7 +135,7 @@ class App extends React.Component {
             arousal: averages[1],
             dominance: averages[2],
             apiFileName: retrievedData.filename,
-            shapeColor: retrievedData.color,
+            shapeColor: '#' + retrievedData.color.substring(2),
           }
         })
       }
@@ -177,7 +177,7 @@ class App extends React.Component {
             arousal: averages[1],
             dominance: averages[2],
             apiFileName: retrievedData.filename,
-            shapeColor: retrievedData.color,
+            shapeColor: '#' + retrievedData.color.substring(2),
           }
         })
       }
