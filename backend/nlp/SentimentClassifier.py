@@ -66,7 +66,7 @@ def categorizeSentimentcomplex(v, a):
 
 
 def naive_bayes_demo():
-    classifier = NaiveBayes.NBClassifier()
+    classifier = nlp.NaiveBayes.NBClassifier()
 
     testdata = "These are some sentences. I love writing sentences. Sometimes when I write sentences, I get sad. " \
                "I hope someday to write a sentence all on my own. Some people say that sentences are not real."
@@ -86,7 +86,7 @@ def lstm_demo():
     testdata = "These are some sentences. I love writing sentences. Sometimes when I write sentences, I get sad. " \
                "I hope someday to write a sentence all on my own. Some people say that sentences are not real."
 
-    classifier = LSTMClassifiers.LSTMClassifier()
+    classifier = nlp.LSTMClassifiers.LSTMClassifier()
 
     sentences = sent_tokenize(testdata)
     v, a, d = classifier.predict(sentences)
