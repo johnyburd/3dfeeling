@@ -14,6 +14,7 @@ import Loader from 'react-loader-spinner';
 
 import Feelbar from './Feelbar'
 import history from './history'
+
 import logo from './3dfeeling_logo.png'
 
 

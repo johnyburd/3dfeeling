@@ -12,6 +12,7 @@ import Feelbar from './Feelbar'
 import history from './history'
 
 const ViewWithTheme = (props) => {
+
   const { value } = useDarkMode()
 
   const [dimensions, setDimensions] = React.useState({
