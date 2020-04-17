@@ -42,7 +42,7 @@ class App extends React.Component {
 
   //Called whenever the component mounts before rendering. (Startup)
   componentDidMount() {
-    console.log('Component Mounted')
+    // console.log('Component Mounted')
   }
 
   //Responsible for updating state when contents of textbox change
@@ -135,7 +135,7 @@ class App extends React.Component {
             arousal: averages[1],
             dominance: averages[2],
             apiFileName: retrievedData.filename,
-            shapeColor: '#' + retrievedData.color.substring(2),
+            shapeColor: retrievedData.color,
           }
         })
       }
@@ -177,7 +177,7 @@ class App extends React.Component {
             arousal: averages[1],
             dominance: averages[2],
             apiFileName: retrievedData.filename,
-            shapeColor: '#' + retrievedData.color.substring(2),
+            shapeColor: retrievedData.color,
           }
         })
       }
