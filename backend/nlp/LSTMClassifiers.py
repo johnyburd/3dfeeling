@@ -13,6 +13,19 @@ from keras.layers import LSTM
 MAX_LENGTH = 50
 
 
+def file_contents(name):
+    with open(name, 'rb') as f:
+        return f.read()
+
+
+vModel = file_contents("./models/valence_lstm.json")
+vWeights = np.load("./models/valence_lstm_weights.npy", allow_pickle=True)
+aModel = file_contents("./models/arousal_lstm.json")
+aWeights = np.load("./models/arousal_lstm_weights.npy", allow_pickle=True)
+dModel = file_contents("./models/dominance_lstm.json")
+dWeights = np.load("./models/dominance_lstm_weights.npy", allow_pickle=True)
+
+
 def load_emobank(path='emobank.csv'):
     """
     loads the emobank file into pandas dataframes. default path is 'emobank.csv'
@@ -39,7 +52,7 @@ def create_lstm(word_embedding_dim, max_length):
 
 
 def train_model(model, X, Y, epochs=30):
-    model.fit(X, Y, epochs=epochs, batch_size=1, verbose=2)
+    model.fit(X, Y, epochs=epochs, batch_size=1, verbose=0)
 
 
 def save_model(model, model_name):
@@ -55,33 +68,28 @@ def save_model(model, model_name):
     with open(fn, "w") as json_file:
         json_file.write(model_json)
     fn = model_name + "_weights.hf"
-    model.save_weights(fn)
+    np.save(model_name + "weights.npy", model.get_weights())
 
 
-def load_model(model_name):
+def load_model(model, weights):
     """
     Load model from model_name.json and model_name.hf
     :param model_name:
     :return:
     """
-    fn = model_name + ".json"
-    json_file = open(fn, 'r')
-    loaded_model_json = json_file.read()
-    json_file.close()
-    loaded_model = model_from_json(loaded_model_json)
-    fn = model_name + "_weights.hf"
-    loaded_model.load_weights(fn)
+    loaded_model = model_from_json(model)
+    loaded_model.set_weights(weights)
     loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
     return loaded_model
 
 
 def load_classifiers():
     print("Loading valence classifier...")
-    valence_model = load_model("./models/valence_lstm")
+    valence_model = load_model(vModel, vWeights)
     print("Loading arousal classifier...")
-    arousal_model = load_model("./models/arousal_lstm")
+    arousal_model = load_model(aModel, aWeights)
     print("Loading dominance classifier...")
-    dominance_model = load_model("./models/dominance_lstm")
+    dominance_model = load_model(dModel, dWeights)
     print("done.")
     return valence_model, arousal_model, dominance_model
 
@@ -207,6 +215,9 @@ class LSTMClassifier:
         self.feature_embedder = wordvec.GloveFeatureEmbedder(wordvec_path)
         self.max_length = MAX_LENGTH
         self.valence_model, self.arousal_model, self.dominance_model = load_classifiers()
+        self.valence_model._make_predict_function()
+        self.arousal_model._make_predict_function()
+        self.dominance_model._make_predict_function()
 
     def predict(self, sentence_list):
         """
@@ -229,6 +240,6 @@ class LSTMClassifier:
 
 
 if __name__ == "__main__":
-    create_and_save()
+    # create_and_save()
     load_and_test()
     mem_test()

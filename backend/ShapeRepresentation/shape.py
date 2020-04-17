@@ -51,6 +51,7 @@ def polygon_points(num_corners, num_points):
 def polygon_cylinder(vads, num_points):
     vads = np.array(vads)
     polygons = []
+    length = int(np.log(vads.shape[0]) * 10)
     if vads.shape[0] > 9:
         for i in range(vads.shape[0] // 10):
             arg = np.argmax(np.square(vads[i * 10:i * 10 + 10, 2] - 0.5))
@@ -66,7 +67,7 @@ def polygon_cylinder(vads, num_points):
     theta_values = np.arange(0, 2 * np.pi, 2 * np.pi / num_points)
     points_3d = []
     faces = []
-    for i, x in enumerate(np.arange(0, 25, 25 / len(vads))):
+    for i, x in enumerate(np.arange(0, length, length / len(vads))):
         poly = min(len(polygons) - 1, i // 10)
         for j, th in enumerate(theta_values):
             r = 0.3 * circ_function_r(vads[i], th)
