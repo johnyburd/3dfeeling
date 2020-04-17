@@ -7,14 +7,17 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 from math import ceil
-import cProfile
 
 # libraries made by us for this project
-import nlp.SentimentClassifier as VAD
-from ShapeRepresentation.shape import generate_cylinder
+# import LSTMClassifiers
+# import nlp.LSTMClassifiers as VAD
+from ShapeRepresentation.shape import polygon_cylinder
 
 # sentiment classifier with 3 dimensions (Valence, Arousal, Dominance)
-vad_classifier = VAD.VADClassifier('nlp/emobank.csv')
+# vad_classifier = VAD.LSTMClassifier()
+
+# above is outdated. should be:
+from nlp.LSTMClassifiers import LSTMClassifier
 
 
 def graphs(points, fig_id):
@@ -42,23 +45,30 @@ def generate(text):
     This function will fail and error out if an empty string is passed to it. Make sure there
     is at least one sentence in the string before calling this function.
     """
+    vad_classifier = LSTMClassifier()
     points = []
     sents = sent_tokenize(text)
     if len(sents) == 1:
         sents.append(sents[0])
-        points = [vad_classifier.analyzeSentiment(s) for s in sents]
-    elif len(sents) > 2000:
-        window = ceil(len(sents) / 2000)
+        v, a, d = vad_classifier.predict(sents)
+        points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
+    elif len(sents) > 1000:
+        v, a, d = vad_classifier.predict(sents)
+        v, a, d = v.flatten(), a.flatten(), d.flatten()
+        window = ceil(len(sents) / 1000)
         for i in range(0, len(sents) - window, window):
-            vals = np.array([vad_classifier.analyzeSentiment(sents[i + j]) for j in range(window)])
-            avg = np.sum(vals, axis=0) / window
+            avg = (np.average(v[i:i + window]),
+                   np.average(a[i:i + window]),
+                   np.average(d[i:i + window]))
             points.append([avg[0], avg[1], avg[2]])
         for i in range(len(sents) - window, len(sents)):
-            points.append(vad_classifier.analyzeSentiment(sents[i]))
+            points.append([v[i], a[i], d[i]])
+        points = np.array(points)
     else:
-        points = [vad_classifier.analyzeSentiment(s) for s in sents]
+        v, a, d = vad_classifier.predict(sents)
+        points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
 
-    model = generate_cylinder(points, 250)
+    model = polygon_cylinder(points, 250)
 
     file_id = str(time.time() * 1000)[0:13]
     filename = "../assets/" + file_id
@@ -71,14 +81,25 @@ def generate(text):
 
     graphs(points, file_id)
 
-    return f"{file_id}.stl", points
+    color_index = np.argsort(np.var(points, axis=1))[0]
+    print("Thing: ", points[color_index])
+    r, g, b = points[color_index] * 255
+    r, g, b = hex(int(r)).lstrip("0x"), hex(int(g)).lstrip("0x"), hex(int(b)).lstrip("0x")
+    if len(r) != 2:
+        r = "0" + r
+    if len(g) != 2:
+        g = "0" + g
+    if len(b) != 2:
+        b = "0" + b
+
+    return f"{file_id}.stl", points.tolist(), "0x" + r + g + b
 
 
 async def get_object(text):
     """
     Runs the above generate method in a separate thread and awaits the result.
     """
-    loop = asyncio.get_running_loop()
+    loop = asyncio.get_event_loop()
     result = ""
 
     with concurrent.futures.ProcessPoolExecutor() as pool:
@@ -87,5 +108,5 @@ async def get_object(text):
     return result
 
 if __name__ == "__main__":
-    paragraph = "This is a fun and happy sentence. " * 32000
-    cProfile.run("generate(paragraph)")
+    paragraph = "A happy sentence; but maybe not. Does it break on semicolons? Something a little longer. " * 5000
+    print(generate(paragraph))

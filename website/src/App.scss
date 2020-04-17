@@ -61,13 +61,20 @@ $app-content-light-fg: $-dark;
 }
 
 
-p, strong {
+
+p {
   font-size: calc(5px + 1.9vmin);
   font-family: $font-family-base;
 
   @include dark-fg;
   @include light-fg;
 
+}
+
+strong {
+  font-size: calc(5px + 1.9vmin);
+  font-family: $font-family-base;
+  color: $-secondary;
 }
 
 input {

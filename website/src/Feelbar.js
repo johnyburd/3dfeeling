@@ -1,8 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import './Feelbar.scss'
 
 import { Navbar, Nav } from 'react-bootstrap';
-import logo from './logo.svg'
+import logo from './3dfeeling_logo.png'
 
 import DarkModeToggle from './Dark';
 
@@ -10,22 +11,21 @@ class Feelbar extends React.Component {
 
   render () {
       return (
-        <div>
-          <Navbar>
+          <Navbar className="Feelbar" sticky="top" >
             <Navbar.Brand href="/">
-              <img alt="" src={logo} width="32" height="32" className="d-inline-block align-top" />{' '}
+              <img alt="3D Feeling Logo" src={logo} width="30" height="30" className="d-inline-block align-top" />{' '}
               3D Feeling
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
+              <Nav className="justify-content-end">
+                <div className="nav-item">
+                  <Nav.Link href="/">Home</Nav.Link>
+                </div>
                 <Nav.Link href="/details">Details</Nav.Link>
-                <DarkModeToggle/>
+                <DarkModeToggle />
               </Nav>
-            </Navbar.Collapse> 
+            </Navbar.Collapse>
           </Navbar>
-        </div>
       )
     }
 }
