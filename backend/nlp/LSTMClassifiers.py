@@ -5,11 +5,6 @@ from keras.models import Sequential
 from keras.models import model_from_json
 from keras.layers import Dense
 from keras.layers import LSTM
-import keras.backend as K
-import tensorflow as tf
-
-
-K.clear_session()
 
 """
 # length of lstm sequence/ number of word parts for classification.
@@ -51,14 +46,13 @@ def load_emobank(path='emobank.csv'):
 def create_lstm(word_embedding_dim, max_length):
     model = Sequential()
     model.add(LSTM(max_length, input_shape=(max_length, word_embedding_dim), return_sequences=False))
-    model.add(Dense(25))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
     return model
 
 
 def train_model(model, X, Y, epochs=30):
-    model.fit(X, Y, epochs=epochs, batch_size=1, verbose=2)
+    model.fit(X, Y, epochs=epochs, batch_size=1, verbose=0)
 
 
 def save_model(model, model_name):
@@ -74,7 +68,7 @@ def save_model(model, model_name):
     with open(fn, "w") as json_file:
         json_file.write(model_json)
     fn = model_name + "_weights.hf"
-    np.save(model_name + "_weights.npy", model.get_weights())
+    np.save(model_name + "weights.npy", model.get_weights())
 
 
 def load_model(model, weights):
@@ -117,7 +111,7 @@ def create_and_save():
     #                   train  models                         #
     ###########################################################
 
-    epochs = 50
+    epochs = 5
 
     print("Training valence model...")
     valence_model = create_lstm(word_embedding_dim, MAX_LENGTH)
@@ -221,15 +215,9 @@ class LSTMClassifier:
         self.feature_embedder = wordvec.GloveFeatureEmbedder(wordvec_path)
         self.max_length = MAX_LENGTH
         self.valence_model, self.arousal_model, self.dominance_model = load_classifiers()
-        self.valence_model.predict(
-            self.feature_embedder.embed_features(["Warmup sentence"], self.max_length))
-        self.arousal_model.predict(
-            self.feature_embedder.embed_features(["Warmup sentence"], self.max_length))
-        self.dominance_model.predict(
-            self.feature_embedder.embed_features(["Warmup sentence"], self.max_length))
-        self.session = K.get_session()
-        self.graph = tf.get_default_graph()
-        self.graph.finalize()
+        self.valence_model._make_predict_function()
+        self.arousal_model._make_predict_function()
+        self.dominance_model._make_predict_function()
 
     def predict(self, sentence_list):
         """
@@ -242,11 +230,9 @@ class LSTMClassifier:
         :return: tuple containing list of valence values, arousal values, and dominance values
         """
         feature_list = self.feature_embedder.embed_features(sentence_list, self.max_length)
-        with self.session.as_default():
-            with self.graph.as_default():
-                v = self.valence_model.predict(feature_list)
-                a = self.arousal_model.predict(feature_list)
-                d = self.dominance_model.predict(feature_list)
+        v = self.valence_model.predict(feature_list)
+        a = self.arousal_model.predict(feature_list)
+        d = self.dominance_model.predict(feature_list)
         v = (v - 1) / 4
         a = (a - 1) / 4
         d = (d - 1) / 4
