@@ -79,7 +79,7 @@ strong {
 input {
   font-size: calc(10px + 1.9vmin);
   font-family: $font-family-base;
-  
+
   @include dark-fg;
   @include light-fg;
 }
