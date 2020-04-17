@@ -213,14 +213,17 @@ class App extends React.Component {
     // If they are, just tell them to use website
     if ((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1)) {
       return (
-        <div className="App">
+        <div>
           <Feelbar />
-          <img alt="3D Feeling Logo" src={logo} width="72" height="72" className="d-inline-block align-top" />{' '}
-          <h1>Sorry about this...</h1>
-          <p>This website was not built with intent to function on mobile.</p>
-          <p>Please visit it on a desktop or laptop computer.</p>
-          <p>You can still check out our <a href='/details'>details page</a>!</p>
+          <div className="App">
+            <img alt="3D Feeling Logo" src={logo} width="72" height="72" className="d-inline-block align-top" />{' '}
+            <h1>Sorry about this...</h1>
+            <p>This website was not built with intent to function on mobile.</p>
+            <p>Please visit it on a desktop or laptop computer.</p>
+            <p>You can still check out our <a href='/details'>details page</a>!</p>
+          </div>
         </div>
+
       )
     } else {
       // Else just proceed normally
