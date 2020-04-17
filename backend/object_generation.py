@@ -7,7 +7,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 from math import ceil
-from multiprocessing import Process, Queue
 
 # libraries made by us for this project
 # import LSTMClassifiers
@@ -19,6 +18,7 @@ from ShapeRepresentation.shape import polygon_cylinder
 
 # above is outdated. should be:
 from nlp.LSTMClassifiers import LSTMClassifier
+vad_classifier = LSTMClassifier()
 
 
 def graphs(points, fig_id):
@@ -37,7 +37,7 @@ def graphs(points, fig_id):
                 edgecolor="#F6F7F9", bbox_inches='tight')
 
 
-def generate(in_queue, out_queue):
+def generate(text):
     """
     Takes a string of text and transforms it into a physical 3D printable model.
 
@@ -46,69 +46,61 @@ def generate(in_queue, out_queue):
     This function will fail and error out if an empty string is passed to it. Make sure there
     is at least one sentence in the string before calling this function.
     """
-    vad_classifier = LSTMClassifier()
-    while True:
-        points = []
-        text = in_queue.get(block=True, timeout=None)
-        sents = sent_tokenize(text)
-        if len(sents) == 1:
-            sents.append(sents[0])
-            v, a, d = vad_classifier.predict(sents)
-            points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
-        elif len(sents) > 1000:
-            v, a, d = vad_classifier.predict(sents)
-            step = ceil(len(sents) / 1000)
-            for i in range(0, len(sents), step):
-                points.append([v[i], a[i], d[i]])
-            points = np.array(points)
-        else:
-            v, a, d = vad_classifier.predict(sents)
-            points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
+    points = []
+    sents = sent_tokenize(text)
+    if len(sents) == 1:
+        sents.append(sents[0])
+        v, a, d = vad_classifier.predict(sents)
+        points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
+    elif len(sents) > 1000:
+        v, a, d = vad_classifier.predict(sents)
+        step = ceil(len(sents) / 1000)
+        for i in range(0, len(sents), step):
+            points.append([v[i], a[i], d[i]])
+        points = np.array(points)
+    else:
+        v, a, d = vad_classifier.predict(sents)
+        points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
 
-        model = polygon_cylinder(points, 250)
+    model = polygon_cylinder(points, 250)
 
-        file_id = str(time.time() * 1000)[0:13]
-        filename = "../assets/" + file_id
+    file_id = str(time.time() * 1000)[0:13]
+    filename = "../assets/" + file_id
 
-        model.write(filename + ".scad")
-        try:
-            subprocess.run(["openscad", "-o", f"{filename}.stl", f"{filename}.scad"])
-        except FileNotFoundError:
-            print("Please install openscad! STL not generated!")
+    model.write(filename + ".scad")
+    try:
+        subprocess.run(["openscad", "-o", f"{filename}.stl", f"{filename}.scad"])
+    except FileNotFoundError:
+        print("Please install openscad! STL not generated!")
 
-        graphs(points, file_id)
+    graphs(points, file_id)
 
-        arg = np.argmax(np.square(points - 0.5), axis=0)
-        r = points[arg[0]][0] * 255
-        g = points[arg[1]][1] * 255
-        b = points[arg[2]][2] * 255
-        r, g, b = hex(int(r)).lstrip("0x"), hex(int(g)).lstrip("0x"), hex(int(b)).lstrip("0x")
-        if len(r) != 2:
-            r = "0" + r
-        if len(g) != 2:
-            g = "0" + g
-        if len(b) != 2:
-            b = "0" + b
+    arg = np.argmax(np.square(points - 0.5), axis=0)
+    r = points[arg[0]][0] * 255
+    g = points[arg[1]][1] * 255
+    b = points[arg[2]][2] * 255
+    r, g, b = hex(int(r)).lstrip("0x"), hex(int(g)).lstrip("0x"), hex(int(b)).lstrip("0x")
+    if len(r) != 2:
+        r = "0" + r
+    if len(g) != 2:
+        g = "0" + g
+    if len(b) != 2:
+        b = "0" + b
 
-        out_queue.put_nowait((f"{file_id}.stl", points.tolist(), "#" + r + g + b))
-    # return f"{file_id}.stl", points.tolist(), "#" + r + g + b
-
-
-create_queue = Queue(maxsize=5)
-value_queue = Queue(maxsize=5)
-p = Process(target=generate, args=(create_queue, value_queue))
-p.start()
+    return f"{file_id}.stl", points.tolist(), "#" + r + g + b
 
 
 async def get_object(text):
     """
     Runs the above generate method in a separate thread and awaits the result.
     """
-    create_queue.put_nowait(text)
-    result = value_queue.get(block=True, timeout=None)
+    loop = asyncio.get_event_loop()
+    result = ""
+
+    with concurrent.futures.ProcessPoolExecutor() as pool:
+        result = await loop.run_in_executor(pool, generate, text)
 
     return result
-
 
 if __name__ == "__main__":
     paragraph = """
