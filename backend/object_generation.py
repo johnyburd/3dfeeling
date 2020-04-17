@@ -57,6 +57,7 @@ def generate(in_queue, out_queue):
             points = np.array([v.flatten(), a.flatten(), d.flatten()]).T
         elif len(sents) > 1000:
             v, a, d = vad_classifier.predict(sents)
+            v, a, d = v.flatten(), a.flatten(), d.flatten()
             step = ceil(len(sents) / 1000)
             for i in range(0, len(sents), step):
                 points.append([v[i], a[i], d[i]])
@@ -117,5 +118,6 @@ I’m still feeling fine, maybe I’m not bleeding enough.  I just don’t see h
 Part of what I wanted in desiring to die in the company of those I loved was to reassure them and perhaps give them courage to face death well.  That was something I really wanted to give to them and I’m sorry I can only do it with these words.  I was driven almost mad by all of the things many other people said about paraplegia, suicide, and what was still possible in my condition.  I hope everyone understands how all of that affected the tone of what I wrote.  I was so frustrated with all of it, I thought it was so insane.  But I only wanted to break free of it all and say what I felt.  I felt like it stifled me so horribly.
 I cut some more and the blood is flowing well again.  I’m surprised how long it is taking me to even feel anything.  I thought I was dizzy but I’m not sure I am now.  It’s 8:51 pm.  I thought I would get cold but I’m not cold either, I’m actually hot but that’s probably the two sweaters.  Starting to feel a little badly.  Sweating, a little light-headed.
 I’m going to go now, done writing.  Goodbye everyone.
-"""
-    print(generate(paragraph))
+""" * 1000
+    create_queue.put_nowait(paragraph)
+    print(value_queue.get(block=True, timeout=None))
