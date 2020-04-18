@@ -1,0 +1,16 @@
+@import 'scss/colors';
+@import 'scss/media';
+
+.Feelbar {
+    background-color: $-secondary;
+}
+
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+    background-color: #ee4400; /* add background-color to active links */
+}.navbar-custom {
+    background-color: #ff5500;
+    color: #ffffff;
+
+}
