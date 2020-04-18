@@ -198,11 +198,6 @@ class App extends React.Component {
    * App renders different things based on variables
    *  that are changed when certain things happen
    *
-   * EDIT: If user attempts to access site on mobile,
-   * there is now another conditional that will render
-   * an intermediary page telling them to use a computer.
-   * They still have the option of visiting the details page.
-   *
    * 1st: Input page (loading and loaded are false)
    * 2nd: Loading page (loading is true, loaded is still false)
    * 3rd: Results page (loading is false and loaded is true)
