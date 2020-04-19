@@ -21,7 +21,9 @@ class Feelbar extends React.Component {
                 <div className="nav-item">
                   <Nav.Link href="/">Home</Nav.Link>
                 </div>
-                <Nav.Link href="/details">Details</Nav.Link>
+                <div className="nav-item">
+                  <Nav.Link href="/details">Details</Nav.Link>
+                </div>
                 <DarkModeToggle />
               </Nav>
             </Navbar.Collapse>

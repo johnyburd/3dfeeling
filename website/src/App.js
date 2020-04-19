@@ -15,8 +15,6 @@ import Loader from 'react-loader-spinner';
 import Feelbar from './Feelbar'
 import history from './history'
 
-import logo from './3dfeeling_logo.png'
-
 
 class App extends React.Component {
   constructor(props) {
@@ -200,111 +198,90 @@ class App extends React.Component {
    * App renders different things based on variables
    *  that are changed when certain things happen
    *
-   * EDIT: If user attempts to access site on mobile,
-   * there is now another conditional that will render
-   * an intermediary page telling them to use a computer.
-   * They still have the option of visiting the details page.
-   *
    * 1st: Input page (loading and loaded are false)
    * 2nd: Loading page (loading is true, loaded is still false)
    * 3rd: Results page (loading is false and loaded is true)
   **/
   render () {
-    // Check if user is accessing on mobile device
-    // If they are, just tell them to use website
-    if ((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1)) {
+    if (!this.state.loading) {
       return (
-        <div className="App">
+        <div>
           <Feelbar />
-          <img alt="3D Feeling Logo" src={logo} width="72" height="72" className="d-inline-block align-top" />{' '}
-          <h1>Sorry about this...</h1>
-          <p>This website was not built with intent to function on mobile.</p>
-          <p>Please visit it on a desktop or laptop computer.</p>
-          <p>You can still check out our <a href='/details'>details page</a>!</p>
+          <div className="App">
+            <div>
+              <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
+              <Form.Label className="mb-5">
+                <p><strong>3D Feeling</strong> is a project designed to help you model emotions.</p>
+                <p>The app will process text and produce a 3D representation of the emotions from the text.</p>
+                <br/>
+                <strong>Enter text in the input box or upload a file to get started.</strong>
+                <br/>
+              </Form.Label>
+                <div className="container-c">
+                  <div className="item Textarea">
+                    <Form.Group controlId="inputTextArea">
+                      <Form.Label>Enter a text sample.</Form.Label>
+                      <Form.Control
+                        disabled={this.state.inputFile}
+                        onChange={() => this.handleText(this.textInput.value)}
+                        as="textarea"
+                        size="lg"
+                        rows="6"
+                        ref={text => {this.textInput = text}}
+                      />
+                      <br/>
+                    </Form.Group>
+                  </div>
+                  <div className="divider"></div>
+                  <div className="item Fileupload">
+                    <Form.Group controlId="inputFileArea">
+                      <Form.Label>Or choose a file to upload.</Form.Label>
+                      <div className="custom-file">
+                        <Form.Control
+                          type='file'
+                          //controlId="customFile"
+                          className="custom-file-input"
+                          onChange={(event) => this.handleFile(event.target.files[0])}
+                          disabled={this.state.inputText}
+                        />
+                        <Form.Label className="custom-file-label Filelabel">
+                          {this.state.inputFile ? this.fileName : "Choose File..."}
+                        </Form.Label>
+                      </div>
+                      <br/>
+                    </Form.Group>
+                  </div>
+                </div>
+                <div className="nice-buttons">
+                  <Button variant="primary" className="nice-button" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
+                    Submit
+                  </Button>
+                  <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState}>
+                    Clear
+                  </Button>
+                  <ToastContainer />
+                </div>
+              </Form>
+            </div>
+          </div>
         </div>
       )
-    } else {
-      // Else just proceed normally
-      if (!this.state.loading) {
-        return (
-          <div>
-            <Feelbar />
-            <div className="App">
-              <div>
-                <Form onSubmit={this.state.inputFile ? this.sendFileToAPI : this.sendTextToAPI}>
-                <Form.Label className="mb-5">
-                  <p><strong>3D Feeling</strong> is a project designed to help you model emotions.</p>
-                  <p>The app will process text and produce a 3D representation of the emotions from the text.</p>
-                  <br/>
-                  <strong>Enter text in the input box or upload a file to get started.</strong>
-                  <br/>
-                </Form.Label>
-                  <div className="container-c">
-                    <div className="item Textarea">
-                      <Form.Group controlId="inputTextArea">
-                        <Form.Label>Enter a text sample.</Form.Label>
-                        <Form.Control
-                          disabled={this.state.inputFile}
-                          onChange={() => this.handleText(this.textInput.value)}
-                          as="textarea"
-                          size="lg"
-                          rows="6"
-                          ref={text => {this.textInput = text}}
-                        />
-                        <br/>
-                      </Form.Group>
-                    </div>
-                    <div className="divider"></div>
-                    <div className="item Fileupload">
-                      <Form.Group controlId="inputFileArea">
-                        <Form.Label>Or choose a file to upload.</Form.Label>
-                        <div className="custom-file">
-                          <Form.Control
-                            type='file'
-                            //controlId="customFile"
-                            className="custom-file-input"
-                            onChange={(event) => this.handleFile(event.target.files[0])}
-                            disabled={this.state.inputText}
-                          />
-                          <Form.Label className="custom-file-label Filelabel">
-                            {this.state.inputFile ? this.fileName : "Choose File..."}
-                          </Form.Label>
-                        </div>
-                        <br/>
-                      </Form.Group>
-                    </div>
-                  </div>
-                  <div className="nice-buttons">
-                    <Button variant="primary" className="nice-button" type="submit" size='lg' disabled={!(this.state.inputText || this.state.inputFile)}>
-                      Submit
-                    </Button>
-                    <Button variant="danger" className="nice-button" type="reset" size='lg' onClick={this.resetState}>
-                      Clear
-                    </Button>
-                    <ToastContainer />
-                  </div>
-                </Form>
-              </div>
-            </div>
-          </div>
-        )
 
-      } else {
-        return (
-          <div className="Submit">
-            <header className="Submit-header">
-              Thank you for submitting!
-            <div style={{ width: 400 }}>
-              <Loader type="Bars" color="#73a3ba" height={120} width={120} />
-              <p>Sit tight. Your text is being processed!</p>
-              <Button variant="danger" size="lg" onClick={this.cancelInput}>
-                Cancel
-              </Button>
-            </div>
-            </header>
+    } else {
+      return (
+        <div className="Submit">
+          <header className="Submit-header">
+            Thank you for submitting!
+          <div style={{ width: 400 }}>
+            <Loader type="Bars" color="#73a3ba" height={120} width={120} />
+            <p>Sit tight. Your text is being processed!</p>
+            <Button variant="danger" size="lg" onClick={this.cancelInput}>
+              Cancel
+            </Button>
           </div>
-        );
-      }
+          </header>
+        </div>
+      );
     }
   }
 }
