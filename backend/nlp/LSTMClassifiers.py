@@ -248,8 +248,11 @@ class LSTMClassifier:
                 a = self.arousal_model.predict(feature_list)
                 d = self.dominance_model.predict(feature_list)
         v = (v - 1) / 4
+        v = np.clip(2 * (v - 0.3), 0, 1)
         a = (a - 1) / 4
+        a = np.clip(2 * (a - 0.3), 0, 1)
         d = (d - 1) / 4
+        d = np.clip(2 * (d - 0.255), 0, 1)
         return (v, a, d)
 
 
