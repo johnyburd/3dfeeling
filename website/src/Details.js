@@ -79,8 +79,8 @@ class Details extends React.Component {
                 was to simply create a 3D histogram of the VAD level in 
                 each sentence. This was used as a proof of concept model 
                 generation technique and as a stepping stone to more 
-                complicated techniques. The current object generation 
-                algorithm that you can see now generates a terrain 
+                complicated techniques. This was iterated upon to an 
+                algorithm that generates a terrain 
                 where each ridge represents 
                 the emotion in each sentence. A custom formula 
                 takes into account the VAD variables to generate a curve 
@@ -88,6 +88,18 @@ class Details extends React.Component {
                 are then sampled from this curve which are put into the 
                 object. These are then all connected together to generate 
                 a terrain that represents the entirety of emotion in the text.
+                The current object generation is similar to the previous one
+                but the VAD formula is wrapped around a polygon and the 
+                polygons are stacked cylindrically. For every group of 10
+                sentences, the dominance value furthest from 0.5 is taken
+                and used to generate a regular polygon with some number of 
+                sides. The higher the dominance the closer the polygon will 
+                be to a triangle and the lower it is the closer it will be to 
+                an octagon. The values from the VAD function are added to the 
+                points on the polygon to give it a rougher edge reresenting 
+                the full spectrum of valence, arousal, and dominance from each
+                sentence. All of these polygons are then stacked together and 
+                connected up to create the final shape.
               </p>
               <br />
 

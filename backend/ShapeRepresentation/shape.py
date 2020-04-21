@@ -62,7 +62,7 @@ def polygon_cylinder(vads, num_points):
     else:
         arg = np.argmax(abs(vads[:, 2] - 0.5))
         val = vads[arg, 2]
-        sides = round(15 - (val * 12))
+        sides = round(8 - (val * 5))
         polygons.append(sides)
 
     theta_values = np.arange(0, 2 * np.pi, 2 * np.pi / num_points)

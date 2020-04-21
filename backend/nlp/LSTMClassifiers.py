@@ -23,14 +23,6 @@ def file_contents(name):
         return f.read()
 
 
-vModel = file_contents("./models/valence_lstm.json")
-vWeights = np.load("./models/valence_lstm_weights.npy", allow_pickle=True)
-aModel = file_contents("./models/arousal_lstm.json")
-aWeights = np.load("./models/arousal_lstm_weights.npy", allow_pickle=True)
-dModel = file_contents("./models/dominance_lstm.json")
-dWeights = np.load("./models/dominance_lstm_weights.npy", allow_pickle=True)
-
-
 def load_emobank(path='emobank.csv'):
     """
     loads the emobank file into pandas dataframes. default path is 'emobank.csv'
@@ -90,6 +82,12 @@ def load_model(model, weights):
 
 
 def load_classifiers():
+    vModel = file_contents("./models/valence_lstm.json")
+    vWeights = np.load("./models/valence_lstm_weights.npy", allow_pickle=True)
+    aModel = file_contents("./models/arousal_lstm.json")
+    aWeights = np.load("./models/arousal_lstm_weights.npy", allow_pickle=True)
+    dModel = file_contents("./models/dominance_lstm.json")
+    dWeights = np.load("./models/dominance_lstm_weights.npy", allow_pickle=True)
     print("Loading valence classifier...")
     valence_model = load_model(vModel, vWeights)
     print("Loading arousal classifier...")
