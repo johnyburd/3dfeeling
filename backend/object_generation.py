@@ -110,7 +110,6 @@ async def get_object(text):
 
     return result
 
-
 if __name__ == "__main__":
     paragraph = """
 On the right side of our cranium

@@ -11,7 +11,8 @@ import useDarkMode from 'use-dark-mode';
 import Feelbar from './Feelbar'
 import history from './history'
 
-const ViewWithTheme = (name) => {
+const ViewWithTheme = (props) => {
+
   const { value } = useDarkMode()
 
   const [dimensions, setDimensions] = React.useState({
@@ -32,20 +33,21 @@ const ViewWithTheme = (name) => {
     }
   })
   console.log(value ? "#2d2d2d" : "#f6f8f9")
+  console.log('Color recommendation', props.color)
   return <STLViewer
-    url={ 'https://api.3dfeeling.ga/assets/' + name.name }
+    url={ 'https://api.3dfeeling.ga/assets/' + props.name }
     width={ dimensions.width / 2.3 }
     height={ dimensions.width / 2.6 }
     backgroundColor={ value ? "#2d2d2d" : "#f6f8f9" }
     sceneClassName={ value ? "#2d2d2d" : "#f6f8f9" }
-    modelColor='#e6584d'
+    // modelColor='#e6584d'
+    modelColor={'' + props.color}
   />
 }
 
 class Results extends React.Component {
 
   componentDidMount() {
-    console.log('Results Mounted')
     console.log('Location', this.props.location)
   }
 
@@ -71,15 +73,17 @@ class Results extends React.Component {
                 <div className="left-side">
                   <ViewWithTheme
                     name={this.props.location.state.apiFileName}
+                    color={this.props.location.state.shapeColor}
                   />
                   <div>
+                    <p>Color recommendation: {this.props.location.state.shapeColor}</p>
                     <Button
                       variant="success"
                       size='lg'
                       onClick={() => { window.location.href = "https://api.3dfeeling.ga/assets/" + this.props.location.state.apiFileName}}
                     >Download</Button>
-                    <Button 
-                      variant="primary" 
+                    <Button
+                      variant="primary"
                       size='lg'
                       onClick={() => history.push({pathname: '/details'})}
                     >Details</Button>

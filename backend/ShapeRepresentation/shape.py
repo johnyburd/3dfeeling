@@ -68,7 +68,7 @@ def polygon_cylinder(vads, num_points):
     theta_values = np.arange(0, 2 * np.pi, 2 * np.pi / num_points)
     points_3d = []
     faces = []
-    for i, x in enumerate(np.arange(0, length, length / vads.shape[0])[0:vads.shape[0]]):
+    for i, x in enumerate(np.arange(0, length, length / len(vads))):
         poly = min(len(polygons) - 1, i // 10)
         interpolate = modf(i / 10)[0]
         sides = round((polygons[poly] * (1 - interpolate))

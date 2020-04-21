@@ -1,5 +1,5 @@
-import nlp.NaiveBayes
-import nlp.LSTMClassifiers
+import NaiveBayes
+import LSTMClassifiers
 import math
 from nltk.tokenize import sent_tokenize
 
