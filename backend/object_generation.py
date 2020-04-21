@@ -1,6 +1,5 @@
 # python library stuff (not made by us)
-import asyncio
-import concurrent.futures
+# import asyncio
 from nltk import sent_tokenize
 import subprocess
 import time
