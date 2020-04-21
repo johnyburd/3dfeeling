@@ -89,7 +89,6 @@ class Details extends React.Component {
                 predict the VAD values for each sentence.
               </p>
               <br />
-
               <h4 className='Sub-header'>Object Generation</h4>
               <p>
                 The first method of object generation
@@ -99,8 +98,8 @@ class Details extends React.Component {
                 complicated techniques.
               </p>
               <p>
-                The current object generation
-                algorithm that you can see now generates a terrain
+                The next object generation
+                algorithm generated a terrain
                 where each ridge represents
                 the emotion in each sentence. A custom formula
                 takes into account the VAD variables to generate a curve
@@ -108,6 +107,20 @@ class Details extends React.Component {
                 are then sampled from this curve which are put into the
                 object. These are then all connected together to generate
                 a terrain that represents the entirety of emotion in the text.
+                </p>
+                <p>
+                The current object generation is similar to the previous one
+                but the VAD formula is wrapped around a polygon and the 
+                polygons are stacked cylindrically. For every group of 10
+                sentences, the dominance value furthest from 0.5 is taken
+                and used to generate a regular polygon with some number of 
+                sides. The higher the dominance the closer the polygon will 
+                be to a triangle and the lower it is the closer it will be to 
+                an octagon. The values from the VAD function are added to the 
+                points on the polygon to give it a rougher edge reresenting 
+                the full spectrum of valence, arousal, and dominance from each
+                sentence. All of these polygons are then stacked together and 
+                connected up to create the final shape.
               </p>
               <br />
 

@@ -1,6 +1,7 @@
 import openpyscad as ops
 from functools import reduce
 import numpy as np
+from math import modf
 
 MAX_TIME = 20
 MAX_VALUES = 0.75 * 20
@@ -54,24 +55,28 @@ def polygon_cylinder(vads, num_points):
     length = int(np.log(vads.shape[0]) * 10)
     if vads.shape[0] > 9:
         for i in range(vads.shape[0] // 10):
-            arg = np.argmax(np.square(vads[i * 10:i * 10 + 10, 2] - 0.5))
+            arg = np.argmax(abs(vads[i * 10:i * 10 + 10, 2] - 0.5))
             val = vads[i * 10 + arg, 2]
-            sides = round(15 - (val * 12))
-            polygons.append(polygon_points(sides, num_points))
+            sides = round(8 - (val * 5))
+            polygons.append(sides)
     else:
-        arg = np.argmax(np.square(vads[:, 2] - 0.5))
+        arg = np.argmax(abs(vads[:, 2] - 0.5))
         val = vads[arg, 2]
-        sides = round(15 - (val * 12))
-        polygons.append(polygon_points(sides, num_points))
+        sides = round(8 - (val * 5))
+        polygons.append(sides)
 
     theta_values = np.arange(0, 2 * np.pi, 2 * np.pi / num_points)
     points_3d = []
     faces = []
     for i, x in enumerate(np.arange(0, length, length / len(vads))):
         poly = min(len(polygons) - 1, i // 10)
+        interpolate = modf(i / 10)[0]
+        sides = round((polygons[poly] * (1 - interpolate))
+                      + (interpolate * polygons[min(len(polygons) - 1, poly + 1)]))
+        polygon = polygon_points(sides, num_points)
         for j, th in enumerate(theta_values):
-            r = 0.3 * circ_function_r(vads[i], th)
-            r += polygons[poly][j]
+            r = 0.1 * circ_function_r(vads[i], th)
+            r += polygon[j]
             r *= (4 - abs(((i % 10) - 5))) * 0.075 + 1
             points_3d.append([x, r * np.cos(th), r * np.sin(th)])
     for i in range(len(vads) - 1):
