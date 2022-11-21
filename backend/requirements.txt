@@ -6,5 +6,5 @@ dill
 openpyscad
 python-magic
 matplotlib
-tensorflow==1.5
+tensorflow==2.9.3
 keras==2.1.5
